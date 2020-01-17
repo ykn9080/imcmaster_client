@@ -75,7 +75,7 @@ const Example = props => {
               name="email"
               id="exampleEmail"
               placeholder="with a placeholder"
-              onChange={onChangeEmail}
+              onBlur={onChangeEmail}
             />
           </FormGroup>
           <FormGroup>

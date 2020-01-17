@@ -1,0 +1,17 @@
+@import "../styles/_normalize.css";
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0.5em;
+}
+.container_nomargin {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0.5em;
+  margin: 0;
+}
+#table {
+  display: grid;
+  grid-template-columns: repeat(17, auto) 1fr;
+}

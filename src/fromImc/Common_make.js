@@ -1,8 +1,9 @@
-
+import $ from 'jquery';
+import Swal from 'sweetalert2';
 
 
 //#region bootstrap custom checkbox
-window.makebootcustom=(type, txtarr, id, options)=> {
+const makebootcustom=(type, txtarr, id, options)=> {
     //makebootcustom('checkbox', ['auto key generate'], 'cbkeymake',{event:'onchange|$(this).next().toggle()',hide:true,stack:true});
     // when save:  setting.ismodel = $("#cbkeymake").is(":checked");
     // when load: $("#cbkeymake").prop("checked", setting.ismodel);
@@ -264,14 +265,14 @@ function makeCtr_img1(startid, nextrownum) {
     });
 }
 
-window.togglechg=(id1, id2)=> {
+const togglechg=(id1, id2)=> {
     $([id1, id2]).each(function(i, k) {
         $("#" + k).toggle();
 
     })
 }
 
-window.togglechgi=(id1, id2)=> {
+const togglechgi=(id1, id2)=> {
     if ($("." + id1).length > 0) {
         var cls = $("." + id1).attr("class").replace(id1, id2);
         $("." + id1).attr("class", cls)
@@ -443,7 +444,7 @@ function delRowdelegate(tbid, options) {
             if (checkCookie(tbid + '_delete_row')) {
                 $("#" + tbid + ">tbody>tr:eq(" + rindex + ")").remove();
             } else {
-                swal({
+                Swal.fire({
                     title: title,
                     text: text,
                     html: true,
@@ -912,7 +913,7 @@ function makedndbox(dvcontain, elist, callback, parentcallback, optarr) {
         drop: function(event, ui) {
             //$(this).addClass("ui-state-highlight")
             if ($("#" + ui.draggable.context.id).siblings().length == 1) {
-                swal({
+                Swal.fire({
                     title: "Warning",
                     text: "Delete row completely?",
                     html: true,
@@ -2171,7 +2172,7 @@ function actionlistfinder(object) {
     return $.merge(mg, ["custom"]);
 }
 
-window.loadbtnstyle=(input, appendto)=> {
+const loadbtnstyle=(input, appendto)=> {
     //input:input object that return style setting, appendto: optional where to ex: #tbBtn
     var data1 = [],
         imglist = [];
@@ -3294,11 +3295,11 @@ function makeContainer(conarr) {
     return container;
 }
 
-window.enabling=(that)=> {
+const enabling=(that)=> {
     $("#" + that).draggable().draggable('enable');
 }
 
-window.disabling=(that)=> {
+const disabling=(that)=> {
     $("#" + that).draggable('disable');
 }
 //#endregion
@@ -3313,16 +3314,16 @@ function clearinserted() {
 }
 
 function sweetmsg(title, body,icon) {
-    //swal({
+    //Swal.fire({
     //    title: "<span style='color:#F8BB86'>Filtering Method<span>"
     //, text: "$[data] will replaced with value string. ex)this is $[data].==> this is value"
     //, showConfirmButton: false
     //, html: true
     //});
     if (typeof body == "undefined" | body == "")
-        swal({ title: "", body: title, html: true });
+        Swal.fire({ title: "", body: title, html: true });
     else
-        swal({ title: title, text: body, html: true });
+        Swal.fire({ title: title, text: body, html: true });
 }
 
 function sweetmsgautoclose(title, body, options) {
@@ -3331,12 +3332,12 @@ function sweetmsgautoclose(title, body, options) {
         if (options.hasOwnProperty("timer")) timer = options.timer;
     }
     if (typeof body == "undefined" | body == "")
-        swal({ title: "", body: title, html: true, timer: timer, showConfirmButton: false });
+        Swal.fire({ title: "", body: title, html: true, timer: timer, showConfirmButton: false });
     else
-        swal({ title: title, text: body, html: true, timer: timer, showConfirmButton: false });
+        Swal.fire({ title: title, text: body, html: true, timer: timer, showConfirmButton: false });
 }
 
-window.sweetmsgconfirm=(confirmfunc, option)=> {
+const sweetmsgconfirm=(confirmfunc, option)=> {
     var title = "Delete Confirm",
         body = "Are your sure to delete?",
         cookiekey = "cookie" + idMake();
@@ -3346,7 +3347,7 @@ window.sweetmsgconfirm=(confirmfunc, option)=> {
         if (option.hasOwnProperty("cookiekey")) cookiekey = option.cookiekey;
     }
     body = "<div>" + body + "</div><div style='margin:0'><label id='cbcookie' type='checkbox'><i class='fa fa-square-o imdim'/>Don't ask</label></div>"
-    swal({
+    Swal.fire({
         title: title,
         text: body,
         html: true,
@@ -3862,7 +3863,7 @@ function makeCtrboot(inp, rtntype) {
     return rtn;
 }
 
-window.makeCtr=(inp, rtntype)=> {
+const makeCtr=(inp, rtntype)=> {
     // create control
     // inp=['type','value','id','class','attr']
     var t = inp[0].split(':');
@@ -4329,7 +4330,7 @@ function resizeIframe($contain) {
 }
 global.pinstatus = false;
 
-window.refreshLayout=()=> {
+const refreshLayout=()=> {
     var mstyle = selectimctable(menuid, '', '');
     if (typeof(mstyle) == "undefined" | mstyle == "") {
         mstyle = {};

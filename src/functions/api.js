@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { currentsetting } from "./config";
 import $ from "jquery";
-import Swal from "sweetalert2";
+import { sweetmsgautoclose } from "../fromImc/Common_make";
 
 export const remotelogin = (username, password) => {
   axios({
@@ -34,25 +34,25 @@ export const remotelogin = (username, password) => {
   });
 };
 
-export function sweetmsgautoclose(title, body, options) {
-  var timer = 2500;
-  if (typeof options != "undefined") {
-    if (options.hasOwnProperty("timer")) timer = options.timer;
-  }
-  if ((typeof body == "undefined") | (body == ""))
-    Swal.fire({
-      title: "",
-      body: title,
-      html: true,
-      timer: timer,
-      showConfirmButton: false
-    });
-  else
-    Swal.fire({
-      title: title,
-      text: body,
-      html: true,
-      timer: timer,
-      showConfirmButton: false
-    });
-}
+// export function sweetmsgautoclose(title, body, options) {
+//   var timer = 2500;
+//   if (typeof options != "undefined") {
+//     if (options.hasOwnProperty("timer")) timer = options.timer;
+//   }
+//   if ((typeof body == "undefined") | (body == ""))
+//     Swal.fire({
+//       title: "",
+//       body: title,
+//       html: true,
+//       timer: timer,
+//       showConfirmButton: false
+//     });
+//   else
+//     Swal.fire({
+//       title: title,
+//       text: body,
+//       html: true,
+//       timer: timer,
+//       showConfirmButton: false
+//     });
+// }

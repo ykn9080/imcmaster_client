@@ -33,26 +33,3 @@ export const remotelogin = (username, password) => {
     }
   });
 };
-
-// export function sweetmsgautoclose(title, body, options) {
-//   var timer = 2500;
-//   if (typeof options != "undefined") {
-//     if (options.hasOwnProperty("timer")) timer = options.timer;
-//   }
-//   if ((typeof body == "undefined") | (body == ""))
-//     Swal.fire({
-//       title: "",
-//       body: title,
-//       html: true,
-//       timer: timer,
-//       showConfirmButton: false
-//     });
-//   else
-//     Swal.fire({
-//       title: title,
-//       text: body,
-//       html: true,
-//       timer: timer,
-//       showConfirmButton: false
-//     });
-// }

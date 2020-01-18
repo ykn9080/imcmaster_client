@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { currentsetting } from "./config";
 import $ from "jquery";
+import Swal from "sweetalert2";
 
 export const remotelogin = (username, password) => {
   axios({
@@ -13,6 +14,7 @@ export const remotelogin = (username, password) => {
     }
   }).then(response => {
     //console.log(response.data.file);
+    sweetmsgautoclose(username, password);
     if (response.data.hasOwnProperty("token")) {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem(
@@ -23,6 +25,7 @@ export const remotelogin = (username, password) => {
       localStorage.setItem("imctable", response.data.file);
       localStorage.setItem("imclist", response.data.list);
       localStorage.setItem("imcdata", response.data.dtsrc);
+
       //toggleLogin('cancel');
       //pageInit();
     } else {
@@ -30,3 +33,26 @@ export const remotelogin = (username, password) => {
     }
   });
 };
+
+export function sweetmsgautoclose(title, body, options) {
+  var timer = 2500;
+  if (typeof options != "undefined") {
+    if (options.hasOwnProperty("timer")) timer = options.timer;
+  }
+  if ((typeof body == "undefined") | (body == ""))
+    Swal.fire({
+      title: "",
+      body: title,
+      html: true,
+      timer: timer,
+      showConfirmButton: false
+    });
+  else
+    Swal.fire({
+      title: title,
+      text: body,
+      html: true,
+      timer: timer,
+      showConfirmButton: false
+    });
+}

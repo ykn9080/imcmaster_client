@@ -15,7 +15,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { currentsetting } from "../functions/config";
 import { remotelogin } from "../functions/api";
 import axios from "axios";
-
+import Join from "./Join";
+import NavLogin from "./NavLogin";
 const Login = props => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

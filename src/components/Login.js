@@ -18,22 +18,47 @@ import axios from "axios";
 import Join from "./Join";
 import NavLogin from "./NavLogin";
 const Login = props => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
+  const [state, setState] = useState({
+    username: "",
+    password: ""
+  });
+  const changeState = e => {
+    const { name, value } = e.target;
+    setState(prevState => {
+      return {
+        ...prevState,
+        [name]: value
+      };
+    });
+  };
   const onSubmitHandler = event => {
     event.preventDefault();
-    console.log(currentsetting);
-    remotelogin(username, password);
+    remotelogin(state.username, state.password);
   };
-  const onChangeEmail = event => {
-    setUsername(event.target.value);
-    //this.setState({username: event.target.value});
-  };
-  const onChangePass = event => {
-    setPassword(event.target.value);
-    //this.setState({password: event.target.value});
-  };
+  // const onChangeEmail = event => {
+  //   //setUsername(event.target.value);
+  //   changeState(state.username, event.target.value);
+  //   setState(prevState => {
+  //     return {
+  //       ...prevState,
+  //       username: event.target.value
+  //     };
+  //   });
+  //   //this.setState({username: event.target.value});
+  // };
+  // const onChangePass = event => {
+  //   changeState(event.target.name, event.target.value);
+  //   setState(prevState => {
+  //     return {
+  //       ...prevState,
+  //       password: event.target.value
+  //     };
+  //   });
+  //   //setPassword(event.target.value);
+  //   //this.setState({password: event.target.value});
+  // };
   return (
     <div style={{ padding: 5 }}>
       <Form>
@@ -41,10 +66,9 @@ const Login = props => {
           <Label for="exampleEmail">Email</Label>
           <Input
             type="text"
-            name="email"
-            id="exampleEmail"
+            name="username"
             placeholder="with a placeholder"
-            onBlur={onChangeEmail}
+            onBlur={changeState}
           />
         </FormGroup>
         <FormGroup>
@@ -52,9 +76,8 @@ const Login = props => {
           <Input
             type="password"
             name="password"
-            id="examplePassword"
             placeholder="password placeholder"
-            onChange={onChangePass}
+            onBlur={changeState}
           />
         </FormGroup>
         <FormGroup className="container_nomargin">

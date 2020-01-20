@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  ButtonGroup,
-  Alert,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Table
-} from "reactstrap";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -77,7 +67,7 @@ const Join = props => {
             name="email"
             id="exampleEmail"
             placeholder="with a placeholder"
-            onBlur={onChangeEmail}
+            //onBlur={onChangeEmail}
           />
         </FormGroup>
         <FormGroup>
@@ -144,7 +134,7 @@ const Join = props => {
           <button
             type="submit"
             class="btn btn-primary btn-lg btn-block"
-            onclick={registration}
+            // onclick={registration}
             id="btnRegister"
           >
             Register

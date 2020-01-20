@@ -3,8 +3,15 @@ import Swal from "sweetalert2";
 
 function sweetmsg(title, body, icon) {
   if ((typeof body == "undefined") | (body == ""))
-    Swal.fire({ title: "", body: title, html: true });
-  else Swal.fire({ title: title, text: body, html: true });
+    Swal.fire({ title: "", text: title });
+  else Swal.fire({ title: title, text: body });
+
+  // Swal.fire({
+  //   icon: "error",
+  //   title: title,
+  //   text: body,
+  //   footer: "<a href>Why do I have this issue?</a>"
+  // });
 }
 
 function sweetmsgautoclose(title, body, options) {
@@ -15,8 +22,7 @@ function sweetmsgautoclose(title, body, options) {
   if ((typeof body == "undefined") | (body == ""))
     Swal.fire({
       title: "",
-      body: title,
-      html: true,
+      text: title,
       timer: timer,
       showConfirmButton: false
     });
@@ -24,7 +30,6 @@ function sweetmsgautoclose(title, body, options) {
     Swal.fire({
       title: title,
       text: body,
-      html: true,
       timer: timer,
       showConfirmButton: false
     });

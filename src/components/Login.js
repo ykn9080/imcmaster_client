@@ -1,20 +1,9 @@
 import React, { Component, useState, useEffect } from "react";
-import {
-  Button,
-  ButtonGroup,
-  Alert,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Table
-} from "reactstrap";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { currentsetting } from "../functions/config";
 import { remotelogin } from "../functions/api";
-import axios from "axios";
 import Join from "./Join";
 import NavLogin from "./NavLogin";
 const Login = props => {
@@ -37,33 +26,12 @@ const Login = props => {
     event.preventDefault();
     remotelogin(state.username, state.password);
   };
-  // const onChangeEmail = event => {
-  //   //setUsername(event.target.value);
-  //   changeState(state.username, event.target.value);
-  //   setState(prevState => {
-  //     return {
-  //       ...prevState,
-  //       username: event.target.value
-  //     };
-  //   });
-  //   //this.setState({username: event.target.value});
-  // };
-  // const onChangePass = event => {
-  //   changeState(event.target.name, event.target.value);
-  //   setState(prevState => {
-  //     return {
-  //       ...prevState,
-  //       password: event.target.value
-  //     };
-  //   });
-  //   //setPassword(event.target.value);
-  //   //this.setState({password: event.target.value});
-  // };
+
   return (
     <div style={{ padding: 5 }}>
       <Form>
         <FormGroup>
-          <Label for="exampleEmail">Email</Label>
+          <Label for="username">Email</Label>
           <Input
             type="text"
             name="username"
@@ -72,7 +40,7 @@ const Login = props => {
           />
         </FormGroup>
         <FormGroup>
-          <Label for="examplePassword">Password</Label>
+          <Label for="password">Password</Label>
           <Input
             type="password"
             name="password"

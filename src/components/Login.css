@@ -2,12 +2,13 @@
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 0.5em;
+  justify-items: center;
 }
 .container_nomargin {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 0.5em;
   margin: 0;
 }

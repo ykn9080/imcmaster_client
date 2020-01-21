@@ -5,6 +5,7 @@ import $ from "jquery";
 import { sweetmsg, sweetmsgautoclose } from "../fromImc/Common_make";
 
 export const remotelogin = (username, password) => {
+  console.log(username, password);
   axios({
     method: "post",
     url: currentsetting.webserviceprefix + "login",

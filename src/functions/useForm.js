@@ -3,7 +3,7 @@ const useForm = callback => {
   const [values, setValues] = useState({});
   const handleSubmit = event => {
     if (event) event.preventDefault();
-    callback();
+    callback(...Object.values(values));
   };
   const handleChange = event => {
     event.persist();

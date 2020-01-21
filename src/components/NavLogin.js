@@ -4,15 +4,18 @@ import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./Login";
 import Join from "./Join";
+import logo from "../images/logo/imc1_1.png";
+import imclogo from "../images/logo/imcmaster.png";
 
 const NavLogin = () => {
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState("2");
   return (
-    <div>
-      {/* <div style="margin-bottom:30px">
-        <img src="/images/logo/imc1_1.png" style="width:60px;" />
-        <img src="/images/logo/imcmaster.png" style="width:150px" />
-      </div> */}
+    <div className="container">
+      <div style={{ marginBottom: "30px" }}>
+        <img src={logo} style={{ width: "60px" }} />
+        <img src={imclogo} style={{ width: "150px" }} />
+      </div>
+
       <Nav tabs>
         <NavItem>
           <NavLink
@@ -41,8 +44,11 @@ const NavLogin = () => {
         <TabPane tabId="1">
           <Login />
         </TabPane>
-        <TabPane tabId="2">Join!!!</TabPane>
+        <TabPane tabId="2">
+          <Join />
+        </TabPane>
       </TabContent>
+      <div />
     </div>
     // <script>
     //     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

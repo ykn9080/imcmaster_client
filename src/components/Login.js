@@ -1,20 +1,9 @@
 import React, { Component, useState, useEffect } from "react";
-import {
-  Button,
-  ButtonGroup,
-  Alert,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Table
-} from "reactstrap";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { currentsetting } from "../functions/config";
 import { remotelogin } from "../functions/api";
-import axios from "axios";
 import Join from "./Join";
 import NavLogin from "./NavLogin";
 import useForm from "../functions/useForm";
@@ -22,6 +11,7 @@ import useForm from "../functions/useForm";
 const Login = props => {
   // const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("");
+<<<<<<< HEAD
   // const [state, setState] = useState({
   //   username: "",
   //   password: ""
@@ -66,11 +56,31 @@ const Login = props => {
   //   //setPassword(event.target.value);
   //   //this.setState({password: event.target.value});
   // };
+=======
+  const [state, setState] = useState({
+    username: "",
+    password: ""
+  });
+  const changeState = e => {
+    const { name, value } = e.target;
+    setState(prevState => {
+      return {
+        ...prevState,
+        [name]: value
+      };
+    });
+  };
+  const onSubmitHandler = event => {
+    event.preventDefault();
+    remotelogin(state.username, state.password);
+  };
+
+>>>>>>> db9dc76349a428089c9adef51d5f1b8d74800198
   return (
     <div style={{ padding: 5 }}>
       <Form>
         <FormGroup>
-          <Label for="exampleEmail">Email</Label>
+          <Label for="username">Email</Label>
           <Input
             type="text"
             name="username"
@@ -79,7 +89,7 @@ const Login = props => {
           />
         </FormGroup>
         <FormGroup>
-          <Label for="examplePassword">Password</Label>
+          <Label for="password">Password</Label>
           <Input
             type="password"
             name="password"

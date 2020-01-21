@@ -17,29 +17,36 @@ import { remotelogin } from "../functions/api";
 import axios from "axios";
 import Join from "./Join";
 import NavLogin from "./NavLogin";
+import useForm from "../functions/useForm";
+
 const Login = props => {
   // const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("");
-  const [state, setState] = useState({
-    username: "",
-    password: ""
-  });
-  const changeState = e => {
-    const { name, value } = e.target;
-    setState(prevState => {
-      return {
-        ...prevState,
-        [name]: value
-      };
-    });
-  };
-  const onSubmitHandler = event => {
-    event.preventDefault();
-    remotelogin(state.username, state.password);
-  };
+  // const [state, setState] = useState({
+  //   username: "",
+  //   password: ""
+  // });
+  // const handleChange = e => {
+  //   const { name, value } = e.target;
+  //   setState(prevState => {
+  //     return {
+  //       ...prevState,
+  //       [name]: value
+  //     };
+  //   });
+  // };
+  // const handleSubmit = event => {
+  //   event.preventDefault();
+  //   remotelogin(state.username, state.password);
+  // };
+  const { values, handleChange, handleSubmit } = useForm(remotelogin);
+  function login() {
+    console.log(values);
+  }
+
   // const onChangeEmail = event => {
   //   //setUsername(event.target.value);
-  //   changeState(state.username, event.target.value);
+  //   handleChange(state.username, event.target.value);
   //   setState(prevState => {
   //     return {
   //       ...prevState,
@@ -49,7 +56,7 @@ const Login = props => {
   //   //this.setState({username: event.target.value});
   // };
   // const onChangePass = event => {
-  //   changeState(event.target.name, event.target.value);
+  //   handleChange(event.target.name, event.target.value);
   //   setState(prevState => {
   //     return {
   //       ...prevState,
@@ -68,7 +75,7 @@ const Login = props => {
             type="text"
             name="username"
             placeholder="with a placeholder"
-            onBlur={changeState}
+            onBlur={handleChange}
           />
         </FormGroup>
         <FormGroup>
@@ -77,14 +84,14 @@ const Login = props => {
             type="password"
             name="password"
             placeholder="password placeholder"
-            onBlur={changeState}
+            onBlur={handleChange}
           />
         </FormGroup>
         <FormGroup className="container_nomargin">
           <Button color="primary" size="lg" block>
             Cancel
           </Button>
-          <Button color="secondary" size="lg" onClick={onSubmitHandler}>
+          <Button color="secondary" size="lg" onClick={handleSubmit}>
             Submit
           </Button>
         </FormGroup>

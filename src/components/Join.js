@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
 import { sweetmsgautoclose } from "../fromImc/Common_make";
-import "./Login.css";
+import "../styles/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import $ from "jquery";
 

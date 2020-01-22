@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import "./Login.css";
+import "../styles/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { currentsetting } from "../functions/config";
 import { remotelogin } from "../functions/api";

@@ -18,10 +18,17 @@ const loggedReducer = (state = false, action) => {
       return state;
   }
 };
+export const glovalVariableReducer = (state = {}, action) => {
+  return {
+    ...state,
+    [action.type]: action.payload
+  };
+};
 
 const allReducers = combineReducers({
   counter: counterReducer,
-  isLogged: loggedReducer
+  isLogged: loggedReducer,
+  gvar: glovalVariableReducer
 });
 
 export default allReducers;

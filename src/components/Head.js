@@ -4,8 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, globalVariable } from "../actions";
 import MultiDispatch from "../reducers/multipleDispatch";
+import { menuHead } from "../fromImc/Common_menu";
 
-const Head = () => {
+const Head1 = () => {
   const counter = useSelector(state => state.counter);
   const global = useSelector(state => state.global);
   const dispatch = useDispatch();
@@ -27,5 +28,9 @@ const Head = () => {
     </>
   );
 };
-
+const Head = () => {
+  useEffect(() => {
+    menuHead();
+  }, []);
+};
 export default Head;

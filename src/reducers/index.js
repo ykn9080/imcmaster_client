@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { globalVar } from "../functions/config";
 
 const counterReducer = (state = 0, action) => {
   switch (action.type) {
@@ -18,7 +19,7 @@ const loggedReducer = (state = false, action) => {
       return state;
   }
 };
-export const glovalVariableReducer = (state = {}, action) => {
+export const glovalVariableReducer = (state = globalVar, action) => {
   return { ...state, [action.type]: action.payload };
 };
 

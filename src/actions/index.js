@@ -10,9 +10,9 @@ export const decrement = () => {
 };
 
 //gloval variable collection
-export const gvar = (type, value) => {
+export const globalVariable = obj => {
   return {
-    type: type,
-    payload: value
+    type: Object.keys(obj)[0],
+    payload: obj[Object.keys(obj)[0]]
   };
 };

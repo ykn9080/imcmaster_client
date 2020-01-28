@@ -2,8 +2,31 @@ import React, { useEffect } from "react";
 import Head from "./Head";
 import { Example } from "./Head4";
 import Recur, { Menu } from "./Head2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //  import { pageInit } from "../fromImc/core";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faAngry } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCheckSquare,
+  faCoffee,
+  faUser,
+  faQuestionCircle,
+  faArrowCircleDown,
+  faArrowCircleRight,
+  faAdjust,
+  faGlobe
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(
+  faCheckSquare,
+  faCoffee,
+  faUser,
+  faQuestionCircle,
+  faArrowCircleDown,
+  faArrowCircleRight,
+  faAdjust,
+  faAngry,
+  faGlobe
+);
 
 let data = [
   {
@@ -47,7 +70,7 @@ const Home = () => {
   // useEffect(() => {
   //   //pageInit();
   // }, []);
-  return <Recur />;
+  return <Head />;
 };
 
 export default Home;

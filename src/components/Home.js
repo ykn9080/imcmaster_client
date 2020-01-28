@@ -5,38 +5,6 @@ import Recur, { Menu } from "./Head2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //  import { pageInit } from "../fromImc/core";
 
-// const data = [
-//   {
-//     id: 1,
-//     name: "Hello Kitty",
-//     items: [
-//       {
-//         id: 2,
-//         name: "Kitty Muu Muu"
-//       },
-//       {
-//         id: 3,
-//         name: "Kitty smack"
-//       }
-//     ]
-//   },
-//   {
-//     id: 4,
-//     name: "Hello Pussy",
-//     items: [
-//       {
-//         id: 5,
-//         name: "World",
-//         items: [
-//           {
-//             id: 6,
-//             name: "Hello Pussy world"
-//           }
-//         ]
-//       }
-//     ]
-//   }
-// ];
 let data = [
   {
     title: "Top level 1",
@@ -76,10 +44,10 @@ let data = [
   }
 ];
 const Home = () => {
-  useEffect(() => {
-    //pageInit();
-  }, []);
-  return <Head />;
+  // useEffect(() => {
+  //   //pageInit();
+  // }, []);
+  return <Recur />;
 };
 
 export default Home;

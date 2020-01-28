@@ -100,5 +100,11 @@ const sweetmsgconfirm = (confirmfunc, option) => {
     }
   });
 };
+function clearinserted() {
+  //remove all the inserted
+  $("#spdlist").remove();
+  $("#archivegdt").remove();
+  $("#spdataajax").remove();
+}
 
-export { sweetmsg, sweetmsgautoclose, sweetmsgconfirm };
+export { sweetmsg, sweetmsgautoclose, sweetmsgconfirm, clearinserted };

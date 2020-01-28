@@ -42,7 +42,6 @@ const globalVar = {
   ],
   mycomp: "",
   jsonlist: "",
-  contType: "afterlogin",
   cnt: 0,
   evval: eval,
   datareturn: "",

@@ -2,6 +2,9 @@ import React from "react";
 import axios from "axios";
 import { currentsetting } from "../functions/config";
 import { funLoading, funStop } from "./core";
+import { menuMy } from "./Common_menu";
+import { useSelector } from "react-redux";
+import $ from "jquery";
 
 axios.defaults.headers.common = {
   Authorization: `bearer ` + localStorage.getItem("token")
@@ -40,10 +43,11 @@ export const jsonReadMyAjax = (
       callbackwithdata(callback, JSON.stringify(response.data), opt);
   });
 };
-
+const gb = useSelector(state => state.global);
 export function jsonDataMyAjax(datacode, callback, callbackorigin, optorigin) {
   //myinfo:comp,staff(or comp only ok)
   var path = "/data/json/imcdata.json";
+  //const gb = useSelector(state => state.global);
   funLoading();
   axios({
     method: "post",
@@ -51,19 +55,20 @@ export function jsonDataMyAjax(datacode, callback, callbackorigin, optorigin) {
     headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     data: {
       path: path,
-      myinfo: mycomp,
+      myinfo: gb.mycomp,
       dataname: "",
       keycode: "code",
       keyvalue: datacode
     }
   }).then(response => {
     if (response.data != "") {
-      if (callback == btnclickexecute) {
-        btnclickexecute(response.data, optorigin[0]);
-      } else {
-        console.log(response.data);
-        callbackwithdata(callback, JSON.stringify(response.data), optorigin);
-      }
+      //btnclickexecute를 정상화한후 살릴것!!!!!!!!!!!!!
+      // if (callback == btnclickexecute) {
+      //   btnclickexecute(response.data, optorigin[0]);
+      // } else {
+      console.log(response.data);
+      callbackwithdata(callback, JSON.stringify(response.data), optorigin);
+      //}
     } else {
       callbackwithdata(callback, "", optorigin);
     }
@@ -126,7 +131,7 @@ export function callbackwithdata(callback, rtndt, opt) {
       callback(dt);
     }
   }
-  ajaxrtn = rtndt;
+  gb.ajaxrtn = rtndt;
 }
 export function datacodereturn(dtsrc) {
   var datacode = "";
@@ -202,7 +207,25 @@ export function datalistreturn(data, datalist, opt) {
   }
   return rtn;
 }
-
+function datafilterreturn(data) {
+  //find filter by datatype
+  var rtn = "";
+  if (typeof data != "undefined") {
+    if (data.dtype == "database") {
+      if (data.hasOwnProperty("querylist")) {
+        $(data.querylist).each(function(i, k) {
+          if (k.sqlcommand == "select") {
+            rtn = k.filter;
+          }
+        });
+      }
+    } else rtn = data.filter;
+  }
+  return rtn;
+}
+function applyFilter(src, filter, option) {
+  return src;
+}
 export const selectimctable = (menuid, subid, dvid) => {
   let rtn;
   //if ( selectimc("imclist", "", "code", dvid) != "")

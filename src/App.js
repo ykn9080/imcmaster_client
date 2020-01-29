@@ -6,16 +6,19 @@ import Login from "./components/Login";
 import Join from "./components/Join";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-function App() {
+const App = props => {
   return (
     <Router>
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/login" component={Login} />
+        <Route
+          path="/login"
+          render={props => <Login {...props} title={`Props through render`} />}
+        />
         <Route path="/join" component={Join} />
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;

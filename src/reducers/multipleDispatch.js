@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { globalVariable } from "../actions";
+import { createStore } from "redux";
+import { glovalVariableReducer } from "./";
+const store = createStore(glovalVariableReducer);
+export const gb = store.getState();
 
 const MultiDispatch = obj => {
   /* 

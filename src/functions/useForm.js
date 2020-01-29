@@ -1,8 +1,17 @@
-import { useState } from "react";
-const useForm = callback => {
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
+const useForm = (callback, props) => {
   const [values, setValues] = useState({});
   const handleSubmit = event => {
     if (event) event.preventDefault();
+    callback(...Object.values(values));
+  };
+  const handleSubmitCallback = async event => {
+    if (event) event.preventDefault();
+    console.log(props, values);
+    values.props = props;
+    console.log(...Object.values(values));
     callback(...Object.values(values));
   };
   const handleChange = event => {
@@ -15,6 +24,7 @@ const useForm = callback => {
   return {
     handleChange,
     handleSubmit,
+    handleSubmitCallback,
     values
   };
 };

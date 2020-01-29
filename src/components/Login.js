@@ -10,6 +10,7 @@ import NavLogin from "./NavLogin";
 import useForm from "../functions/useForm";
 
 const Login = props => {
+  console.log(props);
   // const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("");
   // const [state, setState] = useState({
@@ -29,7 +30,11 @@ const Login = props => {
   //   event.preventDefault();
   //   remotelogin(state.username, state.password);
   // };
-  const { values, handleChange, handleSubmit } = useForm(remotelogin);
+  const { values, handleChange, handleSubmit, handleSubmitCallback } = useForm(
+    remotelogin,
+    props
+  );
+
   function login() {
     console.log(values);
   }
@@ -83,12 +88,15 @@ const Login = props => {
               Cancel
             </Button>
           </Link>
-          <Link to="/" exact onClick={() => handleSubmit()}>
-            {/* </Link><Button color="secondary" size="lg" onClick={handleSubmit}> */}
-            <Button color="secondary" size="lg">
-              Submit
-            </Button>
-          </Link>
+          {/*<Link to="/" exact onClick={() => handleSubmitCallback()}>
+             </Link><Button color="secondary" size="lg" onClick={handleSubmit}> */}
+          <Button
+            color="secondary"
+            size="lg"
+            onClick={() => handleSubmitCallback()}
+          >
+            Submit
+          </Button>
         </FormGroup>
       </Form>
     </div>

@@ -13,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, globalVariable } from "../actions";
-import MultiDispatch from "../reducers/multipleDispatch";
+import MultiDispatch, { gb } from "../reducers/multipleDispatch";
 //import { menuHead } from "../fromImc/Common_menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "../images/logo/imc1_1.png";
@@ -40,7 +40,8 @@ const Head1 = () => {
   const counter = useSelector(state => state.counter);
   const global = useSelector(state => state.global);
   const dispatch = useDispatch();
-  MultiDispatch({ fast: "slow", ugly: "handsom" });
+  MultiDispatch({ vv: "vvvvvv" });
+  console.log(gb);
   const brandStyle = { maxWidth: "300px !important" };
 
   const topbrand = (

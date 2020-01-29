@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "../styles/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -77,12 +78,17 @@ const Login = props => {
           />
         </FormGroup>
         <FormGroup className="container_nomargin">
-          <Button color="primary" size="lg" block>
-            Cancel
-          </Button>
-          <Button color="secondary" size="lg" onClick={handleSubmit}>
-            Submit
-          </Button>
+          <Link to="/" exact>
+            <Button color="primary" size="lg" block>
+              Cancel
+            </Button>
+          </Link>
+          <Link to="/" exact onClick={() => handleSubmit()}>
+            {/* </Link><Button color="secondary" size="lg" onClick={handleSubmit}> */}
+            <Button color="secondary" size="lg">
+              Submit
+            </Button>
+          </Link>
         </FormGroup>
       </Form>
     </div>

@@ -47,7 +47,7 @@ const Home = () => {
   // useEffect(() => {
   //   //pageInit();
   // }, []);
-  return <Recur />;
+  return <Head />;
 };
 
 export default Home;

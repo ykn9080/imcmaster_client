@@ -8,63 +8,27 @@ import { remotelogin } from "../functions/api";
 import Join from "./Join";
 import NavLogin from "./NavLogin";
 import useForm from "../functions/useForm";
+import logo from "../images/logo/imc1_1.png";
+import imclogo from "../images/logo/imcmaster.png";
 
 const Login = props => {
-  console.log(props);
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [state, setState] = useState({
-  //   username: "",
-  //   password: ""
-  // });
-  // const handleChange = e => {
-  //   const { name, value } = e.target;
-  //   setState(prevState => {
-  //     return {
-  //       ...prevState,
-  //       [name]: value
-  //     };
-  //   });
-  // };
-  // const handleSubmit = event => {
-  //   event.preventDefault();
-  //   remotelogin(state.username, state.password);
-  // };
-  const { values, handleChange, handleSubmit, handleSubmitCallback } = useForm(
-    remotelogin,
-    props
-  );
+  const { values, handleChange, handleSubmit } = useForm(remotelogin);
 
-  function login() {
-    console.log(values);
-  }
-
-  // const onChangeEmail = event => {
-  //   //setUsername(event.target.value);
-  //   handleChange(state.username, event.target.value);
-  //   setState(prevState => {
-  //     return {
-  //       ...prevState,
-  //       username: event.target.value
-  //     };
-  //   });
-  //   //this.setState({username: event.target.value});
-  // };
-  // const onChangePass = event => {
-  //   handleChange(event.target.name, event.target.value);
-  //   setState(prevState => {
-  //     return {
-  //       ...prevState,
-  //       password: event.target.value
-  //     };
-  //   });
-  //   //setPassword(event.target.value);
-  //   //this.setState({password: event.target.value});
-  // };
+  const Style = {
+    dv: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    fg: { width: "500px" }
+  };
   return (
-    <div style={{ padding: 5 }}>
+    <div style={Style.dv}>
+      <img src={logo} className="d-inline-block align-top" width="40" />
+      <img src={imclogo} className="d-inline-block align-top" />
       <Form>
-        <FormGroup>
+        <FormGroup style={Style.fg}>
           <Label for="username">Email</Label>
           <Input
             type="text"
@@ -73,7 +37,7 @@ const Login = props => {
             onBlur={handleChange}
           />
         </FormGroup>
-        <FormGroup>
+        <FormGroup style={Style.fg}>
           <Label for="password">Password</Label>
           <Input
             type="password"
@@ -82,19 +46,14 @@ const Login = props => {
             onBlur={handleChange}
           />
         </FormGroup>
-        <FormGroup className="container_nomargin">
+        <FormGroup style={Style.fg} className="container_nomargin">
           <Link to="/" exact>
             <Button color="primary" size="lg" block>
               Cancel
             </Button>
           </Link>
-          {/*<Link to="/" exact onClick={() => handleSubmitCallback()}>
-             </Link><Button color="secondary" size="lg" onClick={handleSubmit}> */}
-          <Button
-            color="secondary"
-            size="lg"
-            onClick={() => handleSubmitCallback()}
-          >
+          <Link to="/" exact></Link>
+          <Button color="secondary" size="lg" onClick={handleSubmit}>
             Submit
           </Button>
         </FormGroup>

@@ -13,10 +13,11 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useSelector } from "react-redux";
-import { globalVariable } from "../actions";
+import { globalVariable } from "../../actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import logo from "../images/logo/imc1_1.png";
-import imclogo from "../images/logo/imcmaster.png";
+import logo from "../../images/logo/imc1_1.png";
+import Signin from "../Login/Login1";
+import imclogo from "../../images/logo/imcmaster.png";
 //import { getlogin } from "../fromImc/core";
 
 const element = <FontAwesomeIcon icon="user" size="lg" />;
@@ -94,10 +95,16 @@ const Head1 = () => {
       <Nav.Link>
         <NavDropdown title={navDropdownTitle} id="basic-nav-dropdown">
           <NavDropdown.Item>
-            <Link to="/login">Log In</Link>
+            <Link to="/Login">Log In</Link>
           </NavDropdown.Item>
           <NavDropdown.Item>
-            <Link to="/join">Join</Link>
+            <Link to="/Join">Join</Link>
+          </NavDropdown.Item>
+          <NavDropdown.Item>
+            <Link to="/Login1">Log1 In</Link>
+          </NavDropdown.Item>
+          <NavDropdown.Item>
+            <Link to="/Join1">Join1 In</Link>
           </NavDropdown.Item>
         </NavDropdown>
       </Nav.Link>

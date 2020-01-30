@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Head from "./Head";
 import { Example } from "./Head4";
 import Recur, { Menu } from "./Head2";
+
 //  import { pageInit } from "../fromImc/core";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faAngry } from "@fortawesome/free-regular-svg-icons";

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
-import "../styles/Login.css";
+import "../../styles/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./Login";
 import Join from "./Join";
-import logo from "../images/logo/imc1_1.png";
-import imclogo from "../images/logo/imcmaster.png";
+import logo from "../../images/logo/imc1_1.png";
+import imclogo from "../../images/logo/imcmaster.png";
 
 const NavLogin = () => {
   const [activeTab, setActiveTab] = useState("2");

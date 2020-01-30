@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { currentsetting } from "./config";
 import $ from "jquery";
-import { sweetmsg, sweetmsgautoclose } from "../fromImc/Common_make";
+import { sweetmsg, sweetmsgautoclose } from "../../fromImc/Common_make";
 import { trackPromise } from "react-promise-tracker";
 
 export const remotelogin = (username, password, props) => {

@@ -1,15 +1,15 @@
 import React, { Component, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import "../styles/Login.css";
+import "../../styles/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { currentsetting } from "../functions/config";
 import { remotelogin } from "../functions/api";
 import Join from "./Join";
 import NavLogin from "./NavLogin";
 import useForm from "../functions/useForm";
-import logo from "../images/logo/imc1_1.png";
-import imclogo from "../images/logo/imcmaster.png";
+import logo from "../../images/logo/imc1_1.png";
+import imclogo from "../../images/logo/imcmaster.png";
 
 const Login = props => {
   const { values, handleChange, handleSubmit } = useForm(remotelogin);

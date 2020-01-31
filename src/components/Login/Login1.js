@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import useForm from "../functions/useForm";
+import { remotelogin } from "../functions/api";
 import logo from "../../images/logo/imc1_1.png";
 import imclogo from "../../images/logo/imcmaster.png";
 
@@ -35,30 +37,44 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     alignItems: "center"
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+  logo: {
+    margin: theme.spacing(1, 0, 5)
   },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(1, 0, 0)
+    margin: theme.spacing(1, 0, 1)
   }
 }));
 
-export default function SignIn() {
+const SignIn = props => {
+  const { values, handleChange, handleSubmit, handleSubmitCallback } = useForm(
+    remotelogin,
+    props
+  );
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-          <logo />
-        </Avatar>
+        <Link to="/" exact>
+          <Grid container className={classes.logo} justify={"flex-start"}>
+            <Grid item xs>
+              <img
+                src={logo}
+                className="d-inline-block align-bottom"
+                width="60"
+              />
+            </Grid>
+            <Grid item>
+              <img src={imclogo} className="d-inline-block align-top" />
+            </Grid>
+          </Grid>
+        </Link>
+
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
@@ -73,6 +89,7 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            onBlur={handleChange}
           />
           <TextField
             variant="outlined"
@@ -84,6 +101,7 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onBlur={handleChange}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -95,6 +113,7 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleSubmitCallback}
           >
             Sign In
           </Button>
@@ -128,4 +147,6 @@ export default function SignIn() {
       </Box>
     </Container>
   );
-}
+};
+
+export default SignIn;

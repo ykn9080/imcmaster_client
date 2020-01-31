@@ -16,6 +16,7 @@ import useForm from "../functions/useForm";
 import { remotelogin } from "../functions/api";
 import logo from "../../images/logo/imc1_1.png";
 import imclogo from "../../images/logo/imcmaster.png";
+import Icon from "@material-ui/core/Icon";
 
 function Copyright() {
   return (
@@ -32,17 +33,17 @@ function Copyright() {
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
   },
   logo: {
-    margin: theme.spacing(1, 0, 5)
+    margin: theme.spacing(4, 0, 4)
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(5)
   },
   submit: {
     margin: theme.spacing(1, 0, 1)
@@ -59,24 +60,24 @@ const SignIn = props => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Link to="/" exact>
-          <Grid container className={classes.logo} justify={"flex-start"}>
-            <Grid item xs>
-              <img
-                src={logo}
-                className="d-inline-block align-bottom"
-                width="60"
-              />
-            </Grid>
-            <Grid item>
-              <img src={imclogo} className="d-inline-block align-top" />
-            </Grid>
+      <Icon>star</Icon>
+      <Link to="/" exact>
+        <Grid container className={classes.logo} justify="flex-start">
+          <Grid item>
+            <img
+              src={logo}
+              className="d-inline-block align-bottom"
+              width="60"
+            />
           </Grid>
-        </Link>
-
+          <Grid item>
+            <img src={imclogo} className="d-inline-block align-top" />
+          </Grid>
+        </Grid>
+      </Link>
+      <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Sign in
+          Log in
         </Typography>
         <form className={classes.form} noValidate>
           <TextField

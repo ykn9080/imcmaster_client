@@ -30,18 +30,17 @@ function Copyright() {
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+  logo: {
+    margin: theme.spacing(4, 0, 4)
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(5)
   },
   submit: {
     margin: theme.spacing(1, 0, 1)
@@ -54,10 +53,22 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Link to="/" exact>
+        <Grid container className={classes.logo} justify={"flex-start"}>
+          <Grid items>
+            <img
+              src={logo}
+              className="d-inline-block align-bottom"
+              width="60"
+            />
+            <Icon className="fa fa-coffee" color="primary" />
+          </Grid>
+          <Grid item>
+            <img src={imclogo} className="d-inline-block align-top" />
+          </Grid>
+        </Grid>
+      </Link>
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>

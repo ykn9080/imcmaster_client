@@ -79,6 +79,9 @@ const NavDropRecur = props => {
 };
 
 const Head1 = () => {
+  function handleSelect(selectedKey) {
+    console.log("selected123 " + selectedKey);
+  }
   const topbrand = (
     <Navbar.Brand href="#home">
       <img src={logo} className="d-inline-block align-top" width="40" />{" "}
@@ -87,13 +90,14 @@ const Head1 = () => {
   );
 
   const navDropdownTitle = <FontAwesomeIcon icon="user" size="lg" />;
+  const navCog = <FontAwesomeIcon icon="cog" size="lg" />;
   const notyet = () => {
     alert("comming soon!!!");
   };
   const topright = (
-    <Nav>
+    <Nav onSelect={handleSelect}>
       <Nav.Link>
-        <NavDropdown title={navDropdownTitle} id="basic-nav-dropdown">
+        <NavDropdown title={navDropdownTitle} id="basic-nav-dropdown1">
           <NavDropdown.Item>
             <Link to="/Login">Log In</Link>
           </NavDropdown.Item>
@@ -108,8 +112,11 @@ const Head1 = () => {
           </NavDropdown.Item>
         </NavDropdown>
       </Nav.Link>
-      <Nav.Link href="#home">
-        <FontAwesomeIcon icon="globe" size="lg" style={{ marginTop: "10" }} />
+      <Nav.Link>
+        <NavDropdown title={navCog} id="basic-nav-dropdown2">
+          <NavDropdown.Item eventKey={"edit"}>Edit</NavDropdown.Item>
+          <NavDropdown.Item eventKey={"admin"}>Admin</NavDropdown.Item>
+        </NavDropdown>
       </Nav.Link>
 
       <Nav.Link href="#link" onClick={notyet}>

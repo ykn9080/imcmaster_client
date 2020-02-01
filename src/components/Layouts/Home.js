@@ -15,7 +15,8 @@ import {
   faArrowCircleDown,
   faArrowCircleRight,
   faAdjust,
-  faGlobe
+  faGlobe,
+  faCog
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -27,7 +28,8 @@ library.add(
   faArrowCircleRight,
   faAdjust,
   faAngry,
-  faGlobe
+  faGlobe,
+  faCog
 );
 
 let data = [

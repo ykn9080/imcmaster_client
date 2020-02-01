@@ -61,7 +61,6 @@ export default function SignUp() {
               className="d-inline-block align-bottom"
               width="60"
             />
-            <Icon className="fa fa-coffee" color="primary" />
           </Grid>
           <Grid item>
             <img src={imclogo} className="d-inline-block align-top" />

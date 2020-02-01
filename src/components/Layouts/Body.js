@@ -9,12 +9,15 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   paper: {
+    height: 250,
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.secondary
   }
 }));
-const InnerGrid = props => {
+
+export const CenteredGrid = props => {
+  const classes = useStyles();
   const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
   const addGridHandler = e => {
     e.preventDefault();
@@ -24,7 +27,6 @@ const InnerGrid = props => {
   const removeGridHandler = e => {
     return null;
   };
-  const classes = useStyles();
   let newArr = [];
   _.each(rowdt, (val, key) => {
     let i;
@@ -33,7 +35,7 @@ const InnerGrid = props => {
     }
   });
   return (
-    <Grid container spacing={3}>
+    <Grid container justify="center" className={classes.root} spacing={2}>
       {newArr.map((dt, index) => {
         return (
           <Grid item xs={dt.xs}>
@@ -50,38 +52,3 @@ const InnerGrid = props => {
     </Grid>
   );
 };
-
-const CenteredGrid = () => {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.root}>
-      <InnerGrid />
-      {/* <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>xs=12</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-      </Grid> */}
-    </div>
-  );
-};
-
-export default CenteredGrid;

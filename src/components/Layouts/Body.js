@@ -20,14 +20,16 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     alignItems: "bottom"
+  },
+  primary: {
+    margin: theme.spacing(1)
   }
 }));
 
 export const CenteredGrid = props => {
   const classes = useStyles();
-  const rowdt = useSelector(state => state.rowdt);
-
-  MultiDispatch({ rowdt: "vvvvvv" });
+  // const rowdt = useSelector(state => state.rowdt);
+  // MultiDispatch({ rowdt: "vvvvvv" });
 
   const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
   const [editMode, setEditMode] = useState(false);
@@ -35,14 +37,6 @@ export const CenteredGrid = props => {
   const removeGridHandler = e => {
     return null;
   };
-  let newArr = [];
-  _.each(rowdt, (val, key) => {
-    let i;
-    for (i = 0; i < val; i++) {
-      newArr.push({ row: key, col: i, val: val - 1, xs: 12 / val });
-    }
-  });
-
   const IconBtn = props => {
     const classes = useStyles();
     const addGridHandler = (row, val) => {
@@ -54,7 +48,12 @@ export const CenteredGrid = props => {
     return (
       <Grid item xs={0.5} style={{ alignItem: "bottom" }}>
         <span>
-          <Fab color="primary" aria-label="add" className={classes.icon}>
+          <Fab
+            color="primary"
+            size="small"
+            aria-label="add"
+            className={classes.icon}
+          >
             <AddIcon
               id={props.dt.row + "n" + (props.dt.val + 1)}
               onClick={() => {
@@ -66,18 +65,31 @@ export const CenteredGrid = props => {
       </Grid>
     );
   };
+
+  const GridRow = props => {
+    return (
+      <Grid item xs={props.xssize}>
+        <Paper className={classes.paper}>xs={props.xssize}</Paper>
+      </Grid>
+    );
+  };
+
+  let newArr = [];
+  _.each(rowdt, (val, key) => {
+    let i;
+    for (i = 0; i < val; i++) {
+      newArr.push({ row: key, col: i, val: val - 1, xs: 12 / val });
+    }
+  });
+
   return (
     <Grid container justify="center" className={classes.root} spacing={2}>
       {newArr.map((dt, index) => {
         return dt.col != dt.val ? (
-          <Grid item xs={dt.xs}>
-            <Paper className={classes.paper}>xs={dt.xs}</Paper>
-          </Grid>
+          <GridRow dt={dt} xssize={dt.xs} />
         ) : (
           <>
-            <Grid item xs={dt.xs - 1}>
-              <Paper className={classes.paper}>xs={dt.xs - 1}</Paper>
-            </Grid>
+            <GridRow dt={dt} xssize={dt.xs - 1} />
             <IconBtn dt={dt} />
           </>
         );

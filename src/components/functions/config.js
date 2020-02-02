@@ -116,7 +116,8 @@ const globalVar = {
   helpdiagramobj: "",
   ff: "",
   vv: "",
-  tt: ""
+  tt: "",
+  selectedKey: ""
 };
 
 export { currentsetting, globalVar };

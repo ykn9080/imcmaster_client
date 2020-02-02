@@ -11,6 +11,10 @@ export const decrement = () => {
 
 //gloval variable collection
 export const globalVariable = obj => {
+  console.log({
+    type: Object.keys(obj)[0],
+    payload: obj[Object.keys(obj)[0]]
+  });
   return {
     type: Object.keys(obj)[0],
     payload: obj[Object.keys(obj)[0]]

@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import ButtonBase from "@material-ui/core/ButtonBase";
 import Fab from "@material-ui/core/Fab";
+import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import MultiDispatch, { gb } from "../../reducers/multipleDispatch";
+import CardForm from "./CardForm";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,6 +23,11 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary
   },
   icon: {
+    "& > *": {
+      margin: theme.spacing(1)
+    }
+  },
+  iconright: {
     alignItems: "bottom"
   },
   primary: {
@@ -28,15 +37,21 @@ const useStyles = makeStyles(theme => ({
 
 export const CenteredGrid = props => {
   const classes = useStyles();
+  let keyval = "BreadCrumb";
+
+  keyval = useSelector(state => state.global.selectedKey);
+
   // const rowdt = useSelector(state => state.rowdt);
   // MultiDispatch({ rowdt: "vvvvvv" });
 
   const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
-  const [editMode, setEditMode] = useState(false);
 
-  const removeGridHandler = e => {
-    return null;
+  const [editMode, setEditMode] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
   };
+
   const IconBtn = props => {
     const classes = useStyles();
     const addGridHandler = (row, val) => {
@@ -46,13 +61,13 @@ export const CenteredGrid = props => {
       setRowdt(newState);
     };
     return (
-      <Grid item xs={0.5} style={{ alignItem: "bottom" }}>
+      <Grid item xs={"auto"}>
         <span>
           <Fab
             color="primary"
             size="small"
             aria-label="add"
-            className={classes.icon}
+            className={classes.iconright}
           >
             <AddIcon
               id={props.dt.row + "n" + (props.dt.val + 1)}
@@ -67,9 +82,31 @@ export const CenteredGrid = props => {
   };
 
   const GridRow = props => {
+    //const [hoverEffect, setHoverEffect] = useState(false);
+    const removeGridHandler = () => {
+      let newState = [...rowdt]; // clone the array
+      newState[props.dt.row] = props.dt.val;
+      setRowdt(newState);
+    };
+
     return (
       <Grid item xs={props.xssize}>
-        <Paper className={classes.paper}>xs={props.xssize}</Paper>
+        <CardForm />
+        {/* <Paper className={classes.paper}>
+          xs={props.xssize}{" "}
+          <div>
+            <Fab color="primary" aria-label="add">
+              <RemoveIcon
+                onClick={() => {
+                  removeGridHandler(props.dt);
+                }}
+              />
+            </Fab>
+            <Fab color="secondary" aria-label="edit">
+              <EditIcon />
+            </Fab>
+          </div>
+        </Paper> */}
       </Grid>
     );
   };
@@ -83,17 +120,20 @@ export const CenteredGrid = props => {
   });
 
   return (
-    <Grid container justify="center" className={classes.root} spacing={2}>
-      {newArr.map((dt, index) => {
-        return dt.col != dt.val ? (
-          <GridRow dt={dt} xssize={dt.xs} />
-        ) : (
-          <>
-            <GridRow dt={dt} xssize={dt.xs - 1} />
-            <IconBtn dt={dt} />
-          </>
-        );
-      })}
-    </Grid>
+    <>
+      <p className={classes.primary}>This page is {keyval}</p>
+      <Grid container justify="center" className={classes.root} spacing={2}>
+        {newArr.map((dt, index) => {
+          return dt.col != dt.val ? (
+            <GridRow dt={dt} xssize={dt.xs} key={dt.col + "_" + index} />
+          ) : (
+            <>
+              <GridRow dt={dt} xssize={dt.xs - 1} key={dt.col + "_" + index} />
+              <IconBtn dt={dt} />
+            </>
+          );
+        })}
+      </Grid>
+    </>
   );
 };

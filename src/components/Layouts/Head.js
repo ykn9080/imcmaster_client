@@ -11,10 +11,11 @@ import {
   FormControl
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "../../actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ActiveLastBreadcrumb } from "./BreadCrumb";
+import { MultiDispatch, GlobalDispatch } from "../../reducers/multipleDispatch";
 import logo from "../../images/logo/imc1_1.png";
 import Signin from "../Login/Login1";
 import imclogo from "../../images/logo/imcmaster.png";
@@ -23,8 +24,9 @@ import imclogo from "../../images/logo/imcmaster.png";
 const element = <FontAwesomeIcon icon="user" size="lg" />;
 
 const Topmenu = () => {
+  const dispatch = useDispatch();
   function handleSelect(selectedKey) {
-    console.log("selected123 " + selectedKey);
+    dispatch(globalVariable({ selectedKey: selectedKey }));
   }
   const menulist = JSON.parse(localStorage.getItem("imctable")).menu;
   return (
@@ -34,7 +36,7 @@ const Topmenu = () => {
           localStorage.getItem("imctable")
         ).submenu.filter((item, itemIndex) => dt.menuid === item.parent);
         return ddList.length === 0 ? (
-          <Nav.Link key={i}>{dt.title}</Nav.Link>
+          <Nav.Link key={dt.title + i}>{dt.title}</Nav.Link>
         ) : (
           <NavDropRecur
             dt={ddList}
@@ -47,6 +49,7 @@ const Topmenu = () => {
     </Nav>
   );
 };
+
 const NavDropRecur = props => {
   {
     /*make menu recursive, */
@@ -58,11 +61,11 @@ const NavDropRecur = props => {
     return subList.filter((item, itemIndex) => id === item.parent);
   };
   return (
-    <NavDropdown title={props.title} id={props.id} key={props.key}>
-      {props.dt.map(dtt => {
+    <NavDropdown title={props.title} id={props.id}>
+      {props.dt.map((dtt, index) => {
         let subdata = subfilter(dtt.subid);
         return subdata.length === 0 ? (
-          <NavDropdown.Item eventKey={dtt.subid} key={dtt.subid}>
+          <NavDropdown.Item eventKey={dtt.subid} key={dtt.subid + index}>
             {dtt.text}
           </NavDropdown.Item>
         ) : (
@@ -79,8 +82,10 @@ const NavDropRecur = props => {
 };
 
 const Head1 = () => {
+  let keyval;
   function handleSelect(selectedKey) {
     console.log("selected123 " + selectedKey);
+    keyval = selectedKey;
   }
   const topbrand = (
     <Navbar.Brand href="#home">
@@ -141,6 +146,7 @@ const Head1 = () => {
           </Form>
         </Navbar.Collapse>
       </Navbar>
+      <ActiveLastBreadcrumb keyval={keyval} />
     </>
   );
 };

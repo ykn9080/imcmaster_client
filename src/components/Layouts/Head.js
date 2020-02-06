@@ -22,28 +22,119 @@ import imclogo from "../../images/logo/imcmaster.png";
 //import { getlogin } from "../fromImc/core";
 
 const element = <FontAwesomeIcon icon="user" size="lg" />;
-
+const myData = [
+  {
+    access: [],
+    _id: "5e3a92713858701652b09292",
+    id: "s1",
+    pid: "m1",
+    comp: "1",
+    title: "Sub1",
+    desc: "sub1페이지1111",
+    creator: "ykn",
+    seq: 0,
+    private: false,
+    layout: [
+      {
+        _id: "5e3a94873858705598b09294",
+        rowseq: 0,
+        colseq: 0,
+        ctrid: ""
+      }
+    ],
+    __v: 0
+  },
+  {
+    access: [],
+    _id: "5e3bc558069da0e31aa6d891",
+    id: "s3",
+    comp: "1",
+    creator: "ykn",
+    desc: "sub3페이지",
+    pid: "m2",
+    private: false,
+    seq: 0,
+    title: "Sub3",
+    layout: []
+  },
+  {
+    access: [],
+    _id: "5e3bcb7f069da0e31aa6eb91",
+    id: "m1",
+    comp: "1",
+    creator: "ykn",
+    desc: "첫페이지소개",
+    layout: [
+      {
+        rowseq: 0,
+        colseq: 0,
+        ctrid: ""
+      }
+    ],
+    pid: "",
+    private: false,
+    seq: 0,
+    title: "FristMenu"
+  },
+  {
+    access: [],
+    _id: "5e3bcb7f069da0e31aa6eb92",
+    id: "m2",
+    comp: "1",
+    creator: "ykn",
+    desc: "second페이지소개",
+    pid: "",
+    private: false,
+    seq: 1,
+    title: "SecondMenu",
+    layout: []
+  },
+  {
+    access: [],
+    _id: "5e3bcb7f069da0e31aa6eb93",
+    id: "s2",
+    comp: "1",
+    creator: "ykn",
+    desc: "sub2페이지",
+    pid: "m1",
+    private: false,
+    seq: 0,
+    title: "Sub2",
+    layout: []
+  },
+  {
+    access: [],
+    _id: "5e3bcb7f069da0e31aa6eb94",
+    id: "s2-1",
+    comp: "1",
+    creator: "ykn",
+    desc: "sub2-1페이지",
+    pid: "s2",
+    private: false,
+    seq: 0,
+    title: "Sub2-1",
+    layout: []
+  }
+];
 const Topmenu = () => {
   const dispatch = useDispatch();
   function handleSelect(selectedKey) {
-    dispatch(globalVariable({ selectedKey: selectedKey }));
+    const ctrlist = myData.filter((item, itemIndex) => item.id === selectedKey);
+    dispatch(globalVariable({ controls: ctrlist }));
   }
-  const menulist = JSON.parse(localStorage.getItem("imctable")).menu;
+  //const menulist = JSON.parse(localStorage.getItem("imctable")).menu;
+  const menulist = myData.filter(
+    (item, itemIndex) => item.comp === "1" && item.pid === ""
+  );
+
   return (
     <Nav className="mr-auto" onSelect={handleSelect}>
       {menulist.map((dt, i) => {
-        const ddList = JSON.parse(
-          localStorage.getItem("imctable")
-        ).submenu.filter((item, itemIndex) => dt.menuid === item.parent);
+        const ddList = myData.filter((item, itemIndex) => item.pid === dt.id);
         return ddList.length === 0 ? (
           <Nav.Link key={dt.title + i}>{dt.title}</Nav.Link>
         ) : (
-          <NavDropRecur
-            dt={ddList}
-            title={dt.title}
-            id={dt.menuid}
-            key={dt.menuid}
-          />
+          <NavDropRecur dt={ddList} title={dt.title} id={dt.id} key={dt.id} />
         );
       })}
     </Nav>
@@ -54,26 +145,24 @@ const NavDropRecur = props => {
   {
     /*make menu recursive, */
   }
-  const [subList, setSubList] = useState(
-    JSON.parse(localStorage.getItem("imctable")).submenu
-  );
+  const [subList, setSubList] = useState([]);
   const subfilter = id => {
-    return subList.filter((item, itemIndex) => id === item.parent);
+    return myData.filter((item, itemIndex) => id === item.pid);
   };
   return (
     <NavDropdown title={props.title} id={props.id}>
       {props.dt.map((dtt, index) => {
-        let subdata = subfilter(dtt.subid);
+        let subdata = subfilter(dtt.id);
         return subdata.length === 0 ? (
-          <NavDropdown.Item eventKey={dtt.subid} key={dtt.subid + index}>
-            {dtt.text}
+          <NavDropdown.Item eventKey={dtt.id} key={dtt.id + index}>
+            {dtt.title}
           </NavDropdown.Item>
         ) : (
           <NavDropRecur
             dt={subdata}
             title={dtt.title}
-            id={dtt.subid}
-            key={dtt.subid}
+            id={dtt.id}
+            key={dtt.id}
           />
         );
       })}

@@ -40,11 +40,13 @@ export const CenteredGrid = props => {
   let keyval = "BreadCrumb";
 
   keyval = useSelector(state => state.global.selectedKey);
+  const ctrlist = useSelector(state => state.global.controls);
 
   // const rowdt = useSelector(state => state.rowdt);
   // MultiDispatch({ rowdt: "vvvvvv" });
 
-  const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
+  //const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
+  const [rowdt, setRowdt] = useState(ctrlist);
 
   const [editMode, setEditMode] = useState(false);
   const [expanded, setExpanded] = useState(false);

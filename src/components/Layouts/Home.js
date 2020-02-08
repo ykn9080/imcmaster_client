@@ -3,6 +3,7 @@ import Head from "./Head";
 import { Example } from "./Head4";
 import Recur, { Menu } from "./Head2";
 import { CenteredGrid } from "./Body";
+import { HeadEdit } from "./Edit/Head";
 
 //  import { pageInit } from "../fromImc/core";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -78,6 +79,7 @@ const Home = () => {
     <>
       <Head />
       <CenteredGrid />
+      <HeadEdit />
     </>
   );
 };

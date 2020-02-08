@@ -17,6 +17,7 @@ import { remotelogin } from "../functions/api";
 import logo from "../../images/logo/imc1_1.png";
 import imclogo from "../../images/logo/imcmaster.png";
 import Icon from "@material-ui/core/Icon";
+import axios from "axios";
 
 function Copyright() {
   return (

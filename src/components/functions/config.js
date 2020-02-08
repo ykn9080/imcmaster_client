@@ -1,9 +1,10 @@
 const server_url = {
-  local: "http://192.168.99.100:3001/",
+  dockermachine: "http://192.168.99.100:3001/",
+  local: "http://localhost:3001/",
   docean: "http://imcmaster.pro:3001/",
   namubuntu: "http://imcmaster.iptime.org:3001/"
 };
-const current_url = server_url.docean;
+const current_url = server_url.local;
 const currentsetting = {
   passporturl: current_url,
   webserviceprefix: current_url,

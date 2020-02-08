@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Sortable from "./MenuSortable";
-import Droppable from "./MenuDroppable";
 
 export const HeadEdit = () => {
   const list = ["ReactJS", "JSX", "JavaScript", "jQuery", "jQuery UI"];
@@ -105,6 +104,16 @@ export const HeadEdit = () => {
   const menulist = myData.filter(
     (item, itemIndex) => item.comp === "1" && item.pid === ""
   );
+  // useEffect(() => {
+  //   //$("#dvHead").append($("<ul/>").append($("<li> hi</li>")));
+  //   $(".navbar-brand").css("max-width", "300px");
+  //   // $("#dvHead").append(
+  //   //   $('<Navbar bg="light" expand="lg"/>').append(
+  //   //     $('<Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>')
+  //   //   )
+  //   // );
+  // }, []);
+
   return (
     <>
       <button type="button" onClick={toggleEnableability}>
@@ -112,15 +121,9 @@ export const HeadEdit = () => {
       </button>
       <Sortable
         opacity={0.8}
-        data={list}
-        enable={isEnabled}
-        onChange={(event, ui) => console.log("DOM changed!", event, ui)}
-      />
-      <Droppable
-        opacity={0.8}
         data={menulist}
         enable={isEnabled}
-        onDrop={(event, ui) => console.log("DOM changed!", event, ui)}
+        onChange={(event, ui) => console.log("DOM changed!", event, ui)}
       />
     </>
   );

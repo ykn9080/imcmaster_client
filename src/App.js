@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Home from "./components/Layouts/Home";
@@ -9,9 +9,8 @@ import Join1 from "./components/Login/Join1";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { userContext } from "./components/functions/userContext";
 
-const [gvalue, setGvalue] = useState([{ test: "ok", hello: "hi" }]);
-
 const App = props => {
+  const [gvalue, setGvalue] = useState([{ test: "ok", hello: "hi" }]);
   return (
     <Router>
       <userContext.Provider value={[gvalue, setGvalue]}>

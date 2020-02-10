@@ -119,11 +119,11 @@ let myData = [
 ];
 const menulist = (dt, itemid, compareid) => {
   console.log(dt);
-  dt.filter((item, itemIndex) => item.comp === "1" && item.pid === pid).sort(
-    function(a, b) {
-      return a.seq < b.seq ? -1 : 1;
-    }
-  );
+  dt.filter(
+    (item, itemIndex) => item.comp === "1" && item.itemid === compareid
+  ).sort(function(a, b) {
+    return a.seq < b.seq ? -1 : 1;
+  });
   return dt;
 };
 const Topmenu = () => {
@@ -135,9 +135,15 @@ const Topmenu = () => {
   //const menulist = JSON.parse(localStorage.getItem("imctable")).menu;
 
   useEffect(() => {
-    dispatch(
-      globalVariable({ menu: JSON.parse(localStorage.getItem("menu")) })
-    );
+    //login후 /function/api.js의 remotelogin callback에서 dispatch를 못해서
+    //일단 localStorage에 저장한후 메뉴로 historyback할때 globalVariable로 dispatch시킴
+    let menu = myData;
+    if (localStorage.getItem("menu"))
+      menu = JSON.parse(localStorage.getItem("menu"));
+    // else{
+    //   //openmenu를 fetch해서 가져옴
+    // }
+    dispatch(globalVariable({ menu: menu }));
   }, []);
   let menuData = useSelector(state => state.global.menu);
 
@@ -216,6 +222,10 @@ const Head1 = () => {
   function handleSelect(selectedKey) {
     console.log("selected123 " + selectedKey);
     keyval = selectedKey;
+    switch (selectedKey) {
+      case "edit":
+        break;
+    }
   }
   const topbrand = (
     <Navbar.Brand href="#home">
@@ -249,7 +259,9 @@ const Head1 = () => {
       </Nav.Link>
       <Nav.Link>
         <NavDropdown title={navCog} id="basic-nav-dropdown2">
-          <NavDropdown.Item eventKey={"edit"}>Edit</NavDropdown.Item>
+          <NavDropdown.Item eventKey={"edit"}>
+            <Link to="/Edit">Edit</Link>
+          </NavDropdown.Item>
           <NavDropdown.Item eventKey={"admin"}>Admin</NavDropdown.Item>
         </NavDropdown>
       </Nav.Link>

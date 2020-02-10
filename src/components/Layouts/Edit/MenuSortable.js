@@ -26,6 +26,7 @@ const DropList = props => {
     return (
       <li
         key={"droplist" + item.id}
+        seq={item.seq}
         className={["dropli", "ui-state-default"].join(" ")}
         style={{ listStyleType: "none" }}
         onClick={selectedmenu}
@@ -39,6 +40,7 @@ const DropList = props => {
 };
 const selectedmenu = props => {
   console.log(props);
+  // this.setState({ chgseq: [[0, 1]] });
   return null;
 };
 const findmaxnum = () => {
@@ -60,17 +62,24 @@ const delbtn = id => {
 export default class Sortable extends React.Component {
   // ... omitted for brevity
   // jQuery UI sortable expects a <ul> list with <li>s.
-
+  constructor(props) {
+    super(props);
+    this.state = { chgseq: [] };
+  }
   componentDidMount() {
     this.$node = $(this.refs.sortable);
+    let seq = [];
     this.$node.sortable({
       opacity: this.props.opacity,
-      // Get the incoming onChange function
-      // and invoke it on the Sortable `change` event
-      drop: function(event, ui) {
-        this.props.onChange(event, ui);
+      placeholder: "ui-state-highlight",
+      update: function() {
+        $(".dropul>li").map((index, li) => {
+          console.log("chgseq:", index, "initseq:", $(li).attr("seq"));
+          if (parseInt($(li).attr("seq")) != index)
+            seq.push([parseInt($(li).attr("seq")), index]);
+          localStorage.setItem("chgseq", JSON.stringify(seq));
+        });
       }
-      //change: (event, ui) => this.props.onChange(event, ui)
     });
   }
   shouldComponentUpdate() {
@@ -86,10 +95,6 @@ export default class Sortable extends React.Component {
     this.$node.sortable("destroy");
   }
   renderItems() {
-    // this.props.data.sort(function(a, b) {
-    //   return parseFloat(a.odr) - parseFloat(b.odr);
-    // });
-
     return this.props.data.length ? (
       <DropList data={this.props.data} />
     ) : (

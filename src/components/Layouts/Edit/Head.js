@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { globalVariable } from "../../../actions";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -32,8 +33,17 @@ export const HeadEdit = props => {
   const toggleEnableability = () => {
     setIsEnabled(!isEnabled);
   };
-
   let menuData = useSelector(state => state.global.menu);
+  if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
+  const dispatch = useDispatch();
+  useEffect(() => {
+    //login후 /function/api.js의 remotelogin callback에서 dispatch를 못해서
+    //일단 localStorage에 저장한후 메뉴로 historyback할때 globalVariable로 dispatch시킴
+    let menu = JSON.parse(localStorage.getItem("menu"));
+    menuData = menu;
+    dispatch(globalVariable({ menu: menu }));
+  }, []);
+
   const topmenu = menuData
     .filter((item, itemIndex) => item.comp === "1" && item.pid === "")
     .sort(function(a, b) {
@@ -147,15 +157,7 @@ export const HeadEdit = props => {
   const onSave = () => {
     //setState의 모든 내용을 redux에 반영한후 display page로 이동
   };
-  // useEffect(() => {
-  //   //$("#dvHead").append($("<ul/>").append($("<li> hi</li>")));
-  //   $(".navbar-brand").css("max-width", "300px");
-  //   // $("#dvHead").append(
-  //   //   $('<Navbar bg="light" expand="lg"/>').append(
-  //   //     $('<Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>')
-  //   //   )
-  //   // );
-  // }, []);
+  const colors = ["Red", "Green", "Blue", "Yellow", "Black", "White", "Orange"];
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -164,6 +166,7 @@ export const HeadEdit = props => {
           <Typography variant="h6">Edit</Typography>
           <Sortable
             className={classes.sortable}
+            ulclass={"dropul"}
             opacity={0.8}
             data={topmenu}
             enable={isEnabled}
@@ -192,6 +195,12 @@ export const HeadEdit = props => {
         </Toolbar>
       </AppBar>
       <Toolbar />
+      <Sortable
+        opacity={0.8}
+        data={topmenu}
+        enable={isEnabled}
+        onChange={(event, ui) => console.log("DOM changed!", event, ui)}
+      />
     </div>
   );
 };

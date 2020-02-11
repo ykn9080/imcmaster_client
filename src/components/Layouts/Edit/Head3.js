@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   }
 }));
-export const HeadEdit = () => {
+export const HeadEdit1 = () => {
   //export default function ButtonAppBar() {
   const classes = useStyles();
 

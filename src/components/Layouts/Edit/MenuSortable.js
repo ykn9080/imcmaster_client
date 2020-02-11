@@ -27,6 +27,7 @@ const DropList = props => {
       <li
         key={"droplist" + item.id}
         seq={item.seq}
+        name={item.id}
         className={["dropli", "ui-state-default"].join(" ")}
         style={{ listStyleType: "none" }}
         onClick={selectedmenu}
@@ -38,9 +39,10 @@ const DropList = props => {
     );
   });
 };
-const selectedmenu = props => {
-  console.log(props);
+const selectedmenu = e => {
   // this.setState({ chgseq: [[0, 1]] });
+  console.log(e.target.getAttribute("name"));
+  e.preventDefault();
   return null;
 };
 const findmaxnum = () => {
@@ -81,6 +83,7 @@ export default class Sortable extends React.Component {
         });
       }
     });
+    this.$node.disableSelection();
   }
   shouldComponentUpdate() {
     return false;
@@ -109,7 +112,7 @@ export default class Sortable extends React.Component {
   }
   render() {
     return (
-      <ul className="dropul" ref="sortable">
+      <ul className={this.props.ulclass} ref="sortable">
         {this.renderItems()}
       </ul>
     );

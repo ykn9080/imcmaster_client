@@ -6,13 +6,17 @@
 }
 .dropul {
   list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 60%;
 }
 .dropli {
   padding: 1px;
   width: auto;
-  min-width: 100px;
+  min-width: 150px;
+  margin-left: 50px;
   text-align: center;
-  height: 34px;
+  height: 45px;
   float: left;
   font-size: 1em;
   cursor: pointer;
@@ -28,4 +32,9 @@
 }
 .newaddli {
   border: dashed 2px yellow !important;
+}
+
+.ui-state-highlight {
+  height: 1.5em;
+  line-height: 1.2em;
 }

@@ -23,12 +23,11 @@ const DropList = props => {
         />
       );
     }
+    console.log(props);
     return (
       <li
         key={"droplist" + item.id}
-        seq={item.seq}
-        name={item.id}
-        className={["dropli", "ui-state-default"].join(" ")}
+        className={[props.liclass, "ui-state-default"].join(" ")}
         style={{ listStyleType: "none" }}
         onClick={selectedmenu}
       >
@@ -39,10 +38,8 @@ const DropList = props => {
     );
   });
 };
-const selectedmenu = e => {
-  // this.setState({ chgseq: [[0, 1]] });
-  console.log(e.target.getAttribute("name"));
-  e.preventDefault();
+const selectedmenu = props => {
+  console.log(props);
   return null;
 };
 const findmaxnum = () => {
@@ -64,26 +61,18 @@ const delbtn = id => {
 export default class Sortable extends React.Component {
   // ... omitted for brevity
   // jQuery UI sortable expects a <ul> list with <li>s.
-  constructor(props) {
-    super(props);
-    this.state = { chgseq: [] };
-  }
+
   componentDidMount() {
     this.$node = $(this.refs.sortable);
-    let seq = [];
     this.$node.sortable({
       opacity: this.props.opacity,
-      placeholder: "ui-state-highlight",
-      update: function() {
-        $(".dropul>li").map((index, li) => {
-          console.log("chgseq:", index, "initseq:", $(li).attr("seq"));
-          if (parseInt($(li).attr("seq")) != index)
-            seq.push([parseInt($(li).attr("seq")), index]);
-          localStorage.setItem("chgseq", JSON.stringify(seq));
-        });
+      // Get the incoming onChange function
+      // and invoke it on the Sortable `change` event
+      drop: function(event, ui) {
+        this.props.onChange(event, ui);
       }
+      //change: (event, ui) => this.props.onChange(event, ui)
     });
-    this.$node.disableSelection();
   }
   shouldComponentUpdate() {
     return false;
@@ -98,8 +87,12 @@ export default class Sortable extends React.Component {
     this.$node.sortable("destroy");
   }
   renderItems() {
+    // this.props.data.sort(function(a, b) {
+    //   return parseFloat(a.odr) - parseFloat(b.odr);
+    // });
+
     return this.props.data.length ? (
-      <DropList data={this.props.data} />
+      <DropList data={this.props.data} liclass={this.props.liclass} />
     ) : (
       <li
         className={["ui-state-default"]}

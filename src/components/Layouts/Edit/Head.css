@@ -1,13 +1,7 @@
-.droppable {
-  width: 100%;
-  margin-bottom: 10px;
-  border-bottom: solid 1px #aeaeae;
-  min-height: 35px;
-}
 .dropul {
   list-style-type: none;
   margin: 0;
-  padding: 0 0 0 1040;
+  padding: 0 0 0 40;
   width: 60%;
 }
 .dropli {
@@ -36,8 +30,9 @@
 }
 .selectli {
   min-height: 44px !important;
-  border-top: solid 5px #800000 !important;
-  margin-top: -9px !important;
+  border-top: solid 7px #800000 !important;
+  background-color: #f2f4e1;
+  color: black;
 }
 .newaddli {
   border: dashed 2px yellow !important;

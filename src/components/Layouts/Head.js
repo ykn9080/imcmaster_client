@@ -184,7 +184,6 @@ const NavDropRecur = props => {
   {
     /*make menu recursive, */
   }
-  const [subList, setSubList] = useState([]);
   const subfilter = id => {
     return props.myData
       .filter((item, itemIndex) => id === item.pid)

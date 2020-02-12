@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "../../../actions";
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,40 +29,42 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const HeadEdit = props => {
-  const list = ["ReactJS", "JSX", "JavaScript", "jQuery", "jQuery UI"];
-  const [isEnabled, setIsEnabled] = useState(true);
-  const toggleEnableability = () => {
-    setIsEnabled(!isEnabled);
-  };
-  let menuData = useSelector(state => state.global.menu);
-  if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
-  const dispatch = useDispatch();
-  useEffect(() => {
-    //login후 /function/api.js의 remotelogin callback에서 dispatch를 못해서
-    //일단 localStorage에 저장한후 메뉴로 historyback할때 globalVariable로 dispatch시킴
-    let menu = JSON.parse(localStorage.getItem("menu"));
-    menuData = menu;
-    dispatch(globalVariable({ menu: menu }));
-  }, []);
+  // const list = ["ReactJS", "JSX", "JavaScript", "jQuery", "jQuery UI"];
+  // const [isEnabled, setIsEnabled] = useState(true);
+  // const toggleEnableability = () => {
+  //   setIsEnabled(!isEnabled);
+  // };
+  // let menuData = useSelector(state => state.global.menu);
+  // if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   //login후 /function/api.js의 remotelogin callback에서 dispatch를 못해서
+  //   //일단 localStorage에 저장한후 메뉴로 historyback할때 globalVariable로 dispatch시킴
+  //   let menu = JSON.parse(localStorage.getItem("menu"));
+  //   menuData = menu;
+  //   dispatch(globalVariable({ menu: menu }));
+  // }, []);
 
-  const topmenu = menuData
-    .filter((item, itemIndex) => item.comp === "1" && item.pid === "")
-    .sort(function(a, b) {
-      return a.seq < b.seq ? -1 : 1;
-    });
+  // const topmenu = menuData
+  //   .filter((item, itemIndex) => item.comp === "1" && item.pid === "")
+  //   .sort(function(a, b) {
+  //     return a.seq < b.seq ? -1 : 1;
+  //   });
 
   const addMenu = () => {
     console.log("add menu");
   };
-  const onCancel = () => {
-    //display page로 이동
-    props.history.push(`/`);
-  };
+  // const onCancel = () => {
+  //   //display page로 이동
+  //   useHistory().goBack();
+  //   //props.history.push(`/`);
+  // };
   const onSave = () => {
     //setState의 모든 내용을 redux에 반영한후 display page로 이동
   };
   const colors = ["Red", "Green", "Blue", "Yellow", "Black", "White", "Orange"];
   const classes = useStyles();
+  const history = useHistory();
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -72,8 +75,7 @@ export const HeadEdit = props => {
             ulclass={"dropul"}
             liclass={"dropli"}
             opacity={0.8}
-            data={topmenu}
-            enable={isEnabled}
+            data={props.data}
             onChange={(event, ui) => console.log("DOM changed!", event, ui)}
           />
           {/* <button type="button" onClick={toggleEnableability}>
@@ -93,18 +95,12 @@ export const HeadEdit = props => {
           <Button color="inherit" onClick={onSave}>
             Save
           </Button>
-          <Button color="inherit" onClick={onCancel}>
+          <Button color="inherit" onClick={() => history.goBack()}>
             Cancel
           </Button>
         </Toolbar>
       </AppBar>
       <Toolbar />
-      <Sortable
-        opacity={0.1}
-        data={menuData}
-        enable={false}
-        onChange={(event, ui) => console.log("DOM changed!!!!", event, ui)}
-      />
     </div>
   );
 };

@@ -42,7 +42,7 @@ const Edit = props => {
       <div className={classes.root}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <HeadEdit data={topmenu} />
+            <HeadEdit topdata={topmenu} />
           </Grid>
           <Grid item xs={3}>
             <SubMenu />

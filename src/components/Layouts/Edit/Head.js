@@ -36,7 +36,7 @@ export const HeadEdit = props => {
   // };
   // let menuData = useSelector(state => state.global.menu);
   // if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // useEffect(() => {
   //   //login후 /function/api.js의 remotelogin callback에서 dispatch를 못해서
   //   //일단 localStorage에 저장한후 메뉴로 historyback할때 globalVariable로 dispatch시킴
@@ -59,12 +59,14 @@ export const HeadEdit = props => {
   //   useHistory().goBack();
   //   //props.history.push(`/`);
   // };
+
   const onSave = () => {
     //setState의 모든 내용을 redux에 반영한후 display page로 이동
   };
   const colors = ["Red", "Green", "Blue", "Yellow", "Black", "White", "Orange"];
   const classes = useStyles();
   const history = useHistory();
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -75,8 +77,8 @@ export const HeadEdit = props => {
             ulclass={"dropul"}
             liclass={"dropli"}
             opacity={0.8}
+            topdata={props.topdata}
             data={props.data}
-            onChange={(event, ui) => console.log("DOM changed!", event, ui)}
           />
           {/* <button type="button" onClick={toggleEnableability}>
             Toggle enable/disable

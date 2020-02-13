@@ -27,44 +27,12 @@ const useStyles = makeStyles(theme => ({
     paddingTop: 10
   }
 }));
-let menuChildern = [];
-const makeChildren = (menu, pid) => {
-  {
-    /* change data format like below
-        let data = [
-            {
-            title: "Top level 1",
-            slug: "top-level-1",
-            children: [
-                {
-                title: "Sub level 1",
-                slug: "sub-level-1",
-                children: []
-                }
-            ]
-        }
-        ] 
-    */
-  }
-  const siblingList = _.filter(menu, { pid: pid }).sort(function(a, b) {
-    return a.seq < b.seq ? -1 : 1;
-  });
-  const childList = id => {
-    return;
-    _.filter(menu, { pid: id });
-  };
 
-  siblingList.map((i, dt) => {
-    menuChildern.push(
-      childList(dt.id)
-        ? (dt.children = makeChildren(childList(dt.id), dt.id))
-        : dt
-    );
-  });
-};
 export const SubMenu = props => {
   let menuData = props.submenu;
   let pid = props.pid;
+  const dispatch = useDispatch();
+
   const findSub = props => {
     const sideMenu = menuData
       .filter((item, itemIndex) => item.pid === props.pid)

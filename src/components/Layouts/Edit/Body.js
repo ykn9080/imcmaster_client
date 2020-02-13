@@ -39,8 +39,25 @@ export const Body = props => {
   let keyval = "BreadCrumb";
 
   keyval = useSelector(state => state.global.selectedKey);
-  const ctrlist = useSelector(state => state.global.controls);
-
+  let ctrlist = useSelector(state => state.global.control);
+  if (typeof ctrlist == "undefined")
+    ctrlist = [
+      // {
+      //   cid: "c1",
+      //   rowindex: 0,
+      //   seq: 0
+      // },
+      // {
+      //   cid: "c2",
+      //   rowindex: 1,
+      //   seq: 0
+      // },
+      // {
+      //   cid: "c3",
+      //   rowindex: 1,
+      //   seq: 1
+      // }
+    ];
   // const rowdt = useSelector(state => state.rowdt);
   // MultiDispatch({ rowdt: "vvvvvv" });
 
@@ -113,23 +130,30 @@ export const Body = props => {
   };
 
   let newArr = [];
-  _.each(rowdt, (val, key) => {
-    let i;
-    for (i = 0; i < val; i++) {
-      newArr.push({ row: key, col: i, val: val - 1, xs: 12 / val });
-    }
+  const numByrow = _.countBy(rowdt, "rowindex");
+  rowdt.map((val, key) => {
+    val.total = numByrow[val.rowindex] - 1;
+    val.xs = 12 / numByrow[val.rowindex];
   });
+  console.log(rowdt);
+  newArr = rowdt;
+  // _.each(rowdt, (val, key) => {
+  //   let i;
+  //   for (i = 0; i < val; i++) {
+  //     newArr.push({ row: key, col: i, val: val - 1, xs: 12 / val });
+  //   }
+  // });
 
   return (
     <>
       <p className={classes.primary}>This page is {keyval}</p>
       <Grid container justify="center" className={classes.root} spacing={2}>
         {newArr.map((dt, index) => {
-          return dt.col != dt.val ? (
-            <GridRow dt={dt} xssize={dt.xs} key={dt.col + "_" + index} />
+          return dt.seq != dt.total ? (
+            <GridRow dt={dt} xssize={dt.xs} key={dt.seq + "_" + index} />
           ) : (
             <>
-              <GridRow dt={dt} xssize={dt.xs - 1} key={dt.col + "_" + index} />
+              <GridRow dt={dt} xssize={dt.xs - 1} key={dt.seq + "_" + index} />
               <IconBtn dt={dt} />
             </>
           );

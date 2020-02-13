@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Cancel from "@material-ui/icons/Cancel";
-import Sortable from "./MenuSortable";
+import { Sortable } from "./MenuSortable";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,32 +29,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const SubMenu = props => {
-  let menuData = props.submenu;
+  let sideMenu = props.topdata;
+  let menuData = props.data;
   let pid = props.pid;
   const dispatch = useDispatch();
 
-  const findSub = props => {
-    const sideMenu = menuData
-      .filter((item, itemIndex) => item.pid === props.pid)
-      .sort(function(a, b) {
-        return a.seq < b.seq ? -1 : 1;
-      });
-    return (
-      <Sortable
-        opacity={0.1}
-        data={sideMenu}
-        enable={false}
-        onChange={(event, ui) => console.log("DOM changed!!!!", event, ui)}
-      />
-    );
-  };
+  // const keyval = useSelector(state => state.global.selectedKey);
+  // const menuData = useSelector(state => state.global.menu);
+
+  // if (keyval !== props.pid) {
+  //   pid = keyval;
+  //   sideMenu = menuData
+  //     .filter((item, itemIndex) => item.pid === pid)
+  //     .sort(function(a, b) {
+  //       return a.seq < b.seq ? -1 : 1;
+  //     });
+  //   console.log(pid, "changed!!!");
+  //   console.log(sideMenu);
+  // }
+
   const addSubMenu = () => {
     console.log("add menu");
   };
   const classes = useStyles();
   return (
     <>
-      <findSub pid={pid} />
+      <Sortable opacity={0.1} data={menuData} topdata={sideMenu} />
       <Button onClick={addSubMenu}>Add</Button>
     </>
   );

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "../../../actions";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,10 +11,11 @@ import "./Head.css";
 
 const DropList = props => {
   const dispatch = useDispatch();
-  const selectedmenu = id => {
-    dispatch(globalVariable({ selectedKey: id }));
-    markTab(id);
-  };
+  // const selectedmenu = id => {
+  //   dispatch(globalVariable({ selectedKey: id }));
+  //   markTab(id);
+  // };
+  console.log(props);
   return props.topdata.map((item, i) => {
     let delicon = delbtn(item.id);
     let moduleicon = "";
@@ -31,7 +32,7 @@ const DropList = props => {
         key={"droplist" + item.id}
         id={item.id}
         className={[props.liclass, "ui-state-default"].join(" ")}
-        onClick={() => selectedmenu(item.id)}
+        onClick={() => props.selectedmenu(item.id)}
       >
         {item.title}
         <NestedList data={subMenu} />
@@ -42,7 +43,7 @@ const DropList = props => {
         key={"droplist" + item.id}
         id={item.id}
         className={[props.liclass, "ui-state-default"].join(" ")}
-        onClick={() => selectedmenu(item.id)}
+        onClick={() => props.selectedmenu(item.id)}
       >
         {item.title}
         {delicon}
@@ -55,11 +56,11 @@ const markTab = id => {
   $("#" + id).addClass("selectli");
 };
 const NestedList = props => {
-  const dispatch = useDispatch();
-  const selectedmenu = id => {
-    dispatch(globalVariable({ selectedKey: id }));
-    markTab(id);
-  };
+  // const dispatch = useDispatch();
+  // const selectedmenu = id => {
+  //   dispatch(globalVariable({ selectedKey: id }));
+  //   markTab(id);
+  // };
   const subfilter = id => {
     return props.data
       .filter((item, itemIndex) => id === item.pid)
@@ -78,17 +79,18 @@ const NestedList = props => {
             key={"droplist" + item.id}
             id={item.id}
             className={["ui-state-default"].join(" ")}
-            onClick={() => selectedmenu(item.id)}
+            onClick={() => props.selectedmenu(item.id)}
           >
             {item.title}
-            <NestedList data={subdata} />){delicon}
+            <NestedList data={subdata} />
+            {delicon}
           </li>
         ) : (
           <li
             key={"droplist" + item.id}
             id={item.id}
             className={["ui-state-default"].join(" ")}
-            onClick={() => selectedmenu(item.id)}
+            onClick={() => props.selectedmenu(item.id)}
           >
             {item.title}
             {delicon}
@@ -117,11 +119,56 @@ const delbtn = id => {
     </React.Fragment>
   );
 };
+export const Sortable = props => {
+  useEffect(() => {
+    //$(refs.sortable);
+    const $node = $("#ulSortable");
+    $node.sortable({
+      opacity: props.opacity,
+      // Get the incoming onChange function
+      // and invoke it on the Sortable `change` event
+      drop: function(event, ui) {
+        props.onChange(event, ui);
+      },
+      change: (event, ui) => props.onChange(event, ui)
+    });
+    return () => {
+      $node.sortable("destroy");
+    };
+  }, []);
+  //let menuData = useSelector(state => state.global.menu);
+  let subMenu = useSelector(state => state.global.subMenu);
+  console.log(props);
+  if (props.topdata) subMenu = props.topdata;
+  console.log(subMenu);
+  return (
+    <ul className={props.ulclass} id="ulSortable">
+      {subMenu ? (
+        <DropList
+          topdata={subMenu}
+          data={props.data}
+          liclass={props.liclass}
+          selectedmenu={props.selectedmenu}
+        />
+      ) : (
+        <li
+          className={["ui-state-default"]}
+          onClick={() => props.selectedmenu("")}
+          key={findmaxnum}
+        >
+          new menu
+        </li>
+      )}
+    </ul>
+  );
+};
 
-export default class Sortable extends React.Component {
+export class Sortable1 extends React.Component {
   // ... omitted for brevity
   // jQuery UI sortable expects a <ul> list with <li>s.
-
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
     this.$node = $(this.refs.sortable);
     this.$node.sortable({
@@ -130,9 +177,10 @@ export default class Sortable extends React.Component {
       // and invoke it on the Sortable `change` event
       drop: function(event, ui) {
         this.props.onChange(event, ui);
-      }
-      //change: (event, ui) => this.props.onChange(event, ui)
+      },
+      change: (event, ui) => this.props.onChange(event, ui)
     });
+    console.log(this.props.topdata);
   }
   shouldComponentUpdate() {
     return false;
@@ -150,17 +198,18 @@ export default class Sortable extends React.Component {
     // this.props.data.sort(function(a, b) {
     //   return parseFloat(a.odr) - parseFloat(b.odr);
     // });
-
+    console.log(this.props);
     return this.props.topdata.length ? (
       <DropList
         topdata={this.props.topdata}
         data={this.props.data}
         liclass={this.props.liclass}
+        selectedmenu={this.props.selectedmenu}
       />
     ) : (
       <li
         className={["ui-state-default"]}
-        //onClick={() => selectedmenu("")}
+        onClick={() => this.props.selectedmenu("")}
         key={findmaxnum}
       >
         new menu

@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Cancel from "@material-ui/icons/Cancel";
-import Sortable from "./MenuSortable";
+import { Sortable } from "./MenuSortable";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -79,6 +79,8 @@ export const HeadEdit = props => {
             opacity={0.8}
             topdata={props.topdata}
             data={props.data}
+            selectedmenu={props.selectedmenu}
+            onChange={(event, ui) => console.log("DOM changed!!!!", event, ui)}
           />
           {/* <button type="button" onClick={toggleEnableability}>
             Toggle enable/disable

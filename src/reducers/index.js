@@ -20,7 +20,6 @@ const loggedReducer = (state = false, action) => {
   }
 };
 export const glovalVariableReducer = (state = globalVar, action) => {
-  console.log(state, action);
   return { ...state, [action.type]: action.payload };
 };
 

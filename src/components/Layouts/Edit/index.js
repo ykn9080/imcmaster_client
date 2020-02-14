@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import $ from "jquery";
 import _ from "lodash";
@@ -28,28 +28,31 @@ const findMenu = (menuData, comp, pid) => {
     });
 };
 const findControl = (menuData, comp, id) => {
-  return menuData
-    .filter((item, itemIndex) => item.comp === comp && item.id === id)
-    .layout.sort(function(a, b) {
-      return a.seq < b.seq ? -1 : 1;
+  const ctr = menuData.filter(
+    (item, itemIndex) => item.comp === comp && item.id === id
+  );
+
+  if (ctr) {
+    return ctr[0].layout.sort(function(a, b) {
+      return a.rowseq < b.rowseq ? -1 : 1;
     });
+  }
 };
 const Edit = props => {
+  const [forchg, setForchg] = useState("");
   const dispatch = useDispatch();
   let menuData = useSelector(state => state.global.menu);
   if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
-  console.log(menuData);
-  let topMenu, subMenu;
+  let topMenu, subMenu, control;
   topMenu = findMenu(menuData, "1", "");
   subMenu = findMenu(menuData, "1", topMenu[0].id);
   useEffect(() => {
     dispatch(globalVariable({ subMenu: subMenu }));
     //$(".dropli:first-child").click();
-    console.log(topMenu, subMenu);
   }, []);
 
   subMenu = useSelector(state => state.global.subMenu);
-  console.log(subMenu);
+  const ctr = useSelector(state => state.global.control);
 
   // let topMenu = findMenu("1", "");
   // console.log(topMenu);
@@ -58,9 +61,10 @@ const Edit = props => {
 
   const selectedmenu = id => {
     const sub = findMenu(menuData, "1", id);
-    console.log(sub);
+
     if (sub.length == 0) {
-      selectedSubmenu(id);
+      const ctr = findControl(menuData, "1", id);
+      dispatch(globalVariable({ control: ctr }));
       return false;
     }
     dispatch(globalVariable({ selectedKey: id }));
@@ -68,14 +72,27 @@ const Edit = props => {
     markTab(id);
     //console.log(id, findMenu("1", id));
   };
+
   const markTab = id => {
     $(".dropli").removeClass("selectli");
     $("#" + id).addClass("selectli");
   };
-  const selectedSubmenu = id => {
-    const ctr = findControl(menuData, "1", id);
-    dispatch(globalVariable({ control: ctr }));
+  let simple = "";
+  const addControl = newArr => {
+    dispatch(globalVariable({ control: newArr }));
+    setForchg(newArr);
   };
+  const removeControl = (ctrList, removeObj) => {
+    ctrList.map((e, i) => {
+      if (
+        e.id === removeObj.id ||
+        (e.rowseq === removeObj.rowseq && e.colseq === removeObj.colseq)
+      )
+        ctrList.splice(i, 1);
+    });
+    addControl(ctrList);
+  };
+
   // const submenu = findMenu("1", topmenu[0].id);
   const classes = useStyles();
 
@@ -98,7 +115,7 @@ const Edit = props => {
             {/*<SubMenu topdata={submenu} data={menuData} pid={topmenu[0].id} /> */}
           </Grid>
           <Grid item xs={9}>
-            <Body />
+            <Body addControl={addControl} removeControl={removeControl} />
           </Grid>
         </Grid>
       </div>

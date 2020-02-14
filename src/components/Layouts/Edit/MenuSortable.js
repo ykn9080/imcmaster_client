@@ -15,7 +15,7 @@ const DropList = props => {
   //   dispatch(globalVariable({ selectedKey: id }));
   //   markTab(id);
   // };
-  console.log(props);
+
   return props.topdata.map((item, i) => {
     let delicon = delbtn(item.id);
     let moduleicon = "";
@@ -133,14 +133,14 @@ export const Sortable = props => {
       change: (event, ui) => props.onChange(event, ui)
     });
     return () => {
-      $node.sortable("destroy");
+      $node.sortable();
     };
   }, []);
   //let menuData = useSelector(state => state.global.menu);
   let subMenu = useSelector(state => state.global.subMenu);
-  console.log(props);
+
   if (props.topdata) subMenu = props.topdata;
-  console.log(subMenu);
+
   return (
     <ul className={props.ulclass} id="ulSortable">
       {subMenu ? (
@@ -198,7 +198,6 @@ export class Sortable1 extends React.Component {
     // this.props.data.sort(function(a, b) {
     //   return parseFloat(a.odr) - parseFloat(b.odr);
     // });
-    console.log(this.props);
     return this.props.topdata.length ? (
       <DropList
         topdata={this.props.topdata}

@@ -1,4 +1,6 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -7,9 +9,9 @@ import Fab from "@material-ui/core/Fab";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
-import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
-import CardForm from "../CardForm";
+import { globalVariable } from "../../../actions";
+
+import CardForm from "./CardForm";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,47 +39,26 @@ const useStyles = makeStyles(theme => ({
 export const Body = props => {
   const classes = useStyles();
   let keyval = "BreadCrumb";
-
-  keyval = useSelector(state => state.global.selectedKey);
-  let ctrlist = useSelector(state => state.global.control);
-  if (typeof ctrlist == "undefined")
-    ctrlist = [
-      // {
-      //   cid: "c1",
-      //   rowindex: 0,
-      //   seq: 0
-      // },
-      // {
-      //   cid: "c2",
-      //   rowindex: 1,
-      //   seq: 0
-      // },
-      // {
-      //   cid: "c3",
-      //   rowindex: 1,
-      //   seq: 1
-      // }
-    ];
-  // const rowdt = useSelector(state => state.rowdt);
-  // MultiDispatch({ rowdt: "vvvvvv" });
-
+  let ctrlist;
+  const dispatch = useDispatch();
   //const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
-  const [rowdt, setRowdt] = useState(ctrlist);
 
   const [editMode, setEditMode] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  //keyval = useSelector(state => state.global.selectedKey);
+  ctrlist = useSelector(state => state.global.control);
+  if (typeof ctrlist == "undefined") ctrlist = [];
+  // useEffect(() => {
+  //   setRowdt(ctrlist);
+  //   console.log(rowdt);
+  // });
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const IconBtn = props => {
     const classes = useStyles();
-    const addGridHandler = (row, val) => {
-      //e.preventDefault();
-      let newState = [...rowdt]; // clone the array
-      newState[row] = val;
-      setRowdt(newState);
-    };
     return (
       <Grid item xs={"auto"}>
         <span>
@@ -88,9 +69,14 @@ export const Body = props => {
             className={classes.iconright}
           >
             <AddIcon
-              id={props.dt.row + "n" + (props.dt.val + 1)}
+              id={props.dt.rowseq + "n" + (props.dt.total + 1)}
               onClick={() => {
-                addGridHandler(props.dt.row, props.dt.val + 2);
+                ctrlist.push({
+                  ctrid: "",
+                  rowseq: props.dt.rowseq,
+                  colseq: props.dt.total + 1
+                });
+                props.addControl(addAcc(ctrlist));
               }}
             />
           </Fab>
@@ -101,60 +87,58 @@ export const Body = props => {
 
   const GridRow = props => {
     //const [hoverEffect, setHoverEffect] = useState(false);
-    const removeGridHandler = () => {
-      let newState = [...rowdt]; // clone the array
-      newState[props.dt.row] = props.dt.val;
-      setRowdt(newState);
-    };
+    // const removeGridHandler = () => {
+    //   let newState = [...rowdt]; // clone the array
+    //   newState[props.dt.row] = props.dt.val;
+    //   setRowdt(newState);
+    // };
 
     return (
       <Grid item xs={props.xssize}>
-        <CardForm />
-        {/* <Paper className={classes.paper}>
-          xs={props.xssize}{" "}
-          <div>
-            <Fab color="primary" aria-label="add">
-              <RemoveIcon
-                onClick={() => {
-                  removeGridHandler(props.dt);
-                }}
-              />
-            </Fab>
-            <Fab color="secondary" aria-label="edit">
-              <EditIcon />
-            </Fab>
-          </div>
-        </Paper> */}
+        <CardForm
+          removeControl={props.removeControl}
+          data={props.dt}
+          ctrlist={ctrlist}
+        />
       </Grid>
     );
   };
+  const addAcc = ctrlist => {
+    const numByrow = _.countBy(ctrlist, "rowseq");
+    ctrlist.map((val, key) => {
+      val.total = numByrow[val.rowseq] - 1;
+      val.xs = 12 / numByrow[val.rowseq];
+    });
+    ctrlist = _.sortBy(ctrlist, ["rowseq", "colseq"]);
+    return ctrlist;
+  };
 
-  let newArr = [];
-  const numByrow = _.countBy(rowdt, "rowindex");
-  rowdt.map((val, key) => {
-    val.total = numByrow[val.rowindex] - 1;
-    val.xs = 12 / numByrow[val.rowindex];
-  });
-  console.log(rowdt);
-  newArr = rowdt;
   // _.each(rowdt, (val, key) => {
   //   let i;
   //   for (i = 0; i < val; i++) {
   //     newArr.push({ row: key, col: i, val: val - 1, xs: 12 / val });
   //   }
   // });
-
   return (
     <>
-      <p className={classes.primary}>This page is {keyval}</p>
+      <p className={classes.primary}>This page is keyval</p>
       <Grid container justify="center" className={classes.root} spacing={2}>
-        {newArr.map((dt, index) => {
-          return dt.seq != dt.total ? (
-            <GridRow dt={dt} xssize={dt.xs} key={dt.seq + "_" + index} />
+        {addAcc(ctrlist).map((dt, index) => {
+          return dt.colseq != dt.total ? (
+            <GridRow dt={dt} xssize={dt.xs} key={dt.rowseq + "_" + dt.colseq} />
           ) : (
             <>
-              <GridRow dt={dt} xssize={dt.xs - 1} key={dt.seq + "_" + index} />
-              <IconBtn dt={dt} />
+              <GridRow
+                dt={dt}
+                xssize={dt.xs - 1}
+                key={dt.rowseq + "_" + dt.colseq}
+              />
+              <IconBtn
+                addControl={props.addControl}
+                removeControl={props.removeControl}
+                dt={dt}
+                ctrlist={addAcc(ctrlist)}
+              />
             </>
           );
         })}

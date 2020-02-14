@@ -84,10 +84,8 @@ const Edit = props => {
   };
   const removeControl = (ctrList, removeObj) => {
     ctrList.map((e, i) => {
-      if (
-        e.id === removeObj.id ||
-        (e.rowseq === removeObj.rowseq && e.colseq === removeObj.colseq)
-      )
+      console.log(e, removeObj);
+      if (e.rowseq === removeObj.rowseq && e.colseq === removeObj.colseq)
         ctrList.splice(i, 1);
     });
     addControl(ctrList);

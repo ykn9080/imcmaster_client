@@ -50,6 +50,7 @@ export default props => {
   const removeHandler = () => {
     setExpanded(!expanded);
   };
+  console.log(props);
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -82,11 +83,10 @@ export default props => {
         <IconButton aria-label="edit">
           <EditIcon />
         </IconButton>{" "}
-        <IconButton
-          aria-label="delete"
-          onClick={() => props.removeControl(props.ctrlist, props.dt)}
-        >
-          <DeleteIcon />
+        <IconButton aria-label="delete">
+          <DeleteIcon
+            onClick={() => props.removeControl(props.ctrlist, props.data)}
+          />
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {

@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Body = props => {
+  console.log(props);
   const classes = useStyles();
   let keyval = "BreadCrumb";
   let ctrlist;
@@ -125,13 +126,21 @@ export const Body = props => {
       <Grid container justify="center" className={classes.root} spacing={2}>
         {addAcc(ctrlist).map((dt, index) => {
           return dt.colseq != dt.total ? (
-            <GridRow dt={dt} xssize={dt.xs} key={dt.rowseq + "_" + dt.colseq} />
+            <GridRow
+              dt={dt}
+              xssize={dt.xs}
+              key={dt.rowseq + "_" + dt.colseq}
+              removeControl={props.removeControl}
+              ctrlist={addAcc(ctrlist)}
+            />
           ) : (
             <>
               <GridRow
                 dt={dt}
                 xssize={dt.xs - 1}
                 key={dt.rowseq + "_" + dt.colseq}
+                removeControl={props.removeControl}
+                ctrlist={addAcc(ctrlist)}
               />
               <IconBtn
                 addControl={props.addControl}

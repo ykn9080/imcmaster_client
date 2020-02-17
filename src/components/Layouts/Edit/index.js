@@ -5,6 +5,7 @@ import _ from "lodash";
 import { Button } from "react-bootstrap";
 import { HeadEdit } from "./Head";
 import { Body } from "./Body";
+import { SubMenu } from "./SubMenu";
 import { Sortable } from "./MenuSortable";
 import { makeStyles } from "@material-ui/core/styles";
 import { globalVariable } from "../../../actions";
@@ -111,13 +112,14 @@ const Edit = props => {
             <HeadEdit selectedmenu={selectedmenu} />
           </Grid>
           <Grid item xs={3}>
-            <Sortable
+            {/* <Sortable
               opacity={0.1}
               pid={selectedKey}
               depth={"all"}
               liclass={"dropli"}
               selectedmenu={selectedmenu}
-            />
+            /> */}
+            <SubMenu />
             <Button>Add</Button>
             {/*<SubMenu topdata={submenu} data={tempMenu} pid={topmenu[0].id} /> */}
           </Grid>

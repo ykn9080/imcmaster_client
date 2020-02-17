@@ -32,7 +32,6 @@ export default function findChildrens(data, id, oputArr, callback) {
 }
 //pid를 parent로 갖는 objects만 추출
 export const directChild = (data, pid, seq) => {
-  console.log(data, pid, seq);
   return data
     .filter((subitem, itemIndex) => subitem.pid === pid)
     .sort(function(a, b) {

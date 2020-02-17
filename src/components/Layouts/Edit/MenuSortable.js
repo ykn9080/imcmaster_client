@@ -116,7 +116,6 @@ const NestedList = props => {
   //   dispatch(globalVariable({ selectedKey: id }));
   //   markTab(id);
   // };
-  console.log(props);
   return props.data ? (
     <ul>
       {props.data.map((item, i) => {

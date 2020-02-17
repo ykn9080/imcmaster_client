@@ -8,37 +8,77 @@ import $ from "jquery";
 import "jquery-ui-bundle";
 import "jquery-ui-bundle/jquery-ui.min.css";
 import "./Head.css";
+import { directChild, findChild } from "../../functions/findChildrens";
 
+export const Sortable = props => {
+  let tempMenu = useSelector(state => state.global.tempMenu);
+  const keyval = useSelector(state => state.global.selectedKey);
+
+  useEffect(() => {
+    //$(refs.sortable);
+    const $node = $("#ulSortable");
+
+    $node.sortable({
+      opacity: props.opacity,
+      // Get the incoming onChange function
+      // and invoke it on the Sortable `change` event
+      drop: function(event, ui) {
+        props.onChange(event, ui);
+      },
+      change: (event, ui) => props.onChange(event, ui)
+    });
+    return () => {
+      $node.sortable();
+    };
+  }, []);
+
+  //let subMenu = useSelector(state => state.global.subMenu);
+
+  let menuList = directChild(tempMenu, props.pid, "seq");
+  if (props.depth === "all") menuList = findChild(tempMenu, props.pid, "seq");
+  return (
+    <ul className={props.ulclass} id="ulSortable">
+      {menuList ? (
+        <DropList
+          menuList={menuList}
+          tempMenu={tempMenu}
+          depth={props.depth}
+          liclass={props.liclass}
+          selectedmenu={props.selectedmenu}
+        />
+      ) : (
+        <li
+          className={["ui-state-default"]}
+          onClick={() => props.selectedmenu("")}
+          key={findmaxnum}
+        >
+          new menu
+        </li>
+      )}
+    </ul>
+  );
+};
+
+// const findMenu = (data, pid, seq) => {
+//   return data
+//     .filter((subitem, itemIndex) => subitem.pid === pid)
+//     .sort(function(a, b) {
+//       return a[seq] < b[seq] ? -1 : 1;
+//     });
+// };
 const DropList = props => {
-  const dispatch = useDispatch();
-  // const selectedmenu = id => {
-  //   dispatch(globalVariable({ selectedKey: id }));
-  //   markTab(id);
-  // };
-
-  return props.topdata.map((item, i) => {
+  return props.menuList.map((item, i) => {
     let delicon = delbtn(item.id);
     let moduleicon = "";
     let subdata = [];
-    if (props.data) subdata = props.data;
-    const subMenu = subdata
-      .filter((subitem, itemIndex) => subitem.pid === item.id)
-      .sort(function(a, b) {
-        return a.seq < b.seq ? -1 : 1;
-      });
+    // const subMenu = subdata
+    //   .filter((subitem, itemIndex) => subitem.pid === item.id)
+    //   .sort(function(a, b) {
+    //     return a.seq < b.seq ? -1 : 1;
+    //   });
+    const subMenu = directChild(props.tempMenu, item.id, "seq");
 
-    return subMenu.length > 0 ? (
-      <li
-        key={"droplist" + item.id}
-        id={item.id}
-        className={[props.liclass, "ui-state-default"].join(" ")}
-        onClick={() => props.selectedmenu(item.id)}
-      >
-        {item.title}
-        <NestedList data={subMenu} />
-        {delicon}
-      </li>
-    ) : (
+    const li = (
       <li
         key={"droplist" + item.id}
         id={item.id}
@@ -49,8 +89,23 @@ const DropList = props => {
         {delicon}
       </li>
     );
+    return subMenu.length > 0 && props.depth === "all" ? (
+      <li
+        key={"droplist" + item.id}
+        id={item.id}
+        className={[props.liclass, "ui-state-default"].join(" ")}
+        onClick={() => props.selectedmenu(item.id)}
+      >
+        {item.title}
+        <NestedList data={subMenu} tempMenu={props.tempMenu} />
+        {delicon}
+      </li>
+    ) : (
+      li
+    );
   });
 };
+
 const markTab = id => {
   $(".dropli").removeClass("selectli");
   $("#" + id).addClass("selectli");
@@ -61,19 +116,12 @@ const NestedList = props => {
   //   dispatch(globalVariable({ selectedKey: id }));
   //   markTab(id);
   // };
-  const subfilter = id => {
-    return props.data
-      .filter((item, itemIndex) => id === item.pid)
-      .sort(function(a, b) {
-        return a.seq < b.seq ? -1 : 1;
-      });
-  };
-
+  console.log(props);
   return props.data ? (
     <ul>
       {props.data.map((item, i) => {
         let delicon = delbtn(item.id);
-        let subdata = subfilter(item.id);
+        let subdata = directChild(props.tempMenu, item.id, "seq");
         return subdata ? (
           <li
             key={"droplist" + item.id}
@@ -82,7 +130,7 @@ const NestedList = props => {
             onClick={() => props.selectedmenu(item.id)}
           >
             {item.title}
-            <NestedList data={subdata} />
+            <NestedList data={subdata} tempMenu={props.tempMenu} />
             {delicon}
           </li>
         ) : (
@@ -117,49 +165,6 @@ const delbtn = id => {
         onClick={() => console.log("deleled ud: ", id)}
       />
     </React.Fragment>
-  );
-};
-export const Sortable = props => {
-  useEffect(() => {
-    //$(refs.sortable);
-    const $node = $("#ulSortable");
-    $node.sortable({
-      opacity: props.opacity,
-      // Get the incoming onChange function
-      // and invoke it on the Sortable `change` event
-      drop: function(event, ui) {
-        props.onChange(event, ui);
-      },
-      change: (event, ui) => props.onChange(event, ui)
-    });
-    return () => {
-      $node.sortable();
-    };
-  }, []);
-  //let menuData = useSelector(state => state.global.menu);
-  let subMenu = useSelector(state => state.global.subMenu);
-
-  if (props.topdata) subMenu = props.topdata;
-
-  return (
-    <ul className={props.ulclass} id="ulSortable">
-      {subMenu ? (
-        <DropList
-          topdata={subMenu}
-          data={props.data}
-          liclass={props.liclass}
-          selectedmenu={props.selectedmenu}
-        />
-      ) : (
-        <li
-          className={["ui-state-default"]}
-          onClick={() => props.selectedmenu("")}
-          key={findmaxnum}
-        >
-          new menu
-        </li>
-      )}
-    </ul>
   );
 };
 

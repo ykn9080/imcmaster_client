@@ -77,8 +77,8 @@ export const HeadEdit = props => {
             ulclass={"dropul"}
             liclass={"dropli"}
             opacity={0.8}
-            topdata={props.topdata}
-            data={props.data}
+            pid={""}
+            depth={1}
             selectedmenu={props.selectedmenu}
             onChange={(event, ui) => console.log("DOM changed!!!!", event, ui)}
           />
@@ -99,7 +99,12 @@ export const HeadEdit = props => {
           <Button color="inherit" onClick={onSave}>
             Save
           </Button>
-          <Button color="inherit" onClick={() => history.goBack()}>
+          <Button
+            color="inherit"
+            onClick={() => {
+              history.goBack();
+            }}
+          >
             Cancel
           </Button>
         </Toolbar>

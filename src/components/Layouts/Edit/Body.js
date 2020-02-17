@@ -12,6 +12,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { globalVariable } from "../../../actions";
 
 import CardForm from "./CardForm";
+import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Body = props => {
-  console.log(props);
+  const forceUpdate = useForceUpdate();
   const classes = useStyles();
   let keyval = "BreadCrumb";
   let ctrlist;

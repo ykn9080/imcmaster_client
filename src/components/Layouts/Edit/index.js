@@ -97,14 +97,14 @@ const Edit = props => {
     dispatch(globalVariable({ control: newArr }));
     setForchg(newArr);
   };
-  const removeControl = (ctrList, removeObj) => {
-    ctrList.map((e, i) => {
-      console.log(e, removeObj);
-      if (e.rowseq === removeObj.rowseq && e.colseq === removeObj.colseq)
-        ctrList.splice(i, 1);
-    });
-    addControl(ctrList);
-  };
+  // const removeControl = (ctrList, removeObj) => {
+  //   ctrList.map((e, i) => {
+  //     console.log(e, removeObj);
+  //     if (e.rowseq === removeObj.rowseq && e.colseq === removeObj.colseq)
+  //       ctrList.splice(i, 1);
+  //   });
+  //   addControl(ctrList);
+  // };
   console.log("reload");
   // const submenu = findMenu("1", topmenu[0].id);
   const classes = useStyles();

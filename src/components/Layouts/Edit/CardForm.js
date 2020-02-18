@@ -85,7 +85,7 @@ export default props => {
         </IconButton>{" "}
         <IconButton aria-label="delete">
           <DeleteIcon
-            onClick={() => props.removeControl(props.ctrlist, props.data)}
+            onClick={() => props.removeControl(props.ctrlist, props.data.ctrid)}
           />
         </IconButton>
         <IconButton

@@ -74,7 +74,7 @@ export const Body = props => {
               id={props.dt.rowseq + "n" + (props.dt.total + 1)}
               onClick={() => {
                 ctrlist.push({
-                  ctrid: "",
+                  ctrid: "imsi" + Math.random().toString(),
                   rowseq: props.dt.rowseq,
                   colseq: props.dt.total + 1
                 });
@@ -98,7 +98,7 @@ export const Body = props => {
     return (
       <Grid item xs={props.xssize}>
         <CardForm
-          removeControl={props.removeControl}
+          removeControl={removeControl}
           data={props.dt}
           ctrlist={ctrlist}
         />
@@ -121,6 +121,15 @@ export const Body = props => {
   //     newArr.push({ row: key, col: i, val: val - 1, xs: 12 / val });
   //   }
   // });
+
+  const removeControl = (ctrList, ctrid) => {
+    ctrList.map((e, i) => {
+      console.log(e, ctrid);
+      if (e.ctrid === ctrid) ctrList.splice(i, 1);
+    });
+    dispatch(globalVariable({ control: ctrList }));
+    forceUpdate();
+  };
   return (
     <>
       <p className={classes.primary}>This page is keyval</p>
@@ -130,8 +139,8 @@ export const Body = props => {
             <GridRow
               dt={dt}
               xssize={dt.xs}
-              key={dt.rowseq + "_" + dt.colseq}
-              removeControl={props.removeControl}
+              key={dt.ctrid}
+              removeControl={removeControl}
               ctrlist={addAcc(ctrlist)}
             />
           ) : (
@@ -139,13 +148,13 @@ export const Body = props => {
               <GridRow
                 dt={dt}
                 xssize={dt.xs - 1}
-                key={dt.rowseq + "_" + dt.colseq}
-                removeControl={props.removeControl}
+                key={dt.ctrid}
+                removeControl={removeControl}
                 ctrlist={addAcc(ctrlist)}
               />
               <IconBtn
                 addControl={props.addControl}
-                removeControl={props.removeControl}
+                removeControl={removeControl}
                 dt={dt}
                 ctrlist={addAcc(ctrlist)}
               />

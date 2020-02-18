@@ -11,6 +11,11 @@ import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import { globalVariable } from "../../../actions";
 
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import AddCircle from "@material-ui/icons/AddCircle";
 import CardForm from "./CardForm";
 import useForceUpdate from "use-force-update";
 
@@ -132,7 +137,6 @@ export const Body = props => {
   };
   return (
     <>
-      <p className={classes.primary}>This page is keyval</p>
       <Grid container justify="center" className={classes.root} spacing={2}>
         {addAcc(ctrlist).map((dt, index) => {
           return dt.colseq != dt.total ? (
@@ -162,6 +166,25 @@ export const Body = props => {
           );
         })}
       </Grid>
+      <Grid
+        container
+        alignItems="flex-start"
+        justify="flex-end"
+        direction="row"
+      >
+        <Fab color="primary" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </Grid>
+      <div class="row end-xs">
+        <div class="col-xs-6">
+          <div class="box">
+            <Fab color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

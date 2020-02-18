@@ -5,6 +5,7 @@ import _ from "lodash";
 import { Button } from "react-bootstrap";
 import { HeadEdit } from "./Head";
 import { Body } from "./Body";
+import { SubMenu } from "./SubMenu";
 import { Sortable } from "./MenuSortable";
 import { makeStyles } from "@material-ui/core/styles";
 import { globalVariable } from "../../../actions";
@@ -40,25 +41,30 @@ const findControl = (tempMenu, comp, id) => {
   }
 };
 const Edit = props => {
+  let subMenu, tempMenu, topMenu, control;
   const [forchg, setForchg] = useState("");
   const dispatch = useDispatch();
   let menuData = useSelector(state => state.global.menu);
   let selectedKey = useSelector(state => state.global.selectedKey);
+
   if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
-  let subMenu, tempMenu;
+
+  topMenu = findMenu(menuData, "1", "");
+  subMenu = findMenu(menuData, "1", topMenu[0].id);
+
+  if (!selectedKey) selectedKey = topMenu[0].id;
+
+  dispatch(globalVariable({ subMenu: subMenu }));
   dispatch(globalVariable({ tempMenu: menuData }));
   //$(".dropli:first-child").click();
   tempMenu = menuData;
 
-  useEffect(() => {
-    //dispatch(globalVariable({ subMenu: subMenu }));
-    dispatch(globalVariable({ tempMenu: menuData }));
-    //$(".dropli:first-child").click();
-    tempMenu = menuData;
-  });
-  let topMenu, control;
-  topMenu = findMenu(tempMenu, "1", "");
-  subMenu = findMenu(tempMenu, "1", topMenu[0].id);
+  // useEffect(() => {
+  //   //dispatch(globalVariable({ subMenu: subMenu }));
+  //   dispatch(globalVariable({ tempMenu: menuData }));
+  //   //$(".dropli:first-child").click();
+  //   tempMenu = menuData;
+  // });
 
   //subMenu = useSelector(state => state.global.subMenu);
   //const ctr = useSelector(state => state.global.control);
@@ -119,7 +125,7 @@ const Edit = props => {
               selectedmenu={selectedmenu}
             />
             <Button>Add</Button>
-            {/*<SubMenu topdata={submenu} data={tempMenu} pid={topmenu[0].id} /> */}
+            <SubMenu selectedmenu={selectedmenu} />
           </Grid>
           <Grid item xs={9}>
             <Body addControl={addControl} removeControl={removeControl} />

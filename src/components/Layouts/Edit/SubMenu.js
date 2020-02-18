@@ -35,17 +35,17 @@ const initialState = {
   mouseY: null
 };
 export const SubMenu = props => {
-  let sideMenu = props.topdata;
-  let menuData = props.data;
+  let subMenu = useSelector(state => state.global.subMenu);
+  let menuData = useSelector(state => state.global.tempmenu);
+  //let menuData = props.data;
   let pid = props.pid;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [open, setOpen] = React.useState({});
-
   const [state, setState] = React.useState(initialState);
+
   const handleContext = (id, event) => {
     event.preventDefault();
-
     setState({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4
@@ -102,7 +102,6 @@ export const SubMenu = props => {
     );
   };
 
-  let subMenu = useSelector(state => state.global.tempmenu);
   const addSubMenu = () => {
     console.log("add menu");
   };
@@ -269,7 +268,10 @@ export const SubMenu = props => {
                   onContextMenu={e => handleContext(sub.id, e)}
                   button
                   selected={selectedIndex === sub.id}
-                  onClick={event => handleListItemClick(event, sub.id)}
+                  onClick={event => {
+                    handleListItemClick(event, sub.id);
+                    props.selectedmenu(sub.id);
+                  }}
                   className={classes.nested}
                 >
                   <ListItemText
@@ -317,9 +319,8 @@ export const SubMenu = props => {
         }
         className={classes.root}
       >
-        {testmenu.map((m, index) => {
+        {subMenu.map((m, index) => {
           let subdata = directChild(menu, m.id, "seq");
-          console.log(testmenu, subdata);
           return subdata.length > 0 ? (
             <NestedList data={subdata} id={m.id} title={m.title} depth={0} />
           ) : (
@@ -327,7 +328,10 @@ export const SubMenu = props => {
               onContextMenu={e => handleContext(e, m.id)}
               button
               selected={selectedIndex === m.id}
-              onClick={event => handleListItemClick(event, m.id)}
+              onClick={event => {
+                handleListItemClick(event, m.id);
+                props.selectedmenu(m.id);
+              }}
             >
               <ListItemText primary={m.title} />
             </ListItem>

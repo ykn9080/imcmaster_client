@@ -128,7 +128,7 @@ const Edit = props => {
             <SubMenu selectedmenu={selectedmenu} />
           </Grid>
           <Grid item xs={9}>
-            <Body addControl={addControl} removeControl={removeControl} />
+            <Body addControl={addControl} />
           </Grid>
         </Grid>
       </div>

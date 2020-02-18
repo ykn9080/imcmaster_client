@@ -13,7 +13,7 @@ import { directChild, findChild } from "../../functions/findChildrens";
 export const Sortable = props => {
   let tempMenu = useSelector(state => state.global.tempMenu);
   const keyval = useSelector(state => state.global.selectedKey);
-
+  console.log(tempMenu);
   useEffect(() => {
     //$(refs.sortable);
     const $node = $("#ulSortable");
@@ -35,7 +35,7 @@ export const Sortable = props => {
   //let subMenu = useSelector(state => state.global.subMenu);
 
   let menuList = directChild(tempMenu, props.pid, "seq");
-  if (props.depth === "all") menuList = findChild(tempMenu, props.pid, "seq");
+  // if (props.depth === "all") menuList = findChild(tempMenu, props.pid, "seq");
   return (
     <ul className={props.ulclass} id="ulSortable">
       {menuList ? (

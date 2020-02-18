@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
+import $ from "jquery";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "../../../actions";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,9 +9,10 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
 import Cancel from "@material-ui/icons/Cancel";
+import AddCircle from "@material-ui/icons/AddCircle";
 import { Sortable } from "./MenuSortable";
+import { directChild } from "../../functions/findChildrens";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,7 +36,7 @@ export const HeadEdit = props => {
   // const toggleEnableability = () => {
   //   setIsEnabled(!isEnabled);
   // };
-  // let menuData = useSelector(state => state.global.menu);
+  let tempMenu = useSelector(state => state.global.tempMenu);
   // if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
   const dispatch = useDispatch();
   // useEffect(() => {
@@ -66,7 +68,17 @@ export const HeadEdit = props => {
   const colors = ["Red", "Green", "Blue", "Yellow", "Black", "White", "Orange"];
   const classes = useStyles();
   const history = useHistory();
+  const selectedmenu = id => {
+    dispatch(globalVariable({ selectedKey: id }));
+    const sub = directChild(tempMenu, id, "seq");
+    //const ctr = findControl(tempMenu, "1", id);
 
+    //dispatch(globalVariable({ control: ctr }));
+    dispatch(globalVariable({ subMenu: sub }));
+    $(".dropli").removeClass("selectli");
+    $("#" + id).addClass("selectli");
+    console.log(sub);
+  };
   return (
     <div className={classes.root}>
       <AppBar position="fixed">

@@ -20,6 +20,7 @@ import { MultiDispatch, GlobalDispatch } from "../../reducers/multipleDispatch";
 import logo from "../../images/logo/imc1_1.png";
 import Signin from "../Login/Login1";
 import imclogo from "../../images/logo/imcmaster.png";
+import { directChild } from "../functions/findChildrens";
 //import { getlogin } from "../fromImc/core";
 
 const element = <FontAwesomeIcon icon="user" size="lg" />;
@@ -218,11 +219,16 @@ const NavDropRecur = props => {
 
 const Head1 = () => {
   let keyval;
+  const dispatch = useDispatch();
   function handleSelect(selectedKey) {
     console.log("selected123 " + selectedKey);
     keyval = selectedKey;
     switch (selectedKey) {
       case "edit":
+        const menu = JSON.parse(localStorage.getItem("menu"));
+        const submenu = directChild(menu, "", "seq");
+        dispatch(globalVariable({ tempMenu: menu }));
+        dispatch(globalVariable({ subMenu: submenu }));
         break;
     }
   }

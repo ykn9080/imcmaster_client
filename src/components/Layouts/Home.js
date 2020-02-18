@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Head from "./Head";
 import { Example } from "./Head4";
 import Recur, { Menu } from "./Head2";
 import { CenteredGrid } from "./Body";
 import { HeadEdit } from "./Edit/Head3";
-
+import { globalVariable } from "../../actions";
 //  import { pageInit } from "../fromImc/core";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faAngry } from "@fortawesome/free-regular-svg-icons";
@@ -71,10 +72,16 @@ let data = [
     slug: "top-level 2"
   }
 ];
+let menuData = [];
 const Home = () => {
-  // useEffect(() => {
-  //   //pageInit();
-  // }, []);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const menu = localStorage.getItem("menu");
+    if (typeof menu != "undefined")
+      menuData = JSON.parse(localStorage.getItem("menu"));
+    dispatch(globalVariable({ menu: menuData }));
+  }, []);
   return (
     <>
       <Head />

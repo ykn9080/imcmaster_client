@@ -40,26 +40,29 @@ const findControl = (tempMenu, comp, id) => {
     });
   }
 };
+
 const Edit = props => {
+  let subMenu, tempMenu, topMenu, control;
   const [forchg, setForchg] = useState("");
   const dispatch = useDispatch();
-  let menuData = useSelector(state => state.global.menu);
+  tempMenu = useSelector(state => state.global.tempMenu);
   let selectedKey = useSelector(state => state.global.selectedKey);
-  if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
-  let subMenu, tempMenu;
-  dispatch(globalVariable({ tempMenu: menuData }));
-  //$(".dropli:first-child").click();
-  tempMenu = menuData;
 
-  useEffect(() => {
-    //dispatch(globalVariable({ subMenu: subMenu }));
-    dispatch(globalVariable({ tempMenu: menuData }));
-    //$(".dropli:first-child").click();
-    tempMenu = menuData;
-  });
-  let topMenu, control;
+  if (!tempMenu) tempMenu = JSON.parse(localStorage.getItem("menu"));
+
   topMenu = findMenu(tempMenu, "1", "");
   subMenu = findMenu(tempMenu, "1", topMenu[0].id);
+
+  if (!selectedKey) selectedKey = topMenu[0].id;
+  console.log(tempMenu);
+  //$(".dropli:first-child").click();
+  //tempMenu = menuData;
+
+  useEffect(() => {
+    console.log(tempMenu, subMenu);
+    dispatch(globalVariable({ subMenu: subMenu }));
+    $(".dropli:first-child").click();
+  }, []);
 
   //subMenu = useSelector(state => state.global.subMenu);
   //const ctr = useSelector(state => state.global.control);
@@ -73,13 +76,11 @@ const Edit = props => {
     dispatch(globalVariable({ selectedKey: id }));
     selectedKey = id;
     const sub = findMenu(tempMenu, "1", id);
-    if (sub.length == 0) {
-      const ctr = findControl(tempMenu, "1", id);
-      dispatch(globalVariable({ control: ctr }));
-      return false;
-    }
+    const ctr = findControl(tempMenu, "1", id);
+    console.log("it's from index", sub);
+    //dispatch(globalVariable({ control: ctr }));
+    dispatch(globalVariable({ subMenu: sub }));
     markTab(id);
-    //console.log(id, findMenu("1", id));
     setForchg("");
   };
 
@@ -92,14 +93,14 @@ const Edit = props => {
     dispatch(globalVariable({ control: newArr }));
     setForchg(newArr);
   };
-  const removeControl = (ctrList, removeObj) => {
-    ctrList.map((e, i) => {
-      console.log(e, removeObj);
-      if (e.rowseq === removeObj.rowseq && e.colseq === removeObj.colseq)
-        ctrList.splice(i, 1);
-    });
-    addControl(ctrList);
-  };
+  // const removeControl = (ctrList, removeObj) => {
+  //   ctrList.map((e, i) => {
+  //     console.log(e, removeObj);
+  //     if (e.rowseq === removeObj.rowseq && e.colseq === removeObj.colseq)
+  //       ctrList.splice(i, 1);
+  //   });
+  //   addControl(ctrList);
+  // };
   console.log("reload");
   // const submenu = findMenu("1", topmenu[0].id);
   const classes = useStyles();
@@ -118,13 +119,12 @@ const Edit = props => {
               depth={"all"}
               liclass={"dropli"}
               selectedmenu={selectedmenu}
-            /> */}
-            <SubMenu />
-            <Button>Add</Button>
-            {/*<SubMenu topdata={submenu} data={tempMenu} pid={topmenu[0].id} /> */}
+            /> 
+            <Button>Add</Button>*/}
+            <SubMenu selectedmenu={selectedmenu} />
           </Grid>
           <Grid item xs={9}>
-            <Body addControl={addControl} removeControl={removeControl} />
+            <Body addControl={addControl} />
           </Grid>
         </Grid>
       </div>

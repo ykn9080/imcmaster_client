@@ -35,17 +35,17 @@ const initialState = {
   mouseY: null
 };
 export const SubMenu = props => {
-  let sideMenu = props.topdata;
-  let menuData = props.data;
+  let subMenu = useSelector(state => state.global.subMenu);
+  let tempMenu = useSelector(state => state.global.tempMenu);
+  //let menuData = props.data;
   let pid = props.pid;
   const dispatch = useDispatch();
   const classes = useStyles();
   const [open, setOpen] = React.useState({});
-
   const [state, setState] = React.useState(initialState);
+
   const handleContext = (id, event) => {
     event.preventDefault();
-
     setState({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4
@@ -81,28 +81,6 @@ export const SubMenu = props => {
     setExpanded(nodes);
   };
 
-  const contextmenu = () => {
-    return (
-      <Menu
-        keepMounted
-        open={state.mouseY !== null}
-        onClose={handleClose}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          state.mouseY !== null && state.mouseX !== null
-            ? { top: state.mouseY, left: state.mouseX }
-            : undefined
-        }
-      >
-        <MenuItem onClick={handleClose}>Copy</MenuItem>
-        <MenuItem onClick={handleClose}>Print</MenuItem>
-        <MenuItem onClick={handleClose}>Highlight</MenuItem>
-        <MenuItem onClick={handleClose}>Email</MenuItem>
-      </Menu>
-    );
-  };
-
-  let subMenu = useSelector(state => state.global.tempmenu);
   const addSubMenu = () => {
     console.log("add menu");
   };
@@ -238,6 +216,24 @@ export const SubMenu = props => {
     }
   ];
   const testmenu = directChild(menu, "m1", "seq");
+
+  const selectedmenu = id => {
+    dispatch(globalVariable({ selectedKey: id }));
+    const ctr = findControl(tempMenu, "1", id);
+    console.log("it's from submenu", ctr);
+    dispatch(globalVariable({ control: ctr }));
+  };
+  const findControl = (tempMenu, comp, id) => {
+    const ctr = tempMenu.filter(
+      (item, itemIndex) => item.comp === comp && item.id === id
+    );
+
+    if (ctr) {
+      return ctr[0].layout.sort(function(a, b) {
+        return a.rowseq < b.rowseq ? -1 : 1;
+      });
+    }
+  };
   const NestedList = props => {
     return (
       <>
@@ -269,7 +265,10 @@ export const SubMenu = props => {
                   onContextMenu={e => handleContext(sub.id, e)}
                   button
                   selected={selectedIndex === sub.id}
-                  onClick={event => handleListItemClick(event, sub.id)}
+                  onClick={event => {
+                    handleListItemClick(event, sub.id);
+                    selectedmenu(sub.id);
+                  }}
                   className={classes.nested}
                 >
                   <ListItemText
@@ -317,9 +316,8 @@ export const SubMenu = props => {
         }
         className={classes.root}
       >
-        {testmenu.map((m, index) => {
+        {subMenu.map((m, index) => {
           let subdata = directChild(menu, m.id, "seq");
-          console.log(testmenu, subdata);
           return subdata.length > 0 ? (
             <NestedList data={subdata} id={m.id} title={m.title} depth={0} />
           ) : (
@@ -327,7 +325,10 @@ export const SubMenu = props => {
               onContextMenu={e => handleContext(e, m.id)}
               button
               selected={selectedIndex === m.id}
-              onClick={event => handleListItemClick(event, m.id)}
+              onClick={event => {
+                handleListItemClick(event, m.id);
+                selectedmenu(m.id);
+              }}
             >
               <ListItemText primary={m.title} />
             </ListItem>

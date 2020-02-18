@@ -48,12 +48,14 @@ const Edit = props => {
   tempMenu = useSelector(state => state.global.tempMenu);
   let selectedKey = useSelector(state => state.global.selectedKey);
 
-  if (!tempMenu) tempMenu = JSON.parse(localStorage.getItem("menu"));
+  if (!tempMenu) {
+    tempMenu = JSON.parse(localStorage.getItem("menu"));
+    topMenu = findMenu(tempMenu, "1", "");
+    subMenu = findMenu(tempMenu, "1", topMenu[0].id);
+    dispatch(globalVariable({ subMenu: subMenu }));
+    if (!selectedKey) selectedKey = topMenu[0].id;
+  }
 
-  topMenu = findMenu(tempMenu, "1", "");
-  subMenu = findMenu(tempMenu, "1", topMenu[0].id);
-
-  if (!selectedKey) selectedKey = topMenu[0].id;
   console.log(tempMenu);
   //$(".dropli:first-child").click();
   //tempMenu = menuData;

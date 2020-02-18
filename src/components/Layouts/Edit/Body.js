@@ -8,6 +8,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Fab from "@material-ui/core/Fab";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
+import ViewColumn from "@material-ui/icons/ViewColumn";
 import EditIcon from "@material-ui/icons/Edit";
 import { globalVariable } from "../../../actions";
 
@@ -68,14 +69,14 @@ export const Body = props => {
     const classes = useStyles();
     return (
       <Grid item xs={"auto"}>
-        <span>
+        {/* <span>
           <Fab
             color="primary"
             size="small"
             aria-label="add"
             className={classes.iconright}
           >
-            <AddIcon
+            <ViewColumn
               id={props.dt.rowseq + "n" + (props.dt.total + 1)}
               onClick={() => {
                 ctrlist.push({
@@ -87,7 +88,20 @@ export const Body = props => {
               }}
             />
           </Fab>
-        </span>
+        </span> */}
+        <IconButton aria-label="split" color="primary">
+          <ViewColumn
+            id={props.dt.rowseq + "n" + (props.dt.total + 1)}
+            onClick={() => {
+              ctrlist.push({
+                ctrid: "imsi" + Math.random().toString(),
+                rowseq: props.dt.rowseq,
+                colseq: props.dt.total + 1
+              });
+              props.addControl(addAcc(ctrlist));
+            }}
+          />
+        </IconButton>
       </Grid>
     );
   };
@@ -110,14 +124,14 @@ export const Body = props => {
       </Grid>
     );
   };
-  const addAcc = ctrlist => {
-    const numByrow = _.countBy(ctrlist, "rowseq");
-    ctrlist.map((val, key) => {
+  const addAcc = ctrList => {
+    const numByrow = _.countBy(ctrList, "rowseq");
+    ctrList.map((val, key) => {
       val.total = numByrow[val.rowseq] - 1;
       val.xs = 12 / numByrow[val.rowseq];
     });
-    ctrlist = _.sortBy(ctrlist, ["rowseq", "colseq"]);
-    return ctrlist;
+    ctrList = _.sortBy(ctrList, ["rowseq", "colseq"]);
+    return ctrList;
   };
 
   // _.each(rowdt, (val, key) => {
@@ -126,7 +140,16 @@ export const Body = props => {
   //     newArr.push({ row: key, col: i, val: val - 1, xs: 12 / val });
   //   }
   // });
-
+  const addNewControl = ctrList => {
+    const maxrow = _.max(ctrList, _.property("rowseq"));
+    console.log(maxrow);
+    ctrList.push({
+      ctrid: "imsi" + Math.random().toString(),
+      rowseq: maxrow + 1,
+      colseq: 0
+    });
+    dispatch(globalVariable({ control: ctrList }));
+  };
   const removeControl = (ctrList, ctrid) => {
     ctrList.map((e, i) => {
       console.log(e, ctrid);
@@ -172,19 +195,14 @@ export const Body = props => {
         justify="flex-end"
         direction="row"
       >
-        <Fab color="primary" aria-label="add">
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={() => addNewControl(ctrlist)}
+        >
           <AddIcon />
         </Fab>
       </Grid>
-      <div class="row end-xs">
-        <div class="col-xs-6">
-          <div class="box">
-            <Fab color="primary" aria-label="add">
-              <AddIcon />
-            </Fab>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

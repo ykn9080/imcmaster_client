@@ -2,12 +2,10 @@ import React, { useState, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import Fab from "@material-ui/core/Fab";
-import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
+import { ActiveLastBreadcrumb } from "../BreadCrumb";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import EditIcon from "@material-ui/icons/Edit";
 import { globalVariable } from "../../../actions";
@@ -40,6 +38,32 @@ const useStyles = makeStyles(theme => ({
   },
   primary: {
     margin: theme.spacing(1)
+  },
+  appBar: {
+    top: "auto",
+    bottom: 0
+  },
+  grow: {
+    flexGrow: 1
+  },
+  fabButton: {
+    position: "absolute",
+    zIndex: 1,
+    top: -80,
+    float: "right",
+    right: 0,
+    marginRight: 20
+  },
+  fabRight: {
+    position: "absolute",
+    zIndex: 1,
+    top: 0,
+    float: "right",
+    right: 0,
+    marginRight: 20
+  },
+  breadcrumb: {
+    textAlign: "right"
   }
 }));
 
@@ -68,52 +92,65 @@ export const Body = props => {
   const IconBtn = props => {
     const classes = useStyles();
     return (
-      <Grid item xs={"auto"}>
-        {/* <span>
-          <Fab
-            color="primary"
-            size="small"
-            aria-label="add"
-            className={classes.iconright}
-          >
-            <ViewColumn
-              id={props.dt.rowseq + "n" + (props.dt.total + 1)}
-              onClick={() => {
-                ctrlist.push({
-                  ctrid: "imsi" + Math.random().toString(),
-                  rowseq: props.dt.rowseq,
-                  colseq: props.dt.total + 1
-                });
-                props.addControl(addAcc(ctrlist));
-              }}
-            />
-          </Fab>
-        </span> */}
-        <IconButton aria-label="split" color="primary">
-          <ViewColumn
-            id={props.dt.rowseq + "n" + (props.dt.total + 1)}
-            onClick={() => {
-              ctrlist.push({
-                ctrid: "imsi" + Math.random().toString(),
-                rowseq: props.dt.rowseq,
-                colseq: props.dt.total + 1
-              });
-              props.addControl(addAcc(ctrlist));
-            }}
-          />
-        </IconButton>
-      </Grid>
+      // <Grid item xs={"auto"}>
+      //   {/* <span>
+      //     <Fab
+      //       color="primary"
+      //       size="small"
+      //       aria-label="add"
+      //       className={classes.iconright}
+      //     >
+      //       <ViewColumn
+      //         id={props.dt.rowseq + "n" + (props.dt.total + 1)}
+      //         onClick={() => {
+      //           ctrlist.push({
+      //             ctrid: "imsi" + Math.random().toString(),
+      //             rowseq: props.dt.rowseq,
+      //             colseq: props.dt.total + 1
+      //           });
+      //           props.addControl(addAcc(ctrlist));
+      //         }}
+      //       />
+      //     </Fab>
+      //   </span> */}
+      //   <IconButton aria-label="split" color="primary">
+      //     <ViewColumn
+      //       id={props.dt.rowseq + "n" + (props.dt.total + 1)}
+      //       onClick={() => {
+      //         ctrlist.push({
+      //           ctrid: "imsi" + Math.random().toString(),
+      //           rowseq: props.dt.rowseq,
+      //           colseq: props.dt.total + 1
+      //         });
+      //         props.addControl(addAcc(ctrlist));
+      //       }}
+      //     />
+      //   </IconButton>
+      // </Grid>
+      //                       <Fab
+      //                       color="secondary"
+      //                       aria-label="add"
+      //                       className={classes.fabRight}
+      //                     >
+      //                       <ViewColumn />
+      //                     </Fab>
+      <IconButton aria-label="split" color="primary">
+        <ViewColumn
+          id={props.dt.rowseq + "n" + (props.dt.total + 1)}
+          onClick={() => {
+            ctrlist.push({
+              ctrid: "imsi" + Math.random().toString(),
+              rowseq: props.dt.rowseq,
+              colseq: props.dt.total + 1
+            });
+            props.addControl(addAcc(ctrlist));
+          }}
+        />
+      </IconButton>
     );
   };
 
   const GridRow = props => {
-    //const [hoverEffect, setHoverEffect] = useState(false);
-    // const removeGridHandler = () => {
-    //   let newState = [...rowdt]; // clone the array
-    //   newState[props.dt.row] = props.dt.val;
-    //   setRowdt(newState);
-    // };
-
     return (
       <Grid item xs={props.xssize}>
         <CardForm
@@ -133,13 +170,6 @@ export const Body = props => {
     ctrList = _.sortBy(ctrList, ["rowseq", "colseq"]);
     return ctrList;
   };
-
-  // _.each(rowdt, (val, key) => {
-  //   let i;
-  //   for (i = 0; i < val; i++) {
-  //     newArr.push({ row: key, col: i, val: val - 1, xs: 12 / val });
-  //   }
-  // });
   const addNewControl = ctrList => {
     const maxrow = _.max(ctrList, _.property("rowseq"));
     console.log(maxrow);
@@ -161,6 +191,7 @@ export const Body = props => {
   return (
     <>
       <Grid container justify="center" className={classes.root} spacing={2}>
+        <ActiveLastBreadcrumb keyval={keyval} className={classes.breadcrumb} />
         {addAcc(ctrlist).map((dt, index) => {
           return dt.colseq != dt.total ? (
             <GridRow
@@ -174,11 +205,13 @@ export const Body = props => {
             <>
               <GridRow
                 dt={dt}
-                xssize={dt.xs - 1}
+                xssize={dt.xs}
+                //xssize={dt.xs - 1}
                 key={dt.ctrid}
                 removeControl={removeControl}
                 ctrlist={addAcc(ctrlist)}
-              />
+              ></GridRow>
+
               <IconBtn
                 addControl={props.addControl}
                 removeControl={removeControl}
@@ -189,20 +222,11 @@ export const Body = props => {
           );
         })}
       </Grid>
-      <Grid
-        container
-        alignItems="flex-start"
-        justify="flex-end"
-        direction="row"
-      >
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={() => addNewControl(ctrlist)}
-        >
+      <AppBar position="fixed" color="primary" className={classes.appBar}>
+        <Fab color="secondary" aria-label="add" className={classes.fabButton}>
           <AddIcon />
         </Fab>
-      </Grid>
+      </AppBar>
     </>
   );
 };

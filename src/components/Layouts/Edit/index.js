@@ -10,6 +10,7 @@ import { Sortable } from "./MenuSortable";
 import { makeStyles } from "@material-ui/core/styles";
 import { globalVariable } from "../../../actions";
 import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
 import { findChild } from "../../functions/findChildrens";
 
 const useStyles = makeStyles(theme => ({
@@ -53,6 +54,7 @@ const Edit = props => {
     topMenu = findMenu(tempMenu, "1", "");
     subMenu = findMenu(tempMenu, "1", topMenu[0].id);
     dispatch(globalVariable({ subMenu: subMenu }));
+    dispatch(globalVariable({ tempMenu: tempMenu }));
     if (!selectedKey) selectedKey = topMenu[0].id;
   }
 
@@ -110,7 +112,7 @@ const Edit = props => {
   return (
     <>
       <div className={classes.root}>
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
             <HeadEdit selectedmenu={selectedmenu} />
           </Grid>
@@ -125,6 +127,7 @@ const Edit = props => {
             <Button>Add</Button>*/}
             <SubMenu selectedmenu={selectedmenu} />
           </Grid>
+
           <Grid item xs={9}>
             <Body addControl={addControl} />
           </Grid>

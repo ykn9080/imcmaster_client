@@ -92,61 +92,41 @@ export const Body = props => {
   const IconBtn = props => {
     const classes = useStyles();
     return (
-      // <Grid item xs={"auto"}>
-      //   {/* <span>
-      //     <Fab
-      //       color="primary"
-      //       size="small"
-      //       aria-label="add"
-      //       className={classes.iconright}
-      //     >
-      //       <ViewColumn
-      //         id={props.dt.rowseq + "n" + (props.dt.total + 1)}
-      //         onClick={() => {
-      //           ctrlist.push({
-      //             ctrid: "imsi" + Math.random().toString(),
-      //             rowseq: props.dt.rowseq,
-      //             colseq: props.dt.total + 1
-      //           });
-      //           props.addControl(addAcc(ctrlist));
-      //         }}
-      //       />
-      //     </Fab>
-      //   </span> */}
-      //   <IconButton aria-label="split" color="primary">
-      //     <ViewColumn
-      //       id={props.dt.rowseq + "n" + (props.dt.total + 1)}
-      //       onClick={() => {
-      //         ctrlist.push({
-      //           ctrid: "imsi" + Math.random().toString(),
-      //           rowseq: props.dt.rowseq,
-      //           colseq: props.dt.total + 1
-      //         });
-      //         props.addControl(addAcc(ctrlist));
-      //       }}
-      //     />
-      //   </IconButton>
-      // </Grid>
-      //                       <Fab
-      //                       color="secondary"
-      //                       aria-label="add"
-      //                       className={classes.fabRight}
-      //                     >
-      //                       <ViewColumn />
-      //                     </Fab>
-      <IconButton aria-label="split" color="primary">
-        <ViewColumn
-          id={props.dt.rowseq + "n" + (props.dt.total + 1)}
-          onClick={() => {
-            ctrlist.push({
-              ctrid: "imsi" + Math.random().toString(),
-              rowseq: props.dt.rowseq,
-              colseq: props.dt.total + 1
-            });
-            props.addControl(addAcc(ctrlist));
-          }}
-        />
-      </IconButton>
+      <Grid item xs={1}>
+        {/* <span>
+          <Fab
+            color="primary"
+            size="small"
+            aria-label="add"
+            className={classes.iconright}
+          >
+            <ViewColumn
+              id={props.dt.rowseq + "n" + (props.dt.total + 1)}
+              onClick={() => {
+                ctrlist.push({
+                  ctrid: "imsi" + Math.random().toString(),
+                  rowseq: props.dt.rowseq,
+                  colseq: props.dt.total + 1
+                });
+                props.addControl(addAcc(ctrlist));
+              }}
+            />
+          </Fab>
+        </span> */}
+        <IconButton aria-label="split" color="primary">
+          <ViewColumn
+            id={props.dt.rowseq + "n" + (props.dt.total + 1)}
+            onClick={() => {
+              ctrlist.push({
+                ctrid: "imsi" + Math.random().toString(),
+                rowseq: props.dt.rowseq,
+                colseq: props.dt.total + 1
+              });
+              props.addControl(addAcc(ctrlist));
+            }}
+          />
+        </IconButton>
+      </Grid>
     );
   };
 
@@ -163,6 +143,20 @@ export const Body = props => {
   };
   const addAcc = ctrList => {
     const numByrow = _.countBy(ctrList, "rowseq");
+    const maxRowIndex = _.max(Object.keys(numByrow));
+    console.log(numByrow, maxRowIndex);
+    ctrList = _.sortBy(ctrList, ["rowseq", "colseq"]);
+    for (let i = 0; i <= maxRowIndex; i++) {
+      let colseq = 0;
+      ctrList.map(val => {
+        console.log(val, i, val.rowseq, numByrow[i]);
+        if (val.rowseq === i) {
+          val.colseq = colseq;
+          colseq++;
+        }
+      });
+    }
+    console.log(ctrList);
     ctrList.map((val, key) => {
       val.total = numByrow[val.rowseq] - 1;
       val.xs = 12 / numByrow[val.rowseq];
@@ -171,14 +165,18 @@ export const Body = props => {
     return ctrList;
   };
   const addNewControl = ctrList => {
-    const maxrow = _.max(ctrList, _.property("rowseq"));
-    console.log(maxrow);
+    const maxrow = _.maxBy(ctrList, "rowseq");
+
+    let maxrowseq = -1;
+
+    if (typeof maxrow != "undefined") maxrowseq = maxrow.rowseq;
     ctrList.push({
       ctrid: "imsi" + Math.random().toString(),
-      rowseq: maxrow + 1,
+      rowseq: maxrowseq + 1,
       colseq: 0
     });
     dispatch(globalVariable({ control: ctrList }));
+    forceUpdate();
   };
   const removeControl = (ctrList, ctrid) => {
     ctrList.map((e, i) => {
@@ -190,8 +188,8 @@ export const Body = props => {
   };
   return (
     <>
-      <Grid container justify="center" className={classes.root} spacing={2}>
-        <ActiveLastBreadcrumb keyval={keyval} className={classes.breadcrumb} />
+      <ActiveLastBreadcrumb keyval={keyval} className={classes.breadcrumb} />
+      <Grid container className={classes.root} spacing={2}>
         {addAcc(ctrlist).map((dt, index) => {
           return dt.colseq != dt.total ? (
             <GridRow
@@ -205,8 +203,7 @@ export const Body = props => {
             <>
               <GridRow
                 dt={dt}
-                xssize={dt.xs}
-                //xssize={dt.xs - 1}
+                xssize={dt.xs - 1}
                 key={dt.ctrid}
                 removeControl={removeControl}
                 ctrlist={addAcc(ctrlist)}
@@ -224,7 +221,7 @@ export const Body = props => {
       </Grid>
       <AppBar position="fixed" color="primary" className={classes.appBar}>
         <Fab color="secondary" aria-label="add" className={classes.fabButton}>
-          <AddIcon />
+          <AddIcon onClick={() => addNewControl(ctrlist)} />
         </Fab>
       </AppBar>
     </>

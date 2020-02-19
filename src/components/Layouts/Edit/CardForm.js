@@ -20,10 +20,12 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 const useStyles = makeStyles(theme => ({
   card: {
     //maxWidth: "100%"
+    maxHeight: 400,
+    minHeight: 300
   },
   media: {
-    height: 0,
-    paddingTop: "56.25%" // 16:9
+    height: 0
+    //paddingTop: "56.25%" // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
@@ -75,8 +77,7 @@ export default props => {
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          together with your guests.
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

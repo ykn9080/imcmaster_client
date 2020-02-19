@@ -5,15 +5,25 @@ import { makeStyles } from "@material-ui/core/styles";
 import { faHome, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import $ from "jquery";
+import _ from "lodash";
 import "jquery-ui-bundle";
 import "jquery-ui-bundle/jquery-ui.min.css";
 import "./Head.css";
 import { directChild, findChild } from "../../functions/findChildrens";
+import IconButton from "@material-ui/core/IconButton";
+import AddBox from "@material-ui/icons/AddCircle";
+import useForceUpdate from "use-force-update";
 
+const useStyles = makeStyles(theme => ({
+  menuButton: {
+    marginLeft: theme.spacing(1)
+  }
+}));
 export const Sortable = props => {
   let tempMenu = useSelector(state => state.global.tempMenu);
   const keyval = useSelector(state => state.global.selectedKey);
-  console.log(tempMenu);
+  const dispatch = useDispatch();
+  const forceUpdate = useForceUpdate();
   useEffect(() => {
     //$(refs.sortable);
     const $node = $("#ulSortable");
@@ -34,18 +44,47 @@ export const Sortable = props => {
 
   //let subMenu = useSelector(state => state.global.subMenu);
 
+  const classes = useStyles();
   let menuList = directChild(tempMenu, props.pid, "seq");
   // if (props.depth === "all") menuList = findChild(tempMenu, props.pid, "seq");
+  const addTopMenu = () => {
+    let obj = _.maxBy(menuList, "seq");
+    let newobj = {
+      id: "imsi" + Math.random().toString(),
+      comp: "1",
+      creator: "ykn",
+      desc: "",
+      pid: "",
+      private: false,
+      seq: obj.seq + 1,
+      title: "New Menu",
+      layout: []
+    };
+    tempMenu.push(newobj);
+    dispatch(globalVariable({ tempMenu: tempMenu }));
+    forceUpdate();
+  };
   return (
     <ul className={props.ulclass} id="ulSortable">
       {menuList ? (
-        <DropList
-          menuList={menuList}
-          tempMenu={tempMenu}
-          depth={props.depth}
-          liclass={props.liclass}
-          selectedmenu={props.selectedmenu}
-        />
+        <>
+          <DropList
+            menuList={menuList}
+            tempMenu={tempMenu}
+            depth={props.depth}
+            liclass={props.liclass}
+            selectedmenu={props.selectedmenu}
+          />
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={addTopMenu}
+          >
+            <AddBox />
+          </IconButton>
+        </>
       ) : (
         <li
           className={["ui-state-default"]}
@@ -116,6 +155,7 @@ const NestedList = props => {
   //   dispatch(globalVariable({ selectedKey: id }));
   //   markTab(id);
   // };
+
   return props.data ? (
     <ul>
       {props.data.map((item, i) => {

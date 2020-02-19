@@ -26,34 +26,15 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(10)
   },
   sortable: {
-    paddingTop: 10
+    margin: 0
   }
 }));
 
 export const HeadEdit = props => {
-  // const list = ["ReactJS", "JSX", "JavaScript", "jQuery", "jQuery UI"];
-  // const [isEnabled, setIsEnabled] = useState(true);
-  // const toggleEnableability = () => {
-  //   setIsEnabled(!isEnabled);
-  // };
   let tempMenu = useSelector(state => state.global.tempMenu);
-  // if (!menuData) menuData = JSON.parse(localStorage.getItem("menu"));
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   //login후 /function/api.js의 remotelogin callback에서 dispatch를 못해서
-  //   //일단 localStorage에 저장한후 메뉴로 historyback할때 globalVariable로 dispatch시킴
-  //   let menu = JSON.parse(localStorage.getItem("menu"));
-  //   menuData = menu;
-  //   dispatch(globalVariable({ menu: menu }));
-  // }, []);
 
-  // const topmenu = menuData
-  //   .filter((item, itemIndex) => item.comp === "1" && item.pid === "")
-  //   .sort(function(a, b) {
-  //     return a.seq < b.seq ? -1 : 1;
-  //   });
-
-  const addMenu = () => {
+  const addTopMenu = () => {
     console.log("add menu");
   };
   // const onCancel = () => {
@@ -71,9 +52,6 @@ export const HeadEdit = props => {
   const selectedmenu = id => {
     dispatch(globalVariable({ selectedKey: id }));
     const sub = directChild(tempMenu, id, "seq");
-    //const ctr = findControl(tempMenu, "1", id);
-
-    //dispatch(globalVariable({ control: ctr }));
     dispatch(globalVariable({ subMenu: sub }));
     $(".dropli").removeClass("selectli");
     $("#" + id).addClass("selectli");
@@ -94,20 +72,7 @@ export const HeadEdit = props => {
             selectedmenu={props.selectedmenu}
             onChange={(event, ui) => console.log("DOM changed!!!!", event, ui)}
           />
-          {/* <button type="button" onClick={toggleEnableability}>
-            Toggle enable/disable
-          </button> */}
           <div className={classes.title}></div>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-            onClick={addMenu}
-          >
-            <AddCircle />
-          </IconButton>
-
           <Button color="inherit" onClick={onSave}>
             Save
           </Button>

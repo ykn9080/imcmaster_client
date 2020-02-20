@@ -18,11 +18,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import {
-  SortableContainer,
-  SortableElement,
-  SortableHandle
-} from "react-sortable-hoc";
+import { Container, Draggable } from "react-smooth-dnd";
+// import {
+//   SortableContainer,
+//   SortableElement,
+//   SortableHandle
+// } from "react-sortable-hoc";
 import DragHandleIcon from "@material-ui/icons/DragHandle";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Collapse from "@material-ui/core/Collapse";
@@ -129,18 +130,21 @@ export const SubMenu = props => {
   const NestedList = props => {
     return (
       <>
-        <ListItem
-          button
-          onClick={e => handleClick(props.id, e)}
-          onContextMenu={e => handleContext(props.id, e)}
-          style={{ cursor: "context-menu" }}
-        >
-          <ListItemText
-            primary={props.title}
-            style={{ paddingLeft: props.depth * 15 }}
-          />
-          {expanded === props.id ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
+        <Draggable key={props.id}>
+          <ListItem
+            button
+            onClick={e => handleClick(props.id, e)}
+            onContextMenu={e => handleContext(props.id, e)}
+            style={{ cursor: "context-menu" }}
+          >
+            <ListItemText
+              primary={props.title}
+              style={{ paddingLeft: props.depth * 15 }}
+              className="drag-handle"
+            />
+            {expanded === props.id ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+        </Draggable>
         <Collapse in={open[props.id]} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {props.data.map((sub, i) => {
@@ -153,21 +157,24 @@ export const SubMenu = props => {
                   depth={props.depth + 1}
                 />
               ) : (
-                <ListItem
-                  onContextMenu={e => handleContext(sub.id, e)}
-                  button
-                  selected={selectedIndex === sub.id}
-                  onClick={event => {
-                    handleListItemClick(event, sub.id);
-                    selectedmenu(sub.id);
-                  }}
-                  className={classes.nested}
-                >
-                  <ListItemText
-                    primary={sub.title}
-                    style={{ paddingLeft: props.depth * 15 }}
-                  />
-                </ListItem>
+                <Draggable key={sub.id}>
+                  <ListItem
+                    onContextMenu={e => handleContext(sub.id, e)}
+                    button
+                    selected={selectedIndex === sub.id}
+                    onClick={event => {
+                      handleListItemClick(event, sub.id);
+                      selectedmenu(sub.id);
+                    }}
+                    className={classes.nested}
+                  >
+                    <ListItemText
+                      primary={sub.title}
+                      style={{ paddingLeft: props.depth * 15 }}
+                      className="drag-handle"
+                    />
+                  </ListItem>
+                </Draggable>
               );
             })}
           </List>
@@ -176,20 +183,51 @@ export const SubMenu = props => {
     );
   };
 
-  const DragHandle = SortableHandle(() => (
-    <ListItemIcon>
-      <DragHandleIcon />
-    </ListItemIcon>
-  ));
-  const SortableItem = SortableElement(({ text }) => (
-    <ListItem ContainerComponent="div">
-      <ListItemSecondaryAction>
-        <DragHandle />
-      </ListItemSecondaryAction>
-      <ListItemText primary={text} />
-    </ListItem>
-  ));
+  // //react-sortable-hoc
+  // const DragHandle = SortableHandle(() => (
+  //   <ListItemIcon>
+  //     <DragHandleIcon />
+  //   </ListItemIcon>
+  // ));
+  // const SortableItem = SortableElement(({ text }) => (
+  //   <ListItem ContainerComponent="div">
+  //     <ListItemSecondaryAction>
+  //       <DragHandle />
+  //     </ListItemSecondaryAction>
+  //     <ListItemText primary={text} />
+  //   </ListItem>
+  // ));
 
+  //react-smooth-dnd
+  const [items, setItems] = useState([
+    { id: "1", text: "Item 1" },
+    { id: "2", text: "Item 2" },
+    { id: "3", text: "Item 3" },
+    { id: "4", text: "Item 4" }
+  ]);
+  const onDrop = ({ removedIndex, addedIndex }) => {
+    console.log({ removedIndex, addedIndex });
+    // setItems(items => arrayMove(items, removedIndex, addedIndex));
+  };
+
+  const contextmenu = (
+    <Menu
+      keepMounted
+      open={state.mouseY !== null}
+      onClose={handleClose}
+      anchorReference="anchorPosition"
+      anchorPosition={
+        state.mouseY !== null && state.mouseX !== null
+          ? { top: state.mouseY, left: state.mouseX }
+          : undefined
+      }
+    >
+      <MenuItem onClick={handleClose}>Copy</MenuItem>
+      <MenuItem onClick={handleClose}>Print</MenuItem>
+      <MenuItem onClick={handleClose}>Highlight</MenuItem>
+      <MenuItem onClick={handleClose}>Email</MenuItem>
+    </Menu>
+  );
   const SubList = (
     <List
       style={{ cursor: "context-menu" }}
@@ -197,44 +235,29 @@ export const SubMenu = props => {
       aria-labelledby="nested-list-subheader"
       className={classes.root}
     >
-      {subMenu.map((m, index) => {
-        let subdata = directChild(tempMenu, m.id, "seq");
-        return subdata.length > 0 ? (
-          <NestedList data={subdata} id={m.id} title={m.title} depth={0} />
-        ) : (
-          <ListItem
-            onContextMenu={e => handleContext(m.id, e)}
-            button
-            selected={selectedIndex === m.id}
-            onClick={event => {
-              handleListItemClick(event, m.id);
-              selectedmenu(m.id);
-            }}
-          >
-            <ListItemSecondaryAction>
-              <DragHandle />
-            </ListItemSecondaryAction>
-            <ListItemText primary={m.title} />
-          </ListItem>
-        );
-      })}
-
-      <Menu
-        keepMounted
-        open={state.mouseY !== null}
-        onClose={handleClose}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          state.mouseY !== null && state.mouseX !== null
-            ? { top: state.mouseY, left: state.mouseX }
-            : undefined
-        }
-      >
-        <MenuItem onClick={handleClose}>Copy</MenuItem>
-        <MenuItem onClick={handleClose}>Print</MenuItem>
-        <MenuItem onClick={handleClose}>Highlight</MenuItem>
-        <MenuItem onClick={handleClose}>Email</MenuItem>
-      </Menu>
+      <Container dragHandleSelector=".drag-handle" lockAxis="y" onDrop={onDrop}>
+        {subMenu.map((m, index) => {
+          let subdata = directChild(tempMenu, m.id, "seq");
+          return subdata.length > 0 ? (
+            <NestedList data={subdata} id={m.id} title={m.title} depth={0} />
+          ) : (
+            <Draggable key={m.id}>
+              <ListItem
+                onContextMenu={e => handleContext(m.id, e)}
+                button
+                selected={selectedIndex === m.id}
+                onClick={event => {
+                  handleListItemClick(event, m.id);
+                  selectedmenu(m.id);
+                }}
+              >
+                <ListItemText primary={m.title} className="drag-handle" />
+              </ListItem>
+            </Draggable>
+          );
+        })}
+      </Container>
+      {contextmenu}
     </List>
   );
 

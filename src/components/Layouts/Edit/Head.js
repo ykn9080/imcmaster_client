@@ -69,7 +69,7 @@ export const HeadEdit = props => {
             opacity={0.8}
             pid={""}
             depth={1}
-            selectedmenu={props.selectedmenu}
+            selectedmenu={selectedmenu}
             onChange={(event, ui) => console.log("DOM changed!!!!", event, ui)}
           />
           <div className={classes.title}></div>

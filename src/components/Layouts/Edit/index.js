@@ -5,7 +5,7 @@ import _ from "lodash";
 import { Button } from "react-bootstrap";
 import { HeadEdit } from "./Head";
 import { Body } from "./Body";
-import { SubMenu } from "./SubMenu";
+import { SubMenu, SubMenu1, SubMenu2 } from "./SubMenu";
 import { Sortable } from "./MenuSortable";
 import { makeStyles } from "@material-ui/core/styles";
 import { globalVariable } from "../../../actions";
@@ -55,7 +55,11 @@ const Edit = props => {
     subMenu = findMenu(tempMenu, "1", topMenu[0].id);
     dispatch(globalVariable({ subMenu: subMenu }));
     dispatch(globalVariable({ tempMenu: tempMenu }));
-    if (!selectedKey) selectedKey = topMenu[0].id;
+    if (!selectedKey) {
+      selectedKey = topMenu[0].id;
+
+      dispatch(globalVariable({ selectedKey }));
+    }
   }
 
   console.log(tempMenu);
@@ -125,7 +129,7 @@ const Edit = props => {
               selectedmenu={selectedmenu}
             /> 
             <Button>Add</Button>*/}
-            <SubMenu selectedmenu={selectedmenu} />
+            <SubMenu2 selectedmenu={selectedmenu} />
           </Grid>
 
           <Grid item xs={9}>

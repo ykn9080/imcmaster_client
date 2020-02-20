@@ -48,6 +48,7 @@ export const findChild = (data, id, sortFields, sortOrder) => {
       findChild(data, obj.id);
     }
   });
+  res = _.uniqBy(res, "id");
   if (typeof sortFields !== "undefined")
     res = sortBy(res, sortFields, sortOrder);
   return res;

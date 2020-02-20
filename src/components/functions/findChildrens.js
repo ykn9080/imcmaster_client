@@ -43,12 +43,15 @@ let res = [];
 //not callback childFind(data,"id");
 export const findChild = (data, id, sortFields, sortOrder) => {
   data.forEach(obj => {
+    let newres = [];
     if (obj.pid === id) {
       res.push(obj);
+      _.remove(data, dt => dt.id === id);
+      console.log(data);
       findChild(data, obj.id);
     }
   });
-  res = _.uniqBy(res, "id");
+  //res = _.uniqBy(res, "id");
   if (typeof sortFields !== "undefined")
     res = sortBy(res, sortFields, sortOrder);
   return res;

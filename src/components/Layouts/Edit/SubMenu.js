@@ -479,20 +479,20 @@ export const SubMenu2 = () => {
   ];
   let tempMenu = useSelector(state => state.global.tempMenu);
   let selectedKey = useSelector(state => state.global.selectedKey);
-  const sub = findChild(tempMenu, selectedKey, "seq");
+  let tempMenu1 = tempMenu;
+  const sub = findChild(tempMenu1, selectedKey, "seq");
 
   const { TreeNode } = Tree;
   const [expandedKeys, setExpendedKeys] = useState([]);
-  let treeDt = [];
-  const [gData, setgData] = useState();
-  treeDt = getTreeFromFlatData({
+
+  let treeDt = getTreeFromFlatData({
     flatData: sub.map(node => ({ ...node, title: node.title })),
     getKey: node => node.id, // resolve a node's key
     getParentKey: node => node.pid, // resolve a node's parent's key
     rootKey: "" // The value of the parent key when there is no parent (i.e., at root level)
   });
-  setgData(treeDt);
-  console.log(sub, treeDt);
+  const [gData, setgData] = useState(treeDt);
+  console.log(sub, tempMenu1, selectedKey);
 
   // //make tree data to flat
   // const flatData = getFlatDataFromTree({

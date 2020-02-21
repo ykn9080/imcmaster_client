@@ -37,7 +37,7 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUp from "@material-ui/icons/ArrowDropUp";
-import { directChild, findChild } from "../../functions/findChildrens";
+import { directChild, getChildren } from "../../functions/findChildrens";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
@@ -340,6 +340,8 @@ export class SubMenu1 extends Component {
 
 export const SubMenu2 = () => {
   const forceUpdate = useForceUpdate();
+  const dispatch = useDispatch();
+  const [key, setKey] = useState("");
   const data = [
     {
       title: "0-0",
@@ -477,63 +479,42 @@ export const SubMenu2 = () => {
       ]
     }
   ];
+
   let tempMenu = useSelector(state => state.global.tempMenu);
   let selectedKey = useSelector(state => state.global.selectedKey);
-  let tempMenu1 = tempMenu;
-  const sub = findChild(tempMenu1, selectedKey, "seq");
-
+  if (selectedKey !== key) setKey(selectedKey);
   const { TreeNode } = Tree;
   const [expandedKeys, setExpendedKeys] = useState([]);
 
   let treeDt = getTreeFromFlatData({
-    flatData: sub.map(node => ({ ...node, title: node.title })),
+    flatData: tempMenu.map(node => ({ ...node, title: node.title })),
+    getKey: node => node.id, // resolve a node's key
+    getParentKey: node => node.pid, // resolve a node's parent's key
+    rootKey: "" // The value of the parent key when there is no parent (i.e., at root level)
+  });
+  const subList = getChildren(treeDt, selectedKey);
+  treeDt = getTreeFromFlatData({
+    flatData: subList.map(node => ({ ...node, title: node.title })),
     getKey: node => node.id, // resolve a node's key
     getParentKey: node => node.pid, // resolve a node's parent's key
     rootKey: selectedKey // The value of the parent key when there is no parent (i.e., at root level)
   });
+  const addKey = (_tns, _preKey) => {
+    const preKey = _preKey || "0";
+    const tns = _tns || treeDt;
+    tns.map((v, i) => {
+      const key = `${preKey}-${i}`;
+      console.log(key, v);
+      v.key = key;
+      if (v.hasOwnProperty("children")) {
+        addKey(v.children, key);
+      }
+    });
+  };
+  addKey();
+  localStorage.setItem("subList", JSON.stringify(treeDt));
   const [gData, setgData] = useState(treeDt);
-  console.log(sub, tempMenu1, selectedKey);
 
-  // //make tree data to flat
-  // const flatData = getFlatDataFromTree({
-  //   treeData: gData,
-  //   getNodeKey: ({ node }) => node.id, // This ensures your "id" properties are exported in the path
-  //   ignoreCollapsed: false // Makes sure you traverse every node in the tree, not just the visible ones
-  // });
-  // const rtn1 = _.map(flatData, "node");
-  // delete rtn1.children;
-
-  // const [searchValue, setSearchValue] = useState("");
-  // const [autoExpandParent, setAutoExpandParent] = useState(true);
-
-  // const onExpand = expandedKeys => {
-  //   setExpendedKeys(expandedKeys);
-  //   setAutoExpandParent(false);
-  //   // this.setState({
-  //   //   expandedKeys,
-  //   //   autoExpandParent: false,
-  //   // });
-  // };
-
-  // const onChange = e => {
-  //   const { value } = e.target;
-  //   const expandedKeys = dataList
-  //     .map(item => {
-  //       if (item.title.indexOf(value) > -1) {
-  //         return getParentKey(item.key, gData);
-  //       }
-  //       return null;
-  //     })
-  //     .filter((item, i, self) => item && self.indexOf(item) === i);
-  //   setEXpandedKeys(expandedKeys);
-  //   setAutoExpandParent(true);
-  //   setSearchValue(value);
-  //   // this.setState({
-  //   //   expandedKeys,
-  //   //   searchValue: value,
-  //   //   autoExpandParent: true,
-  //   // });
-  // };
   const onDragEnter = info => {
     console.log(info);
     // expandedKeys 需要受控时设置
@@ -541,9 +522,37 @@ export const SubMenu2 = () => {
     //   expandedKeys: info.expandedKeys,
     // });
   };
+  const findControl = (tempMenu, comp, id) => {
+    const ctr = tempMenu.filter(
+      (item, itemIndex) => item.comp === comp && item.id === id
+    );
 
+    if (ctr) {
+      return ctr[0].layout.sort(function(a, b) {
+        return a.rowseq < b.rowseq ? -1 : 1;
+      });
+    }
+  };
+  const onSelect = (selectedKeys, info) => {
+    //find id from key
+    let key = "";
+    if (selectedKeys.length === 1) key = selectedKeys[0];
+    const dt = JSON.parse(localStorage.getItem("subList"));
+    const flatData = getFlatDataFromTree({
+      treeData: dt,
+      getNodeKey: ({ node }) => node.id, // This ensures your "id" properties are exported in the path
+      ignoreCollapsed: false // Makes sure you traverse every node in the tree, not just the visible ones
+    });
+    const rtn1 = _.map(flatData, "node"); //select node from each object
+    rtn1.map(v => {
+      console.log(v, key);
+      if (v.key === key) {
+        const ctr = findControl(tempMenu, "1", v.id);
+        dispatch(globalVariable({ control: ctr }));
+      }
+    });
+  };
   const onDrop = info => {
-    console.log(info);
     const dropKey = info.node.props.eventKey;
     const dragKey = info.dragNode.props.eventKey;
     const dropPos = info.node.props.pos.split("-");
@@ -600,15 +609,20 @@ export const SubMenu2 = () => {
         ar.splice(i + 1, 0, dragObj);
       }
     }
-    console.log(gData, data);
+    console.log(data);
+    localStorage.setItem("subList", JSON.stringify(data));
     setgData(data);
-    forceUpdate();
+
+    setTimeout(function() {
+      forceUpdate();
+    }, 0);
     // this.setState({
     //   gData: data,
     // });
   };
-  const loop = data =>
-    data.map(item => {
+  const loop = data => {
+    console.log(data, JSON.parse(localStorage.getItem("subList")));
+    return data.map(item => {
       if (item.children && item.children.length) {
         return (
           <TreeNode key={item.key} title={item.title}>
@@ -618,6 +632,7 @@ export const SubMenu2 = () => {
       }
       return <TreeNode key={item.key} title={item.title} />;
     });
+  };
 
   return (
     <Tree
@@ -627,8 +642,10 @@ export const SubMenu2 = () => {
       blockNode
       onDragEnter={onDragEnter}
       onDrop={onDrop}
+      onSelect={onSelect}
     >
-      {loop(gData)}
+      {/* {loop(gData)} */}
+      {loop(JSON.parse(localStorage.getItem("subList")))}
     </Tree>
   );
 };

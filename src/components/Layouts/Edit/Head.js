@@ -13,6 +13,7 @@ import Cancel from "@material-ui/icons/Cancel";
 import AddCircle from "@material-ui/icons/AddCircle";
 import { Sortable } from "./MenuSortable";
 import { directChild } from "../../functions/findChildrens";
+import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const HeadEdit = props => {
+  const forceUpdate = useForceUpdate();
   let tempMenu = useSelector(state => state.global.tempMenu);
   const dispatch = useDispatch();
 
@@ -55,7 +57,7 @@ export const HeadEdit = props => {
     dispatch(globalVariable({ subMenu: sub }));
     $(".dropli").removeClass("selectli");
     $("#" + id).addClass("selectli");
-    console.log(sub);
+    forceUpdate();
   };
   return (
     <div className={classes.root}>

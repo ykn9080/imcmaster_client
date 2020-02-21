@@ -489,7 +489,7 @@ export const SubMenu2 = () => {
     flatData: sub.map(node => ({ ...node, title: node.title })),
     getKey: node => node.id, // resolve a node's key
     getParentKey: node => node.pid, // resolve a node's parent's key
-    rootKey: "" // The value of the parent key when there is no parent (i.e., at root level)
+    rootKey: selectedKey // The value of the parent key when there is no parent (i.e., at root level)
   });
   const [gData, setgData] = useState(treeDt);
   console.log(sub, tempMenu1, selectedKey);

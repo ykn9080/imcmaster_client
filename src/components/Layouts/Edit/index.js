@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import $ from "jquery";
 import _ from "lodash";
-import { Button } from "react-bootstrap";
 import { HeadEdit } from "./Head";
 import { Body } from "./Body";
-import { SubMenu, SubMenu1, SubMenu2 } from "./SubMenu";
-import { Sortable } from "./MenuSortable";
-import { makeStyles } from "@material-ui/core/styles";
+import { SubMenu } from "./SubMenu";
 import { globalVariable } from "../../../actions";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
 import { findChild } from "../../functions/findChildrens";
 
 const useStyles = makeStyles(theme => ({
@@ -129,7 +126,7 @@ const Edit = props => {
               selectedmenu={selectedmenu}
             /> 
             <Button>Add</Button>*/}
-            <SubMenu2 selectedmenu={selectedmenu} />
+            <SubMenu selectedmenu={selectedmenu} />
           </Grid>
 
           <Grid item xs={9}>

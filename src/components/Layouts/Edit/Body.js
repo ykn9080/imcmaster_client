@@ -5,17 +5,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import { ActiveLastBreadcrumb } from "../BreadCrumb";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import EditIcon from "@material-ui/icons/Edit";
-import { globalVariable } from "../../../actions";
-
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import AddCircle from "@material-ui/icons/AddCircle";
+
+import { ActiveLastBreadcrumb } from "../BreadCrumb";
+import { globalVariable } from "../../../actions";
 import CardForm from "./CardForm";
+import ControlIcon from "./ControlIcon";
 import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles(theme => ({
@@ -93,26 +90,6 @@ export const Body = props => {
     const classes = useStyles();
     return (
       <Grid item xs={1}>
-        {/* <span>
-          <Fab
-            color="primary"
-            size="small"
-            aria-label="add"
-            className={classes.iconright}
-          >
-            <ViewColumn
-              id={props.dt.rowseq + "n" + (props.dt.total + 1)}
-              onClick={() => {
-                ctrlist.push({
-                  ctrid: "imsi" + Math.random().toString(),
-                  rowseq: props.dt.rowseq,
-                  colseq: props.dt.total + 1
-                });
-                props.addControl(addAcc(ctrlist));
-              }}
-            />
-          </Fab>
-        </span> */}
         <IconButton aria-label="split" color="primary">
           <ViewColumn
             id={props.dt.rowseq + "n" + (props.dt.total + 1)}
@@ -208,7 +185,6 @@ export const Body = props => {
                 removeControl={removeControl}
                 ctrlist={addAcc(ctrlist)}
               ></GridRow>
-
               <IconBtn
                 addControl={props.addControl}
                 removeControl={removeControl}
@@ -218,12 +194,16 @@ export const Body = props => {
             </>
           );
         })}
+        <ControlIcon ctrList={ctrlist} addNewControl={addNewControl} />
       </Grid>
+      {/* 
       <AppBar position="fixed" color="primary" className={classes.appBar}>
-        <Fab color="secondary" aria-label="add" className={classes.fabButton}>
-          <AddIcon onClick={() => addNewControl(ctrlist)} />
+        <Fab className={classes.fabButton}>
+          <AddIcon onClick={() => addNewControl(ctrlist)} /> 
+          <ControlIcon />
         </Fab>
-      </AppBar>
+      </AppBar> 
+    */}
     </>
   );
 };

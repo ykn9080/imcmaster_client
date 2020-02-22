@@ -83,6 +83,7 @@ const WizardDialog = ({ id, type, status, status1 }) => {
             </Button>
           </Toolbar>
         </AppBar>
+
         {contents}
         <List>
           <ListItem button>

@@ -8,13 +8,13 @@ import {
 } from "../../functions/dataUtil";
 import { getChildren } from "../../functions/findChildrens";
 
-// import Menu from "@material-ui/core/Menu";
-// import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
 import "antd/dist/antd.css";
-import { Tree, Menu } from "antd";
+import { Tree } from "antd";
 import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles(theme => ({
@@ -97,31 +97,31 @@ export const SubMenu = () => {
   addKey();
   localStorage.setItem("subList", JSON.stringify(treeDt));
   const [gData, setgData] = useState(treeDt);
-  const contextmenu = (
-    <Menu>
-      <Menu.Item key="1">1st menu item</Menu.Item>
-      <Menu.Item key="2">2nd menu item</Menu.Item>
-      <Menu.Item key="3">3rd menu item</Menu.Item>
-    </Menu>
-  );
-  // const mm = (
-  //   <Menu
-  //     keepMounted
-  //     open={state.mouseY !== null}
-  //     onClose={handleClose}
-  //     anchorReference="anchorPosition"
-  //     anchorPosition={
-  //       state.mouseY !== null && state.mouseX !== null
-  //         ? { top: state.mouseY, left: state.mouseX }
-  //         : undefined
-  //     }
-  //   >
-  //     <MenuItem onClick={handleClose}>Copy</MenuItem>
-  //     <MenuItem onClick={handleClose}>Print</MenuItem>
-  //     <MenuItem onClick={handleClose}>Highlight</MenuItem>
-  //     <MenuItem onClick={handleClose}>Email</MenuItem>
+  // const contextmenu = (
+  //   <Menu>
+  //     <Menu.Item key="1">1st menu item</Menu.Item>
+  //     <Menu.Item key="2">2nd menu item</Menu.Item>
+  //     <Menu.Item key="3">3rd menu item</Menu.Item>
   //   </Menu>
   // );
+  const mm = (
+    <Menu
+      keepMounted
+      open={state.mouseY !== null}
+      onClose={handleClose}
+      anchorReference="anchorPosition"
+      anchorPosition={
+        state.mouseY !== null && state.mouseX !== null
+          ? { top: state.mouseY, left: state.mouseX }
+          : undefined
+      }
+    >
+      <MenuItem onClick={handleClose}>Copy</MenuItem>
+      <MenuItem onClick={handleClose}>Print</MenuItem>
+      <MenuItem onClick={handleClose}>Highlight</MenuItem>
+      <MenuItem onClick={handleClose}>Email</MenuItem>
+    </Menu>
+  );
 
   const findControl = (tempMenu, comp, id) => {
     const ctr = tempMenu.filter(
@@ -230,8 +230,14 @@ export const SubMenu = () => {
     //   gData: data,
     // });
   };
-  const onRightClick = (event, node) => {
-    console.log("imin", event, node);
+  const onRightClick = ({ event, node }) => {
+    event.preventDefault();
+    setState({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4
+    });
+    console.log("imin", event);
+    return { mm };
   };
   /* #endregion */
 

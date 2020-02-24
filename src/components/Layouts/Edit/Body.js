@@ -9,10 +9,10 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 
-import { ActiveLastBreadcrumb } from "../BreadCrumb";
-import { globalVariable } from "../../../actions";
-import CardForm from "./CardForm";
-import ControlIcon from "./ControlIcon";
+import { ActiveLastBreadcrumb } from "components/Layouts/BreadCrumb";
+import { globalVariable } from "actions";
+import CardForm from "components/Layouts/Edit/CardForm";
+import ControlIcon from "components/Controls/ControlIcon";
 import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles(theme => ({

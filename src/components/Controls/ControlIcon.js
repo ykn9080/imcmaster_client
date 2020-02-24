@@ -13,7 +13,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import EditIcon from "@material-ui/icons/Edit";
 import LibraryAdd from "@material-ui/icons/LibraryAdd";
 
-import { globalVariable } from "../../../actions";
+import { globalVariable } from "actions";
 import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles(theme => ({

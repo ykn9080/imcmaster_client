@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import $ from "jquery";
 import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "../../../actions";
+import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -12,7 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Cancel from "@material-ui/icons/Cancel";
 import AddCircle from "@material-ui/icons/AddCircle";
 import { Sortable } from "./MenuSortable";
-import { directChild } from "../../functions/findChildrens";
+import { directChild } from "components/functions/findChildrens";
 import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles(theme => ({

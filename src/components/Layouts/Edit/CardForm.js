@@ -16,7 +16,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import WizardDialog from "./ControlWizard";
+import WizardDialog from "components/Controls/ControlWizard";
 
 const useStyles = makeStyles(theme => ({
   card: {

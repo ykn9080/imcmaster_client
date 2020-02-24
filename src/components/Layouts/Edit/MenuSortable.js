@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "../../../actions";
+import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { faHome, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,7 @@ import _ from "lodash";
 import "jquery-ui-bundle";
 import "jquery-ui-bundle/jquery-ui.min.css";
 import "./Head.css";
-import { directChild, findChild } from "../../functions/findChildrens";
+import { directChild, findChild } from "components/functions/findChildrens";
 import IconButton from "@material-ui/core/IconButton";
 import AddBox from "@material-ui/icons/AddCircle";
 import useForceUpdate from "use-force-update";

@@ -5,10 +5,10 @@ import _ from "lodash";
 import { HeadEdit } from "./Head";
 import { Body } from "./Body";
 import { SubMenu } from "./SubMenu";
-import { globalVariable } from "../../../actions";
+import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import { findChild } from "../../functions/findChildrens";
+import { findChild } from "components/functions/findChildrens";
 
 const useStyles = makeStyles(theme => ({
   root: {

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "../../../actions";
+import { globalVariable } from "actions";
 import {
   getTreeFromFlatData,
   getFlatDataFromTree
-} from "../../functions/dataUtil";
-import { getChildren } from "../../functions/findChildrens";
+} from "components/functions/dataUtil";
+import { getChildren } from "components/functions/findChildrens";
 
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, Component } from "react";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "../../../actions";
+import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { Sortable } from "./MenuSortable";
 

@@ -13,15 +13,14 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "../../actions";
+import { globalVariable } from "actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ActiveLastBreadcrumb } from "./BreadCrumb";
 import { MultiDispatch, GlobalDispatch } from "../../reducers/multipleDispatch";
-import logo from "../../images/logo/imc1_1.png";
-import Signin from "../Login/Login1";
+import logo from "images/logo/imc1_1.png";
+import Signin from "components/Login/Login1";
 import imclogo from "../../images/logo/imcmaster.png";
-import { directChild } from "../functions/findChildrens";
-//import { getlogin } from "../fromImc/core";
+import { directChild } from "components/functions/findChildrens";
 
 const element = <FontAwesomeIcon icon="user" size="lg" />;
 let myData = [

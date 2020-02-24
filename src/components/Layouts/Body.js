@@ -9,7 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
-import MultiDispatch, { gb } from "../../reducers/multipleDispatch";
+import MultiDispatch, { gb } from "reducers/multipleDispatch";
 import CardForm from "./CardForm";
 
 const useStyles = makeStyles(theme => ({

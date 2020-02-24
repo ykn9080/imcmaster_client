@@ -1,14 +1,14 @@
 import React, { useContext, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import Home from "./components/Layouts/Home";
-import Login from "./components/Login/Login";
-import Login1 from "./components/Login/Login1";
-import Join from "./components/Login/Join";
-import Join1 from "./components/Login/Join1";
-import Edit from "./components/Layouts/Edit";
+import Home from "components/Layouts/Home";
+import Login from "components/Login/Login";
+import Login1 from "components/Login/Login1";
+import Join from "components/Login/Join";
+import Join1 from "components/Login/Join1";
+import Edit from "components/Edit";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { userContext } from "./components/functions/userContext";
+import { userContext } from "components/functions/userContext";
 
 const App = props => {
   const [gvalue, setGvalue] = useState([{ test: "ok", hello: "hi" }]);

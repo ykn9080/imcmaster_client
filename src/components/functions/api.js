@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import axios from "axios";
 import { currentsetting } from "./config";
 import $ from "jquery";
-import { sweetmsg, sweetmsgautoclose } from "../../fromImc/Common_make";
+import { sweetmsg, sweetmsgautoclose } from "fromImc/Common_make";
 import { trackPromise } from "react-promise-tracker";
 import { createStore } from "redux";
 import { globalVariable } from "actions";

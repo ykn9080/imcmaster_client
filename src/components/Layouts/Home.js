@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Head from "./Head";
-import { Example } from "./Head4";
-import Recur, { Menu } from "./Head2";
 import { CenteredGrid } from "./Body";
-import { HeadEdit } from "./Edit/Head3";
-import { globalVariable } from "../../actions";
+import { HeadEdit } from "components/Edit/Head3";
+import { globalVariable } from "actions";
 //  import { pageInit } from "../fromImc/core";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faAngry } from "@fortawesome/free-regular-svg-icons";

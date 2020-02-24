@@ -11,7 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 import { ActiveLastBreadcrumb } from "components/Layouts/BreadCrumb";
 import { globalVariable } from "actions";
-import CardForm from "components/Layouts/Edit/CardForm";
+import CardForm from "components/Edit/CardForm";
 import ControlIcon from "components/Controls/ControlIcon";
 import useForceUpdate from "use-force-update";
 

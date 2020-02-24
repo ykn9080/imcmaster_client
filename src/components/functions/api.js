@@ -5,8 +5,8 @@ import $ from "jquery";
 import { sweetmsg, sweetmsgautoclose } from "../../fromImc/Common_make";
 import { trackPromise } from "react-promise-tracker";
 import { createStore } from "redux";
-import { globalVariable } from "../../actions";
-import { glovalVariableReducer } from "../../reducers";
+import { globalVariable } from "actions";
+import { glovalVariableReducer } from "reducers";
 import { useSelector, useDispatch } from "react-redux";
 import { userContext } from "./userContext";
 

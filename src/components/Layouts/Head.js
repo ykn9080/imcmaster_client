@@ -16,10 +16,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ActiveLastBreadcrumb } from "./BreadCrumb";
-import { MultiDispatch, GlobalDispatch } from "../../reducers/multipleDispatch";
+import { MultiDispatch, GlobalDispatch } from "reducers/multipleDispatch";
 import logo from "images/logo/imc1_1.png";
 import Signin from "components/Login/Login1";
-import imclogo from "../../images/logo/imcmaster.png";
+import imclogo from "images/logo/imcmaster.png";
 import { directChild } from "components/functions/findChildrens";
 
 const element = <FontAwesomeIcon icon="user" size="lg" />;

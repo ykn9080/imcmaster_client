@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, Component } from "react";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "./node_modules/actions";
+import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { Sortable } from "./MenuSortable";
 
@@ -19,16 +19,16 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import SortableTree from "react-sortable-tree";
-import "./node_modules/react-sortable-tree/style.css"; // This only needs to be imported once in your app
+import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
 import {
   getTreeFromFlatData,
   getFlatDataFromTree
-} from "../functions/dataUtil";
+} from "components/functions/dataUtil";
 
 import { Container, Draggable } from "react-smooth-dnd";
 import DragHandleIcon from "@material-ui/icons/DragHandle";
 
-import "./node_modules/antd/dist/antd.css";
+import "antd/dist/antd.css";
 import { Tree } from "antd";
 
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";

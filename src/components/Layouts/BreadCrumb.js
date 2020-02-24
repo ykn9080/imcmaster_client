@@ -3,7 +3,7 @@ import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Link from "@material-ui/core/Link";
 
 import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "../../actions";
+import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({

@@ -55,7 +55,7 @@ export default props => {
   const removeHandler = () => {
     setExpanded(!expanded);
   };
-  const createControl = () => {
+  const createControl = (ctrList, _id, direction) => {
     //step1: select control type->step2: select template/create new
     //->step3: edit control
     //->step4-1: save control ->save to control list, return to edit menu,
@@ -64,6 +64,7 @@ export default props => {
     setOpen(true);
     console.log(open, open1);
   };
+  const resizeControl = (ctrList, _id, direction) => {};
   console.log(open);
   return (
     <>
@@ -102,6 +103,20 @@ export default props => {
           <IconButton aria-label="delete">
             <DeleteIcon
               onClick={() => props.removeControl(props.ctrList, props.data._id)}
+            />
+          </IconButton>
+          <IconButton aria-label="delete">
+            <ArrowLeft
+              onClick={() =>
+                resizeControl(props.ctrList, props.data._id, "left")
+              }
+            />
+          </IconButton>
+          <IconButton aria-label="delete">
+            <ArrowRight
+              onClick={() =>
+                resizeControl(props.ctrList, props.data._id, "right")
+              }
             />
           </IconButton>
           <IconButton

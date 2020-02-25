@@ -14,6 +14,7 @@ import { globalVariable } from "actions";
 import CardForm from "components/Edit/CardForm";
 import ControlIcon from "components/Controls/ControlIcon";
 import useForceUpdate from "use-force-update";
+import { ObjectID } from "bson";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,133 +69,145 @@ export const Body = props => {
   const forceUpdate = useForceUpdate();
   const classes = useStyles();
   let keyval = "BreadCrumb";
-  let ctrlist;
+  let ctrList;
   const dispatch = useDispatch();
   //const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
 
   const [editMode, setEditMode] = useState(false);
   const [expanded, setExpanded] = useState(false);
   //keyval = useSelector(state => state.global.selectedKey);
-  ctrlist = useSelector(state => state.global.control);
-  if (typeof ctrlist == "undefined") ctrlist = [];
+  ctrList = useSelector(state => state.global.control);
+  if (typeof ctrList == "undefined") ctrList = [];
   // useEffect(() => {
   //   setRowdt(ctrlist);
   //   console.log(rowdt);
   // });
-
+  ctrList = _.sortBy(ctrList, ["seq"]);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const IconBtn = props => {
-    const classes = useStyles();
-    return (
-      <Grid item xs={1}>
-        <IconButton aria-label="split" color="primary">
-          <ViewColumn
-            id={props.dt.rowseq + "n" + (props.dt.total + 1)}
-            onClick={() => {
-              ctrlist.push({
-                ctrid: "imsi" + Math.random().toString(),
-                rowseq: props.dt.rowseq,
-                colseq: props.dt.total + 1
-              });
-              props.addControl(addAcc(ctrlist));
-            }}
-          />
-        </IconButton>
-      </Grid>
-    );
-  };
+  // const IconBtn = props => {
+  //   const classes = useStyles();
+  //   return (
+  //     <Grid item xs={1}>
+  //       <IconButton aria-label="split" color="primary">
+  //         <ViewColumn
+  //           id={props.dt.rowseq + "n" + (props.dt.total + 1)}
+  //           onClick={() => {
+  //             ctrlist.push({
+  //               ctrid: "imsi" + Math.random().toString(),
+  //               rowseq: props.dt.rowseq,
+  //               colseq: props.dt.total + 1
+  //             });
+  //             props.addControl(addAcc(ctrlist));
+  //           }}
+  //         />
+  //       </IconButton>
+  //     </Grid>
+  //   );
+  // };
 
   const GridRow = props => {
+    console.log(props.dt, ctrList);
     return (
       <Grid item xs={props.xssize}>
         <CardForm
           removeControl={removeControl}
           data={props.dt}
-          ctrlist={ctrlist}
+          ctrList={ctrList}
         />
       </Grid>
     );
   };
-  const addAcc = ctrList => {
-    const numByrow = _.countBy(ctrList, "rowseq");
-    const maxRowIndex = _.max(Object.keys(numByrow));
-    console.log(numByrow, maxRowIndex);
-    ctrList = _.sortBy(ctrList, ["rowseq", "colseq"]);
-    for (let i = 0; i <= maxRowIndex; i++) {
-      let colseq = 0;
-      ctrList.map(val => {
-        console.log(val, i, val.rowseq, numByrow[i]);
-        if (val.rowseq === i) {
-          val.colseq = colseq;
-          colseq++;
-        }
-      });
-    }
-    console.log(ctrList);
-    ctrList.map((val, key) => {
-      val.total = numByrow[val.rowseq] - 1;
-      val.xs = 12 / numByrow[val.rowseq];
-    });
-    ctrList = _.sortBy(ctrList, ["rowseq", "colseq"]);
-    return ctrList;
-  };
+  // const addAcc = ctrList => {
+  //   const numByrow = _.countBy(ctrList, "rowseq");
+  //   const maxRowIndex = _.max(Object.keys(numByrow));
+  //   console.log(numByrow, maxRowIndex);
+  //   ctrList = _.sortBy(ctrList, ["rowseq", "colseq"]);
+  //   for (let i = 0; i <= maxRowIndex; i++) {
+  //     let colseq = 0;
+  //     ctrList.map(val => {
+  //       console.log(val, i, val.rowseq, numByrow[i]);
+  //       if (val.rowseq === i) {
+  //         val.colseq = colseq;
+  //         colseq++;
+  //       }
+  //     });
+  //   }
+  //   console.log(ctrList);
+  //   ctrList.map((val, key) => {
+  //     val.total = numByrow[val.rowseq] - 1;
+  //     val.xs = 12 / numByrow[val.rowseq];
+  //   });
+  //   ctrList = _.sortBy(ctrList, ["seq"]);
+  //   return ctrList;
+  // };
   const addNewControl = ctrList => {
-    const maxrow = _.maxBy(ctrList, "rowseq");
-
-    let maxrowseq = -1;
-
-    if (typeof maxrow != "undefined") maxrowseq = maxrow.rowseq;
+    let maxseq = _.maxBy(ctrList, "seq");
+    if (typeof maxseq === "undefined") maxseq = -1;
+    const _id = new ObjectID();
     ctrList.push({
-      ctrid: "imsi" + Math.random().toString(),
-      rowseq: maxrowseq + 1,
-      colseq: 0
+      _id: _id,
+      ctrid: "",
+      type: "",
+      seq: maxseq + 1,
+      size: 6
     });
     dispatch(globalVariable({ control: ctrList }));
     forceUpdate();
   };
-  const removeControl = (ctrList, ctrid) => {
+  const removeControl = (ctrList, _id) => {
+    console.log(ctrList, _id);
     ctrList.map((e, i) => {
-      console.log(e, ctrid);
-      if (e.ctrid === ctrid) ctrList.splice(i, 1);
+      console.log(e, _id);
+      if (e._id === _id) ctrList.splice(i, 1);
     });
     dispatch(globalVariable({ control: ctrList }));
     forceUpdate();
   };
+
   return (
     <>
       <ActiveLastBreadcrumb keyval={keyval} className={classes.breadcrumb} />
       <Grid container className={classes.root} spacing={2}>
-        {addAcc(ctrlist).map((dt, index) => {
-          return dt.colseq != dt.total ? (
+        {ctrList.map((dt, index) => {
+          return (
             <GridRow
               dt={dt}
-              xssize={dt.xs}
-              key={dt.ctrid}
+              xssize={dt.size}
+              key={dt._id}
               removeControl={removeControl}
-              ctrlist={addAcc(ctrlist)}
+              ctrList={ctrList}
             />
-          ) : (
-            <>
-              <GridRow
-                dt={dt}
-                xssize={dt.xs - 1}
-                key={dt.ctrid}
-                removeControl={removeControl}
-                ctrlist={addAcc(ctrlist)}
-              ></GridRow>
-              <IconBtn
-                addControl={props.addControl}
-                removeControl={removeControl}
-                dt={dt}
-                ctrlist={addAcc(ctrlist)}
-              />
-            </>
+
+            // return dt.colseq != dt.total ? (
+            //   <GridRow
+            //     dt={dt}
+            //     xssize={dt.xs}
+            //     key={dt.ctrid}
+            //     removeControl={removeControl}
+            //     ctrlist={addAcc(ctrlist)}
+            //   />
+            // ) : (
+            //   <>
+            //     <GridRow
+            //       dt={dt}
+            //       xssize={dt.xs - 1}
+            //       key={dt.ctrid}
+            //       removeControl={removeControl}
+            //       ctrlist={addAcc(ctrlist)}
+            //     ></GridRow>
+            //     <IconBtn
+            //       addControl={props.addControl}
+            //       removeControl={removeControl}
+            //       dt={dt}
+            //       ctrlist={addAcc(ctrlist)}
+            //     />
+            //  </>
           );
         })}
-        <ControlIcon ctrList={ctrlist} addNewControl={addNewControl} />
+        <ControlIcon ctrList={ctrList} addNewControl={addNewControl} />
       </Grid>
       {/* 
       <AppBar position="fixed" color="primary" className={classes.appBar}>

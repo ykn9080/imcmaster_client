@@ -17,6 +17,7 @@
     "antd": "^3.26.11",
     "axios": "^0.19.1",
     "bootstrap": "^4.4.1",
+    "bson": "^4.0.3",
     "jquery": "^3.4.1",
     "jquery-ui-bundle": "^1.12.1-migrate",
     "lodash": "^4.17.15",

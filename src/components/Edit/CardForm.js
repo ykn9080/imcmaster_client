@@ -96,14 +96,12 @@ export default props => {
         <CardActions disableSpacing>
           <IconButton aria-label="edit">
             <EditIcon
-              onClick={() => createControl(props.ctrlist, props.data.ctrid)}
+              onClick={() => createControl(props.ctrList, props.data._id)}
             />
           </IconButton>{" "}
           <IconButton aria-label="delete">
             <DeleteIcon
-              onClick={() =>
-                props.removeControl(props.ctrlist, props.data.ctrid)
-              }
+              onClick={() => props.removeControl(props.ctrList, props.data._id)}
             />
           </IconButton>
           <IconButton

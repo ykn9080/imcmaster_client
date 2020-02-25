@@ -1,4 +1,8 @@
 import React from "react";
+import _ from "lodash";
+import { useSelector, useDispatch } from "react-redux";
+import { globalVariable } from "actions";
+import useForceUpdate from "use-force-update";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -12,6 +16,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import ArrowLeft from "@material-ui/icons/ArrowLeft";
+import ArrowRight from "@material-ui/icons/ArrowRight";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -45,6 +51,8 @@ const useStyles = makeStyles(theme => ({
 
 export default props => {
   const classes = useStyles();
+  const forceUpdate = useForceUpdate();
+  const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState(false);
   //
   const [open, setOpen] = React.useState(false);
@@ -64,7 +72,25 @@ export default props => {
     setOpen(true);
     console.log(open, open1);
   };
-  const resizeControl = (ctrList, _id, direction) => {};
+  const resizeControl = (ctrList, _id, direction) => {
+    console.log(_id, direction);
+    _.each(ctrList, function(value, key) {
+      if (value._id === _id) {
+        console.log(value.size);
+        switch (direction) {
+          case "left":
+            if (value.size > 3) value.size = value.size - 1;
+            break;
+          case "right":
+            if (value.size < 12) value.size = value.size + 1;
+            break;
+        }
+        console.log(value, value.size);
+      }
+    });
+    dispatch(globalVariable({ control: ctrList }));
+    forceUpdate();
+  };
   console.log(open);
   return (
     <>

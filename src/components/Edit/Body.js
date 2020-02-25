@@ -1,20 +1,15 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { globalVariable } from "actions";
+import useForceUpdate from "use-force-update";
+import $ from "jquery";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import ViewColumn from "@material-ui/icons/ViewColumn";
-import AppBar from "@material-ui/core/AppBar";
-import IconButton from "@material-ui/core/IconButton";
-
-import { ActiveLastBreadcrumb } from "components/Layouts/BreadCrumb";
-import { globalVariable } from "actions";
 import CardForm from "components/Edit/CardForm";
 import ControlIcon from "components/Controls/ControlIcon";
-import useForceUpdate from "use-force-update";
-import { ObjectID } from "bson";
+import { ObjectID } from "bson"; //_id maker for MongoDB
+import { BodyHead } from "./BodyHead";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,90 +54,28 @@ const useStyles = makeStyles(theme => ({
     float: "right",
     right: 0,
     marginRight: 20
-  },
-  breadcrumb: {
-    textAlign: "right"
   }
 }));
 
 export const Body = props => {
   const forceUpdate = useForceUpdate();
   const classes = useStyles();
-  let keyval = "BreadCrumb";
+
   let ctrList;
   const dispatch = useDispatch();
-  //const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
 
   const [editMode, setEditMode] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  //keyval = useSelector(state => state.global.selectedKey);
   ctrList = useSelector(state => state.global.control);
   if (typeof ctrList == "undefined") ctrList = [];
-  // useEffect(() => {
-  //   setRowdt(ctrlist);
-  //   console.log(rowdt);
-  // });
+  useEffect(() => {
+    $(".MuiGrid-container").css({ overflow: "hidden" });
+  });
   ctrList = _.sortBy(ctrList, ["seq"]);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  // const IconBtn = props => {
-  //   const classes = useStyles();
-  //   return (
-  //     <Grid item xs={1}>
-  //       <IconButton aria-label="split" color="primary">
-  //         <ViewColumn
-  //           id={props.dt.rowseq + "n" + (props.dt.total + 1)}
-  //           onClick={() => {
-  //             ctrlist.push({
-  //               ctrid: "imsi" + Math.random().toString(),
-  //               rowseq: props.dt.rowseq,
-  //               colseq: props.dt.total + 1
-  //             });
-  //             props.addControl(addAcc(ctrlist));
-  //           }}
-  //         />
-  //       </IconButton>
-  //     </Grid>
-  //   );
-  // };
-
-  const GridRow = props => {
-    console.log(props.dt, ctrList);
-    return (
-      <Grid item xs={props.xssize}>
-        <CardForm
-          removeControl={removeControl}
-          data={props.dt}
-          ctrList={ctrList}
-        />
-      </Grid>
-    );
-  };
-  // const addAcc = ctrList => {
-  //   const numByrow = _.countBy(ctrList, "rowseq");
-  //   const maxRowIndex = _.max(Object.keys(numByrow));
-  //   console.log(numByrow, maxRowIndex);
-  //   ctrList = _.sortBy(ctrList, ["rowseq", "colseq"]);
-  //   for (let i = 0; i <= maxRowIndex; i++) {
-  //     let colseq = 0;
-  //     ctrList.map(val => {
-  //       console.log(val, i, val.rowseq, numByrow[i]);
-  //       if (val.rowseq === i) {
-  //         val.colseq = colseq;
-  //         colseq++;
-  //       }
-  //     });
-  //   }
-  //   console.log(ctrList);
-  //   ctrList.map((val, key) => {
-  //     val.total = numByrow[val.rowseq] - 1;
-  //     val.xs = 12 / numByrow[val.rowseq];
-  //   });
-  //   ctrList = _.sortBy(ctrList, ["seq"]);
-  //   return ctrList;
-  // };
   const addNewControl = ctrList => {
     let maxseq = _.maxBy(ctrList, "seq");
     if (typeof maxseq === "undefined") maxseq = -1;
@@ -168,55 +101,97 @@ export const Body = props => {
   };
 
   return (
-    <>
-      <ActiveLastBreadcrumb keyval={keyval} className={classes.breadcrumb} />
-      <Grid container className={classes.root} spacing={2}>
+    <div>
+      <BodyHead />
+
+      <Grid container className={classes.root} spacing={1}>
         {ctrList.map((dt, index) => {
           return (
-            <GridRow
-              dt={dt}
-              xssize={dt.size}
-              key={dt._id}
-              removeControl={removeControl}
-              ctrList={ctrList}
-            />
-
-            // return dt.colseq != dt.total ? (
-            //   <GridRow
-            //     dt={dt}
-            //     xssize={dt.xs}
-            //     key={dt.ctrid}
-            //     removeControl={removeControl}
-            //     ctrlist={addAcc(ctrlist)}
-            //   />
-            // ) : (
-            //   <>
-            //     <GridRow
-            //       dt={dt}
-            //       xssize={dt.xs - 1}
-            //       key={dt.ctrid}
-            //       removeControl={removeControl}
-            //       ctrlist={addAcc(ctrlist)}
-            //     ></GridRow>
-            //     <IconBtn
-            //       addControl={props.addControl}
-            //       removeControl={removeControl}
-            //       dt={dt}
-            //       ctrlist={addAcc(ctrlist)}
-            //     />
-            //  </>
+            <Grid item xs={dt.size} key={dt._id} className="draggable-item">
+              <CardForm
+                removeControl={removeControl}
+                data={dt}
+                ctrList={ctrList}
+              />
+            </Grid>
           );
         })}
         <ControlIcon ctrList={ctrList} addNewControl={addNewControl} />
       </Grid>
-      {/* 
-      <AppBar position="fixed" color="primary" className={classes.appBar}>
-        <Fab className={classes.fabButton}>
-          <AddIcon onClick={() => addNewControl(ctrlist)} /> 
-          <ControlIcon />
-        </Fab>
-      </AppBar> 
-    */}
-    </>
+    </div>
   );
 };
+
+/* #region  drag drop sample */
+// const applyDrag = (arr, dragResult) => {
+//   const { removedIndex, addedIndex, payload } = dragResult;
+//   if (removedIndex === null && addedIndex === null) return arr;
+
+//   const result = [...arr];
+//   let itemToAdd = payload;
+
+//   if (removedIndex !== null) {
+//     itemToAdd = result.splice(removedIndex, 1)[0];
+//   }
+
+//   if (addedIndex !== null) {
+//     result.splice(addedIndex, 0, itemToAdd);
+//   }
+
+//   return result;
+// };
+
+// const generateItems = (count, creator) => {
+//   const result = [];
+//   for (let i = 0; i < count; i++) {
+//     result.push(creator(i));
+//   }
+//   return result;
+// };
+
+// export const DragHandle = () => {
+//   const [items, setItems] = useState(
+//     generateItems(50, index => {
+//       return {
+//         id: index,
+//         data: "Draggable" + index
+//       };
+//     })
+//   );
+
+//   return (
+//     <div>
+//       <div className="simple-page">
+//         <Container
+//           dragHandleSelector=".column-drag-handle"
+//           onDrop={e => setItems(applyDrag(items, e))}
+//         >
+//           {items.map(p => {
+//             return (
+//               <Draggable key={p.id}>
+//                 <div className="draggable-item">
+//                   <Card
+//                     title="Default size card"
+//                     extra={<a href="#">More</a>}
+//                     style={{ width: 300 }}
+//                   >
+//                     <span
+//                       className="column-drag-handle"
+//                       style={{ float: "left", padding: "0 10px" }}
+//                     >
+//                       &#x2630;
+//                     </span>
+//                     <p>Card content</p>
+//                     <p>Card content</p>
+//                     <p>Card content</p>
+//                   </Card>
+//                 </div>
+//               </Draggable>
+//             );
+//           })}
+//         </Container>
+//       </div>
+//     </div>
+//   );
+// };
+/* #endregion */

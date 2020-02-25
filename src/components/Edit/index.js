@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import $ from "jquery";
 import _ from "lodash";
 import { HeadEdit } from "./Head";
-import { Body } from "./Body";
+import { Body, DragHandle } from "./Body";
 import { SubMenu } from "./SubMenu";
 import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import { findChild } from "components/functions/findChildrens";
+import { Container, Draggable } from "react-smooth-dnd";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -113,19 +114,11 @@ const Edit = props => {
   return (
     <>
       <div className={classes.root}>
-        <Grid container spacing={1}>
+        <Grid container>
           <Grid item xs={12}>
             <HeadEdit selectedmenu={selectedmenu} />
           </Grid>
           <Grid item xs={3}>
-            {/* <Sortable
-              opacity={0.1}
-              pid={selectedKey}
-              depth={"all"}
-              liclass={"dropli"}
-              selectedmenu={selectedmenu}
-            /> 
-            <Button>Add</Button>*/}
             <SubMenu selectedmenu={selectedmenu} />
           </Grid>
 

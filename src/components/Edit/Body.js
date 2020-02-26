@@ -102,7 +102,7 @@ export const Body = props => {
 
   return (
     <div>
-      <BodyHead />
+      <BodyHead ctrList={ctrList} />
 
       <Grid container className={classes.root} spacing={1}>
         {ctrList.map((dt, index) => {

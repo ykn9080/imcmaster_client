@@ -15,14 +15,14 @@ import MoreVert from "@material-ui/icons/MoreVert";
 import IconButton from "@material-ui/core/IconButton";
 import Box from "@material-ui/core/Box";
 import { ActiveLastBreadcrumb } from "components/Layouts/BreadCrumb";
-import Layout1 from "images/layout/Layout1.png";
-import Layout2 from "images/layout/Layout2.png";
-import Layout3 from "images/layout/Layout3.png";
-import Layout4 from "images/layout/Layout4.png";
-import Layout5 from "images/layout/Layout5.png";
-import Layout6 from "images/layout/Layout6.png";
-import Layout7 from "images/layout/Layout7.png";
-import Layout8 from "images/layout/Layout8.png";
+import Layout1 from "images/Layout/Layout1.png";
+import Layout2 from "images/Layout/Layout2.png";
+import Layout3 from "images/Layout/Layout3.png";
+import Layout4 from "images/Layout/Layout4.png";
+import Layout5 from "images/Layout/Layout5.png";
+import Layout6 from "images/Layout/Layout6.png";
+import Layout7 from "images/Layout/Layout7.png";
+import Layout8 from "images/Layout/Layout8.png";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(0)
   }
 }));
-export const BodyHead = () => {
+export const BodyHead = ({ctrList}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl1, setAnchorEl1] = useState(null);
   const handleClick = event => {
@@ -52,8 +52,34 @@ export const BodyHead = () => {
   };
   const handleClose1 = num => {
     console.log(num);
+    const layout=[[1],[1],[2],[3],[1,2],[2,1],[1,3],[3,1]];
+    LayoutControl(layout[num-1]);
     setAnchorEl1(null);
   };
+
+  const LayoutControl = layout => {
+if(ctrList.length>0){
+
+}
+else{
+
+}
+let addCtr=()=>{
+  let _id = new ObjectID();
+  {
+    _id:  new ObjectID(),
+    ctrid: "",
+    type: "",
+    seq: maxseq + 1,
+    size: 6
+  }
+}
+   
+    dispatch(globalVariable({ control: ctrList }));
+    forceUpdate();
+  };
+
+
   const classes = useStyles();
   let keyval = "BreadCrumb";
 

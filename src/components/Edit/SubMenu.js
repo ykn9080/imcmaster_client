@@ -40,32 +40,7 @@ const initialState = {
   mouseX: null,
   mouseY: null
 };
-
-export const SubMenu = () => {
-  const forceUpdate = useForceUpdate();
-  const dispatch = useDispatch();
-  const [key, setKey] = useState("");
-
-  //for context
-  const [state, setState] = React.useState(initialState);
-  const handleContext = (id, event) => {
-    event.preventDefault();
-    setState({
-      mouseX: event.clientX - 2,
-      mouseY: event.clientY - 4
-    });
-    console.log(id);
-  };
-  const handleClose = () => {
-    setState(initialState);
-  };
-
-  let tempMenu = useSelector(state => state.global.tempMenu);
-  let selectedKey = useSelector(state => state.global.selectedKey);
-  if (selectedKey !== key) setKey(selectedKey);
-  const { TreeNode } = Tree;
-  const [expandedKeys, setExpendedKeys] = useState([]);
-
+const makeSubMenu = (tempMenu, selectedKey) => {
   // 1. convert flatarray to children style
   let treeDt = getTreeFromFlatData({
     flatData: tempMenu.map(node => ({ ...node, title: node.title })),
@@ -95,8 +70,53 @@ export const SubMenu = () => {
     });
   };
   addKey();
-  localStorage.setItem("subList", JSON.stringify(treeDt));
-  const [gData, setgData] = useState(treeDt);
+  return treeDt;
+};
+export const SubMenu = props => {
+  const forceUpdate = useForceUpdate();
+  const dispatch = useDispatch();
+  //selectedKey
+  const [key, setKey] = useState("");
+  let selectedKey = useSelector(state => state.global.selectedKey);
+  if (selectedKey !== key) setKey(selectedKey);
+  //subMenu data
+  //let tempMenu = useSelector(state => state.global.tempMenu);
+  let tempMenu = props.tempMenu;
+  let initData = makeSubMenu(tempMenu, selectedKey);
+
+  const [gData, setgData] = useState([]);
+  const { TreeNode } = Tree;
+  const [expandedKeys, setExpendedKeys] = useState([]);
+
+  //localStorage.setItem("subList", JSON.stringify(treeDt));
+
+  useEffect(() => {
+    console.log("run", initData);
+    setgData(initData);
+  }, [props]);
+
+  /* #region  for context */
+  const [state, setState] = React.useState(initialState);
+  const handleContext = (id, event) => {
+    event.preventDefault();
+    setState({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4
+    });
+    console.log(id);
+  };
+  const handleClose = () => {
+    setState(initialState);
+  };
+  const onRightClick = ({ event, node }) => {
+    event.preventDefault();
+    setState({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4
+    });
+    console.log("imin", event);
+    return { mm };
+  };
   // const contextmenu = (
   //   <Menu>
   //     <Menu.Item key="1">1st menu item</Menu.Item>
@@ -122,18 +142,7 @@ export const SubMenu = () => {
       <MenuItem onClick={handleClose}>Email</MenuItem>
     </Menu>
   );
-
-  const findControl = (tempMenu, comp, id) => {
-    const ctr = tempMenu.filter(
-      (item, itemIndex) => item.comp === comp && item.id === id
-    );
-
-    if (ctr) {
-      return ctr[0].layout.sort(function(a, b) {
-        return a.rowseq < b.rowseq ? -1 : 1;
-      });
-    }
-  };
+  /* #endregion */
 
   /* #region anttree eventhandler collection */
   const onDragEnter = info => {
@@ -181,7 +190,7 @@ export const SubMenu = () => {
     };
 
     const data = gData; //[...this.state.gData];
-
+    console.log(data);
     // Find dragObject
     let dragObj;
     loop(data, dragKey, (item, index, arr) => {
@@ -219,25 +228,20 @@ export const SubMenu = () => {
         ar.splice(i + 1, 0, dragObj);
       }
     }
-    console.log(data);
-    localStorage.setItem("subList", JSON.stringify(data));
     setgData(data);
-
-    setTimeout(function() {
-      forceUpdate();
-    }, 0);
-    // this.setState({
-    //   gData: data,
-    // });
+    forceUpdate();
   };
-  const onRightClick = ({ event, node }) => {
-    event.preventDefault();
-    setState({
-      mouseX: event.clientX - 2,
-      mouseY: event.clientY - 4
-    });
-    console.log("imin", event);
-    return { mm };
+
+  const findControl = (tempMenu, comp, id) => {
+    const ctr = tempMenu.filter(
+      (item, itemIndex) => item.comp === comp && item.id === id
+    );
+
+    if (ctr) {
+      return ctr[0].layout.sort(function(a, b) {
+        return a.rowseq < b.rowseq ? -1 : 1;
+      });
+    }
   };
   /* #endregion */
 
@@ -266,8 +270,8 @@ export const SubMenu = () => {
       onSelect={onSelect}
       onRightClick={onRightClick}
     >
-      {/* {loop(gData)} */}
-      {loop(JSON.parse(localStorage.getItem("subList")))}
+      {loop(gData)}
+      {/* {loop(JSON.parse(localStorage.getItem("subList")))} */}
     </Tree>
   );
 };

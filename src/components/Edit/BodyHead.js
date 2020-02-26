@@ -25,14 +25,14 @@ export const BodyHead = () => {
   let keyval = "BreadCrumb";
   return (
     <div style={{ width: "100%" }}>
-      <Box display="flex" p={1} bgcolor="background.paper">
-        <Box p={1} flexGrow={1} bgcolor="grey.300">
+      <Box display="flex" p={1}>
+        <Box p={1} flexGrow={1}>
           <ActiveLastBreadcrumb keyval={keyval} />
         </Box>
-        <Box p={1} bgcolor="grey.300">
+        <Box p={1} className={classes.extendedIcon}>
           ss
         </Box>
-        <Box p={1} bgcolor="grey.300">
+        <Box p={1} className={classes.extendedIcon}>
           ss
         </Box>
       </Box>

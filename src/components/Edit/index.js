@@ -119,7 +119,7 @@ const Edit = props => {
             <HeadEdit selectedmenu={selectedmenu} />
           </Grid>
           <Grid item xs={3}>
-            <SubMenu selectedmenu={selectedmenu} />
+            <SubMenu selectedmenu={selectedmenu} tempMenu={tempMenu} />
           </Grid>
 
           <Grid item xs={9}>

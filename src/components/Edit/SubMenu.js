@@ -16,6 +16,7 @@ import "react-sortable-tree/style.css"; // This only needs to be imported once i
 import "antd/dist/antd.css";
 import { Tree } from "antd";
 import useForceUpdate from "use-force-update";
+import SubMenuHead from "./SubMenuHead";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -261,18 +262,21 @@ export const SubMenu = props => {
   };
 
   return (
-    <Tree
-      className="draggable-tree"
-      defaultExpandedKeys={expandedKeys}
-      draggable
-      blockNode
-      onDragEnter={onDragEnter}
-      onDrop={onDrop}
-      onSelect={onSelect}
-      onRightClick={onRightClick}
-    >
-      {loop(gData)}
-      {/* {loop(JSON.parse(localStorage.getItem("subList")))} */}
-    </Tree>
+    <>
+      <SubMenuHead />
+      <Tree
+        className="draggable-tree"
+        defaultExpandedKeys={expandedKeys}
+        draggable
+        blockNode
+        onDragEnter={onDragEnter}
+        onDrop={onDrop}
+        onSelect={onSelect}
+        onRightClick={onRightClick}
+      >
+        {loop(gData)}
+        {/* {loop(JSON.parse(localStorage.getItem("subList")))} */}
+      </Tree>
+    </>
   );
 };

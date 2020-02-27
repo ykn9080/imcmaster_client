@@ -170,6 +170,7 @@ export const SubMenu = props => {
         dispatch(globalVariable({ control: ctr }));
       }
     });
+    dispatch(globalVariable({ menuedit: false }));
   };
   const onDrop = info => {
     const dropKey = info.node.props.eventKey;

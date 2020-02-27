@@ -10,6 +10,7 @@ import CardForm from "components/Edit/CardForm";
 import ControlIcon from "components/Controls/ControlIcon";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 import { BodyHead } from "./BodyHead";
+import { EditForm } from "./EditForm";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -103,7 +104,7 @@ export const Body = props => {
   return (
     <div>
       <BodyHead ctrList={ctrList} />
-
+      <EditForm />
       <Grid container className={classes.root} spacing={1}>
         {ctrList.map((dt, index) => {
           return (

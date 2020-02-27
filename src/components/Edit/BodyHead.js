@@ -54,8 +54,10 @@ export const BodyHead = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl1, setAnchorEl1] = useState(null);
   const [layoutIndex, setLayoutIndex] = useState(0); //selected layout form index
+
   const handleAddControl = () => {
     const ctrLength = ctrList.length;
+    console.log(layoutIndex);
     const layObj = layout[layoutIndex];
     const ttl = _.sum(layObj.col) * layObj.repeat;
 
@@ -63,8 +65,8 @@ export const BodyHead = () => {
     let seq = ctrLength;
     ctrList.push(addCtr(seq, findNthWidth(seq, layObj.col)));
     console.log(ctrList);
-    dispatch(globalVariable({ control: ctrList }));
-    LayoutControl(layObj);
+    //dispatch(globalVariable({ control: ctrList }));
+    LayoutControl(layObj, ctrList);
   };
   const handleReset = () => {
     dispatch(globalVariable({ control: [] }));
@@ -121,11 +123,13 @@ export const BodyHead = () => {
     });
     return chk;
   };
-  const LayoutControl = layObj => {
+  const LayoutControl = (layObj, ctrl) => {
     if (typeof layObj === "undefined") return false;
-
+    if (typeof ctrl != "undefined") ctrList = ctrl;
+    console.log(ctrList);
     // let unitwidth = 12 / _.sum(layObj.col);
-    if ((ctrList.length === 0) | isBlank()) {
+    if (ctrList.length === 0) {
+      //| isBlank()) {
       ctrList = [];
       let seq = 0;
       for (let i = 0; i < layObj.repeat; i++) {
@@ -142,8 +146,9 @@ export const BodyHead = () => {
         ctr.seq = j;
         ctr.size = findNthWidth(j, layObj.col);
       });
+      console.log(ctrList);
     }
-    console.log(ctrList);
+
     dispatch(globalVariable({ control: ctrList }));
     //forceUpdate();
   };

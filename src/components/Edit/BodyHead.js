@@ -14,6 +14,7 @@ import Apps from "@material-ui/icons/Apps";
 import MoreVert from "@material-ui/icons/MoreVert";
 import IconButton from "@material-ui/core/IconButton";
 import Box from "@material-ui/core/Box";
+import Tooltip from "@material-ui/core/Tooltip";
 import { ActiveLastBreadcrumb } from "components/Layouts/BreadCrumb";
 import Layout1 from "images/Layout/Layout1.png";
 import Layout2 from "images/Layout/Layout2.png";
@@ -23,6 +24,7 @@ import Layout5 from "images/Layout/Layout5.png";
 import Layout6 from "images/Layout/Layout6.png";
 import Layout7 from "images/Layout/Layout7.png";
 import Layout8 from "images/Layout/Layout8.png";
+import { ObjectID } from "bson"; //_id maker for MongoDB
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -32,9 +34,43 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(0)
   }
 }));
-export const BodyHead = ({ctrList}) => {
+export const BodyHead = () => {
+  const layout = [
+    { col: [1], repeat: 1 },
+    { col: [1], repeat: 2 },
+    { col: [2], repeat: 2 },
+    { col: [3], repeat: 3 },
+    { col: [1, 2], repeat: 1 },
+    { col: [2, 1], repeat: 1 },
+    { col: [1, 3], repeat: 1 },
+    { col: [3, 1], repeat: 1 }
+  ];
+  let ctrList = useSelector(state => state.global.control);
+
+  console.log(ctrList);
+  if (typeof ctrList === "undefined") ctrList = [];
+  const dispatch = useDispatch();
+  const forceUpdate = useForceUpdate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl1, setAnchorEl1] = useState(null);
+  const [layoutIndex, setLayoutIndex] = useState(0); //selected layout form index
+  const handleAddControl = () => {
+    const ctrLength = ctrList.length;
+    const layObj = layout[layoutIndex];
+    const ttl = _.sum(layObj.col) * layObj.repeat;
+
+    console.log(ctrLength, layObj, ttl);
+    let seq = ctrLength;
+    ctrList.push(addCtr(seq, findNthWidth(seq, layObj.col)));
+    console.log(ctrList);
+    dispatch(globalVariable({ control: ctrList }));
+    LayoutControl(layObj);
+  };
+  const handleReset = () => {
+    dispatch(globalVariable({ control: [] }));
+    dispatch(globalVariable({ menuedit: false }));
+    handleClose();
+  };
   const handleClick = event => {
     const id = $(event.currentTarget).attr("aria-controls");
     switch (id) {
@@ -52,34 +88,70 @@ export const BodyHead = ({ctrList}) => {
   };
   const handleClose1 = num => {
     console.log(num);
-    const layout=[[1],[1],[2],[3],[1,2],[2,1],[1,3],[3,1]];
-    LayoutControl(layout[num-1]);
+
+    setLayoutIndex(num - 1);
+    LayoutControl(layout[num - 1]);
     setAnchorEl1(null);
   };
 
-  const LayoutControl = layout => {
-if(ctrList.length>0){
-
-}
-else{
-
-}
-let addCtr=()=>{
-  let _id = new ObjectID();
-  {
-    _id:  new ObjectID(),
-    ctrid: "",
-    type: "",
-    seq: maxseq + 1,
-    size: 6
-  }
-}
-   
-    dispatch(globalVariable({ control: ctrList }));
-    forceUpdate();
+  const findNthWidth = (seq, arr) => {
+    //find nth round
+    const ttl = _.sum(arr);
+    const index = seq % ttl;
+    //find arr index
+    if (index + 1 <= arr[0]) return 12 / arr[0];
+    else return 12 / arr[1];
   };
+  let addCtr = (seq, size) => {
+    const id = new ObjectID();
+    console.log(id);
+    return {
+      _id: id,
+      ctrid: "",
+      type: "",
+      seq: seq,
+      size: size
+    };
+  };
+  const isBlank = () => {
+    //chk if any of object already assign control
+    let chk = true;
+    ctrList.map((v, i) => {
+      if (v.ctrid !== "") chk = false;
+    });
+    return chk;
+  };
+  const LayoutControl = layObj => {
+    if (typeof layObj === "undefined") return false;
 
-
+    // let unitwidth = 12 / _.sum(layObj.col);
+    if ((ctrList.length === 0) | isBlank()) {
+      ctrList = [];
+      let seq = 0;
+      for (let i = 0; i < layObj.repeat; i++) {
+        layObj.col.map((v, i) => {
+          for (let j = 0; j < v; j++) {
+            ctrList.push(addCtr(seq, findNthWidth(seq, layObj.col)));
+            seq++;
+          }
+        });
+      }
+    } else {
+      ctrList = _.sortBy(ctrList, ["seq"]);
+      ctrList.map((ctr, j) => {
+        ctr.seq = j;
+        ctr.size = findNthWidth(j, layObj.col);
+      });
+    }
+    console.log(ctrList);
+    dispatch(globalVariable({ control: ctrList }));
+    //forceUpdate();
+  };
+  const handleMenuEdit = () => {
+    dispatch(globalVariable({ menuedit: true }));
+    dispatch(globalVariable({ control: [] }));
+    handleClose();
+  };
   const classes = useStyles();
   let keyval = "BreadCrumb";
 
@@ -141,14 +213,8 @@ let addCtr=()=>{
       open={Boolean(anchorEl)}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>
-        {" "}
-        <ListItemIcon>
-          <AddBox fontSize="small" />
-        </ListItemIcon>
-        Edit
-      </MenuItem>
-      <MenuItem onClick={handleClose}>Delete</MenuItem>
+      <MenuItem onClick={handleMenuEdit}>Edit</MenuItem>
+      <MenuItem onClick={handleReset}>Reset</MenuItem>
     </Menu>
   );
   return (
@@ -158,31 +224,37 @@ let addCtr=()=>{
           <ActiveLastBreadcrumb keyval={keyval} />
         </Box>
         <Box p={1} className={classes.extendedIcon}>
-          <IconButton
-            aria-label="Edit Submenu"
-            onClick={handleClick}
-            aria-haspopup="true"
-            aria-controls="editMenu"
-          >
-            <MoreVert />
-          </IconButton>
+          <Tooltip title="Edit Sub Menu">
+            <IconButton
+              aria-label="Edit Submenu"
+              onClick={handleClick}
+              aria-haspopup="true"
+              aria-controls="editMenu"
+            >
+              <MoreVert />
+            </IconButton>
+          </Tooltip>
           {editMenu}
         </Box>
         <Box p={1} className={classes.extendedIcon}>
-          <IconButton
-            aria-label="Layout Template"
-            onClick={handleClick}
-            aria-haspopup="true"
-            aria-controls="layoutMenu"
-          >
-            <Apps />
-          </IconButton>
+          <Tooltip title="Layout Template">
+            <IconButton
+              aria-label="Layout Template"
+              onClick={handleClick}
+              aria-haspopup="true"
+              aria-controls="layoutMenu"
+            >
+              <Apps />
+            </IconButton>
+          </Tooltip>
           {layoutMenu}
         </Box>
         <Box p={1} className={classes.extendedIcon}>
-          <IconButton aria-label="add new Control">
-            <AddBox />
-          </IconButton>
+          <Tooltip title="Add new Control">
+            <IconButton aria-label="add new Control" onClick={handleAddControl}>
+              <AddBox />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Box>
     </div>

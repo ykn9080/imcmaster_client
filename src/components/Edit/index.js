@@ -4,6 +4,7 @@ import $ from "jquery";
 import _ from "lodash";
 import { HeadEdit } from "./Head";
 import { Body, DragHandle } from "./Body";
+import Footer from "components/Layouts/Footer";
 import { SubMenu } from "./SubMenu";
 import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
@@ -46,6 +47,7 @@ const Edit = props => {
   const dispatch = useDispatch();
   tempMenu = useSelector(state => state.global.tempMenu);
   let selectedKey = useSelector(state => state.global.selectedKey);
+  let showSidebar = useSelector(state => state.global.showSidebar);
 
   if (!tempMenu) {
     tempMenu = JSON.parse(localStorage.getItem("menu"));
@@ -118,15 +120,19 @@ const Edit = props => {
           <Grid item xs={12}>
             <HeadEdit selectedmenu={selectedmenu} />
           </Grid>
-          <Grid item xs={3}>
-            <SubMenu selectedmenu={selectedmenu} tempMenu={tempMenu} />
-          </Grid>
 
-          <Grid item xs={9}>
+          {showSidebar ? (
+            <Grid item xs={3}>
+              <SubMenu selectedmenu={selectedmenu} tempMenu={tempMenu} />
+            </Grid>
+          ) : null}
+
+          <Grid item xs>
             <Body addControl={addControl} />
           </Grid>
         </Grid>
       </div>
+      <Footer />
     </>
   );
 };

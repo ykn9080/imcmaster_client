@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Head from "./Head";
 import { CenteredGrid } from "./Body";
+import Footer from "./Footer";
 import { HeadEdit } from "components/Edit/Head3";
 import { globalVariable } from "actions";
 //  import { pageInit } from "../fromImc/core";
@@ -84,6 +85,7 @@ const Home = () => {
     <>
       <Head />
       <CenteredGrid />
+      <Footer />
     </>
   );
 };

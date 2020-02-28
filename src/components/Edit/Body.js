@@ -6,6 +6,7 @@ import $ from "jquery";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import CardForm from "components/Edit/CardForm";
 import ControlIcon from "components/Controls/ControlIcon";
 import { ObjectID } from "bson"; //_id maker for MongoDB
@@ -21,6 +22,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.secondary
+  },
+  paper1: {
+    padding: theme.spacing(1),
+    minHeight: "100vh"
   },
   icon: {
     "& > *": {
@@ -105,20 +110,23 @@ export const Body = props => {
     <div>
       <BodyHead ctrList={ctrList} />
       <EditForm />
-      <Grid container className={classes.root} spacing={1}>
-        {ctrList.map((dt, index) => {
-          return (
-            <Grid item xs={dt.size} key={dt._id} className="draggable-item">
-              <CardForm
-                removeControl={removeControl}
-                data={dt}
-                ctrList={ctrList}
-              />
-            </Grid>
-          );
-        })}
-        <ControlIcon ctrList={ctrList} addNewControl={addNewControl} />
-      </Grid>
+      <Paper variant="outlined" square className={classes.paper1}>
+        <Grid container className={classes.root} spacing={1}>
+          {ctrList.map((dt, index) => {
+            return (
+              <Grid item xs={dt.size} key={dt._id} className="draggable-item">
+                <CardForm
+                  removeControl={removeControl}
+                  data={dt}
+                  ctrList={ctrList}
+                />
+              </Grid>
+            );
+          })}
+          <Paper variant="outlined"></Paper>
+          {/* <ControlIcon ctrList={ctrList} addNewControl={addNewControl} /> */}
+        </Grid>
+      </Paper>
     </div>
   );
 };

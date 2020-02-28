@@ -228,7 +228,7 @@ export const BodyHead = () => {
         <Box p={1} flexGrow={1}>
           <ActiveLastBreadcrumb keyval={keyval} />
         </Box>
-        <Box p={1} className={classes.extendedIcon}>
+        <Box p={0} className={classes.extendedIcon}>
           <Tooltip title="Edit Sub Menu">
             <IconButton
               aria-label="Edit Submenu"
@@ -241,7 +241,7 @@ export const BodyHead = () => {
           </Tooltip>
           {editMenu}
         </Box>
-        <Box p={1} className={classes.extendedIcon}>
+        <Box p={0} className={classes.extendedIcon}>
           <Tooltip title="Layout Template">
             <IconButton
               aria-label="Layout Template"
@@ -254,7 +254,7 @@ export const BodyHead = () => {
           </Tooltip>
           {layoutMenu}
         </Box>
-        <Box p={1} className={classes.extendedIcon}>
+        <Box p={0} className={classes.extendedIcon}>
           <Tooltip title="Add new Control">
             <IconButton aria-label="add new Control" onClick={handleAddControl}>
               <AddBox />

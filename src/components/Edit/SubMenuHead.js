@@ -12,10 +12,10 @@ const SubMenuHead = () => {
   return (
     <div style={{ width: "100%" }}>
       <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+        <Box p={1.8}>
           <Typography paragraph>Sub Menu</Typography>
         </Box>
-        <Box p={1}>
+        <Box>
           <Tooltip title="Add new SubMenu">
             <IconButton aria-label="add new SubMenu" onClick={handleAddSubMenu}>
               <AddBox />

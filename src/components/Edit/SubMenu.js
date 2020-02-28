@@ -79,10 +79,11 @@ export const SubMenu = props => {
   //selectedKey
   const [key, setKey] = useState("");
   let selectedKey = useSelector(state => state.global.selectedKey);
+  let showSidebar = useSelector(state => state.global.showSidebar);
   if (selectedKey !== key) setKey(selectedKey);
   //subMenu data
-  //let tempMenu = useSelector(state => state.global.tempMenu);
-  let tempMenu = props.tempMenu;
+  let tempMenu = useSelector(state => state.global.tempMenu);
+  //let tempMenu = props.tempMenu;
   let initData = makeSubMenu(tempMenu, selectedKey);
 
   const [gData, setgData] = useState([]);
@@ -262,21 +263,23 @@ export const SubMenu = props => {
   };
 
   return (
-    <>
-      <SubMenuHead />
-      <Tree
-        className="draggable-tree"
-        defaultExpandedKeys={expandedKeys}
-        draggable
-        blockNode
-        onDragEnter={onDragEnter}
-        onDrop={onDrop}
-        onSelect={onSelect}
-        onRightClick={onRightClick}
-      >
-        {loop(gData)}
-        {/* {loop(JSON.parse(localStorage.getItem("subList")))} */}
-      </Tree>
-    </>
+    <div id="dvSidebar">
+      {showSidebar ? <SubMenuHead /> : null}
+      {showSidebar ? (
+        <Tree
+          className="draggable-tree"
+          defaultExpandedKeys={expandedKeys}
+          draggable
+          blockNode
+          onDragEnter={onDragEnter}
+          onDrop={onDrop}
+          onSelect={onSelect}
+          onRightClick={onRightClick}
+        >
+          {loop(gData)}
+          {/* {loop(JSON.parse(localStorage.getItem("subList")))} */}
+        </Tree>
+      ) : null}
+    </div>
   );
 };

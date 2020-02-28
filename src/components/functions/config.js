@@ -119,7 +119,8 @@ const globalVar = {
   vv: "",
   tt: "",
   selectedKey: "",
-  menuedit: false
+  menuedit: false,
+  showSidebar: true
 };
 
 export { currentsetting, globalVar };

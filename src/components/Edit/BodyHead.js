@@ -9,6 +9,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
 import AddBox from "@material-ui/icons/AddBox";
 import Apps from "@material-ui/icons/Apps";
 import MoreVert from "@material-ui/icons/MoreVert";
@@ -25,6 +26,7 @@ import Layout6 from "images/Layout/Layout6.png";
 import Layout7 from "images/Layout/Layout7.png";
 import Layout8 from "images/Layout/Layout8.png";
 import { ObjectID } from "bson"; //_id maker for MongoDB
+import Reorder from "@material-ui/icons/Reorder";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -54,7 +56,7 @@ export const BodyHead = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl1, setAnchorEl1] = useState(null);
   const [layoutIndex, setLayoutIndex] = useState(0); //selected layout form index
-
+  let showSidebar = useSelector(state => state.global.showSidebar);
   const handleAddControl = () => {
     const ctrLength = ctrList.length;
     console.log(layoutIndex);
@@ -157,6 +159,11 @@ export const BodyHead = () => {
     dispatch(globalVariable({ control: [] }));
     handleClose();
   };
+  const handleExpand = () => {
+    dispatch(globalVariable({ showSidebar: true }));
+
+    console.log("expand sidebar");
+  };
   const classes = useStyles();
   let keyval = "BreadCrumb";
 
@@ -225,7 +232,17 @@ export const BodyHead = () => {
   return (
     <div style={{ width: "100%" }}>
       <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+        {showSidebar ? null : (
+          <Box p={0}>
+            <Tooltip title="Show Sidebar">
+              <IconButton aria-label="Show Sidebar" onClick={handleExpand}>
+                <Reorder />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+
+        <Box p={1.5} flexGrow={1}>
           <ActiveLastBreadcrumb keyval={keyval} />
         </Box>
         <Box p={0} className={classes.extendedIcon}>

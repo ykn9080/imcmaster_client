@@ -42,7 +42,7 @@ const findControl = (tempMenu, comp, id) => {
 };
 
 const Edit = props => {
-  let subMenu, tempMenu, topMenu, control;
+  let tempMenu, topMenu, control;
   const [forchg, setForchg] = useState("");
   const dispatch = useDispatch();
   tempMenu = useSelector(state => state.global.tempMenu);
@@ -52,8 +52,8 @@ const Edit = props => {
   if (!tempMenu) {
     tempMenu = JSON.parse(localStorage.getItem("menu"));
     topMenu = findMenu(tempMenu, "1", "");
-    subMenu = findMenu(tempMenu, "1", topMenu[0].id);
-    dispatch(globalVariable({ subMenu: subMenu }));
+    // subMenu = findMenu(tempMenu, "1", topMenu[0].id);
+    // dispatch(globalVariable({ subMenu: subMenu }));
     dispatch(globalVariable({ tempMenu: tempMenu }));
     if (!selectedKey) {
       selectedKey = topMenu[0].id;
@@ -62,13 +62,9 @@ const Edit = props => {
     }
   }
 
-  console.log(tempMenu);
-  //$(".dropli:first-child").click();
-  //tempMenu = menuData;
-
   useEffect(() => {
-    console.log(tempMenu, subMenu);
-    dispatch(globalVariable({ subMenu: subMenu }));
+    console.log(tempMenu);
+    //dispatch(globalVariable({ subMenu: subMenu }));
     $(".dropli:first-child").click();
   }, []);
 
@@ -87,7 +83,7 @@ const Edit = props => {
     const ctr = findControl(tempMenu, "1", id);
     console.log("it's from index", sub);
     //dispatch(globalVariable({ control: ctr }));
-    dispatch(globalVariable({ subMenu: sub }));
+    //dispatch(globalVariable({ subMenu: sub }));
     markTab(id);
     setForchg("");
   };

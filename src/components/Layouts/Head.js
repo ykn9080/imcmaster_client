@@ -225,9 +225,9 @@ const Head1 = () => {
     switch (selectedKey) {
       case "edit":
         const menu = JSON.parse(localStorage.getItem("menu"));
-        const submenu = directChild(menu, "", "seq");
+        //const submenu = directChild(menu, "", "seq");
         dispatch(globalVariable({ tempMenu: menu }));
-        dispatch(globalVariable({ subMenu: submenu }));
+        //dispatch(globalVariable({ subMenu: submenu }));
         break;
     }
   }

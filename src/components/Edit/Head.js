@@ -53,8 +53,8 @@ export const HeadEdit = props => {
   const history = useHistory();
   const selectedmenu = id => {
     dispatch(globalVariable({ selectedKey: id }));
-    const sub = directChild(tempMenu, id, "seq");
-    dispatch(globalVariable({ subMenu: sub }));
+    // const sub = directChild(tempMenu, id, "seq");
+    // dispatch(globalVariable({ subMenu: sub }));
     $(".dropli").removeClass("selectli");
     $("#" + id).addClass("selectli");
     forceUpdate();

@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 }));
 export const Sortable = props => {
   let tempMenu = useSelector(state => state.global.tempMenu);
-  const keyval = useSelector(state => state.global.selectedKey);
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
   useEffect(() => {
@@ -41,8 +40,6 @@ export const Sortable = props => {
       $node.sortable();
     };
   }, []);
-
-  //let subMenu = useSelector(state => state.global.subMenu);
 
   const classes = useStyles();
   let menuList = directChild(tempMenu, props.pid, "seq");
@@ -98,25 +95,12 @@ export const Sortable = props => {
   );
 };
 
-// const findMenu = (data, pid, seq) => {
-//   return data
-//     .filter((subitem, itemIndex) => subitem.pid === pid)
-//     .sort(function(a, b) {
-//       return a[seq] < b[seq] ? -1 : 1;
-//     });
-// };
 const DropList = props => {
   return props.menuList.map((item, i) => {
     let delicon = delbtn(item.id);
     let moduleicon = "";
     let subdata = [];
-    // const subMenu = subdata
-    //   .filter((subitem, itemIndex) => subitem.pid === item.id)
-    //   .sort(function(a, b) {
-    //     return a.seq < b.seq ? -1 : 1;
-    //   });
     const subMenu = directChild(props.tempMenu, item.id, "seq");
-
     const li = (
       <li
         key={"droplist" + item.id}
@@ -150,12 +134,6 @@ const markTab = id => {
   $("#" + id).addClass("selectli");
 };
 const NestedList = props => {
-  // const dispatch = useDispatch();
-  // const selectedmenu = id => {
-  //   dispatch(globalVariable({ selectedKey: id }));
-  //   markTab(id);
-  // };
-
   return props.data ? (
     <ul>
       {props.data.map((item, i) => {
@@ -206,75 +184,3 @@ const delbtn = id => {
     </React.Fragment>
   );
 };
-
-export class Sortable1 extends React.Component {
-  // ... omitted for brevity
-  // jQuery UI sortable expects a <ul> list with <li>s.
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    this.$node = $(this.refs.sortable);
-    this.$node.sortable({
-      opacity: this.props.opacity,
-      // Get the incoming onChange function
-      // and invoke it on the Sortable `change` event
-      drop: function(event, ui) {
-        this.props.onChange(event, ui);
-      },
-      change: (event, ui) => this.props.onChange(event, ui)
-    });
-    console.log(this.props.topdata);
-  }
-  shouldComponentUpdate() {
-    return false;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.enable !== this.props.enable) {
-      this.$node.sortable(nextProps.enable ? "enable" : "disable");
-    }
-  }
-  componentWillUnmount() {
-    // Clean up the mess when the component unmounts
-    this.$node.sortable("destroy");
-  }
-  renderItems() {
-    // this.props.data.sort(function(a, b) {
-    //   return parseFloat(a.odr) - parseFloat(b.odr);
-    // });
-    return this.props.topdata.length ? (
-      <DropList
-        topdata={this.props.topdata}
-        data={this.props.data}
-        liclass={this.props.liclass}
-        selectedmenu={this.props.selectedmenu}
-      />
-    ) : (
-      <li
-        className={["ui-state-default"]}
-        onClick={() => this.props.selectedmenu("")}
-        key={findmaxnum}
-      >
-        new menu
-      </li>
-    );
-  }
-  render() {
-    return (
-      <ul className={this.props.ulclass} ref="sortable">
-        {this.renderItems()}
-      </ul>
-    );
-  }
-}
-
-// Optional: set the default props, in case none are passed
-Sortable.defaultProps = {
-  opacity: 1
-};
-// // Optional: set the prop types
-// Sortable.propTypes = {
-//   opacity: React.PropTypes.number,
-//   enable: React.PropTypes.bool,
-//   onChange: React.PropTypes.func.isRequired
-// };

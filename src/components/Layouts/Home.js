@@ -33,44 +33,6 @@ library.add(
   faCog
 );
 
-let data = [
-  {
-    title: "Top level 1",
-    slug: "top-level-1",
-    children: [
-      {
-        title: "Sub level 1",
-        slug: "sub-level-1",
-        children: [
-          {
-            title: "Sub Sub Level 1",
-            slug: "sub-sub-level-1",
-            children: [
-              {
-                title: "Sub Sub Level 2",
-                slug: "sub-sub-level-2",
-                children: [
-                  {
-                    title: "Sub Sub Level 23",
-                    slug: "sub-sub-level-23"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        title: "Sub level 2",
-        slug: "sub-level-2"
-      }
-    ]
-  },
-  {
-    title: "Top level 2",
-    slug: "top-level 2"
-  }
-];
 let menuData = [];
 const Home = () => {
   const dispatch = useDispatch();

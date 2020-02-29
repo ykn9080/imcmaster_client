@@ -2,6 +2,7 @@ import React, { useStyle } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import $ from "jquery";
+import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import AddBox from "@material-ui/icons/AddBox";
 import IconButton from "@material-ui/core/IconButton";
@@ -29,6 +30,10 @@ const SubMenuHead = () => {
   let selectedKey = useSelector(state => state.global.selectedKey);
   const handleAddSubMenu = () => {
     const id = new ObjectID();
+    const length = _.filter(tempMenu, function(o) {
+      return (o.pid = selectedKey);
+    }).length;
+
     let newmenu = {
       _id: id,
       id: "imsi" + Math.random().toString(),
@@ -37,12 +42,12 @@ const SubMenuHead = () => {
       desc: "",
       pid: selectedKey,
       private: false,
-      seq: subMenu.length,
+      seq: length,
       title: "New submenu",
       layout: [],
       access: []
     };
-    console.log(newmenu);
+    console.log(newmenu, tempMenu);
     tempMenu.push(newmenu);
     dispatch(globalVariable({ tempMenu: tempMenu }));
   };

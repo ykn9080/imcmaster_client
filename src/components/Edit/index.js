@@ -48,7 +48,7 @@ const Edit = props => {
   tempMenu = useSelector(state => state.global.tempMenu);
   let selectedKey = useSelector(state => state.global.selectedKey);
   let showSidebar = useSelector(state => state.global.showSidebar);
-
+  console.log("selecctedkey", selectedKey);
   if (!tempMenu) {
     tempMenu = JSON.parse(localStorage.getItem("menu"));
     topMenu = findMenu(tempMenu, "1", "");
@@ -65,7 +65,7 @@ const Edit = props => {
   useEffect(() => {
     console.log(tempMenu);
     //dispatch(globalVariable({ subMenu: subMenu }));
-    $(".dropli:first-child").click();
+    //$(".dropli:first-child").click();
   }, []);
 
   //subMenu = useSelector(state => state.global.subMenu);
@@ -92,7 +92,7 @@ const Edit = props => {
     $(".dropli").removeClass("selectli");
     $("#" + id).addClass("selectli");
   };
-  let simple = "";
+
   const addControl = newArr => {
     dispatch(globalVariable({ control: newArr }));
     setForchg(newArr);

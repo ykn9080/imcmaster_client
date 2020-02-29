@@ -1,6 +1,7 @@
 import React, { useStyle } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
+import useForceUpdate from "use-force-update";
 import $ from "jquery";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,7 +24,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(0)
   }
 }));
-const SubMenuHead = () => {
+const SubMenuHead = props => {
+  const forceUpdate = useForceUpdate();
   const classes = useStyles();
   const dispatch = useDispatch();
   let tempMenu = useSelector(state => state.global.tempMenu);
@@ -31,7 +33,7 @@ const SubMenuHead = () => {
   const handleAddSubMenu = () => {
     const id = new ObjectID();
     const length = _.filter(tempMenu, function(o) {
-      return (o.pid = selectedKey);
+      return o.pid == selectedKey;
     }).length;
 
     let newmenu = {
@@ -47,9 +49,9 @@ const SubMenuHead = () => {
       layout: [],
       access: []
     };
-    console.log(newmenu, tempMenu);
     tempMenu.push(newmenu);
     dispatch(globalVariable({ tempMenu: tempMenu }));
+    props.callBack(true);
   };
   const handleCollapse = () => {
     dispatch(globalVariable({ showSidebar: false }));

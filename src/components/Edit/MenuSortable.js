@@ -21,6 +21,8 @@ const useStyles = makeStyles(theme => ({
 }));
 export const Sortable = props => {
   let tempMenu = useSelector(state => state.global.tempMenu);
+  let keyval = props.pid;
+  let selectedKey = useSelector(state => state.global.selectedKey);
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
   useEffect(() => {
@@ -39,10 +41,11 @@ export const Sortable = props => {
     return () => {
       $node.sortable();
     };
-  }, []);
-
+    keyval = selectedKey;
+  }, [selectedKey]);
+  console.log("keyval:", keyval, "sel", selectedKey);
   const classes = useStyles();
-  let menuList = directChild(tempMenu, props.pid, "seq");
+  let menuList = directChild(tempMenu, keyval, "seq");
   // if (props.depth === "all") menuList = findChild(tempMenu, props.pid, "seq");
   const addTopMenu = () => {
     let obj = _.maxBy(menuList, "seq");

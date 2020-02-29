@@ -1,3 +1,12 @@
+/*
+ * @Author: yknam
+ * @Date: 2020-2-29 14:34
+ * @Last Modified by: yknam
+ * @Last Modified time: 2020-2-29 14:34
+ * @Desc: Side Menu Bar Open when click top tab
+ * Work on contextmenu 2-29
+ */
+
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,11 +16,9 @@ import {
   getFlatDataFromTree
 } from "components/functions/dataUtil";
 import { getChildren } from "components/functions/findChildrens";
-
+import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { makeStyles } from "@material-ui/core/styles";
-
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
 import "antd/dist/antd.css";
 import { Tree } from "antd";
@@ -35,6 +42,12 @@ const useStyles = makeStyles(theme => ({
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary
+  },
+  tmpStyle: {
+    position: "absolute",
+    // left: `${pageX}px`,
+    // top: `${pageY}px`,
+    boxShadow: "2px 2px 10px #333333"
   }
 }));
 const initialState = {
@@ -73,11 +86,13 @@ const makeSubMenu = (tempMenu, selectedKey) => {
   addKey();
   return treeDt;
 };
+
 export const SubMenu = props => {
   const forceUpdate = useForceUpdate();
   const dispatch = useDispatch();
   //selectedKey
   const [key, setKey] = useState("");
+  const [rightClickNodeTreeItem, setRightClickNodeTreeItem] = useState({});
   let selectedKey = useSelector(state => state.global.selectedKey);
   let showSidebar = useSelector(state => state.global.showSidebar);
   if (selectedKey !== key) setKey(selectedKey);
@@ -86,6 +101,8 @@ export const SubMenu = props => {
   //let tempMenu = props.tempMenu;
   let initData = makeSubMenu(tempMenu, selectedKey);
 
+  const [reload, setReload] = useState(false); //for reload from child
+  const [anchorEl, setAnchorEl] = useState(false); //for open menu when rightclick tree
   const [gData, setgData] = useState([]);
   const { TreeNode } = Tree;
   const [expandedKeys, setExpendedKeys] = useState([]);
@@ -95,56 +112,140 @@ export const SubMenu = props => {
   useEffect(() => {
     console.log("run", initData);
     setgData(initData);
-  }, [props]);
+  }, [props, reload]);
 
-  /* #region  for context */
-  const [state, setState] = React.useState(initialState);
-  const handleContext = (id, event) => {
-    event.preventDefault();
-    setState({
-      mouseX: event.clientX - 2,
-      mouseY: event.clientY - 4
-    });
-    console.log(id);
-  };
   const handleClose = () => {
-    setState(initialState);
+    setAnchorEl(false);
   };
+
+  // /* #region  Context Menu for Tree */
+  // //Tree node right click event
+  // const treeNodeonRightClick = ({ event, node }) => {
+  //   event.persist();
+  //   console.log("iiii");
+  //   //const { offsetLeft, _isCollapsed } = this.props;
+  //   const offsetLeft = 10;
+  //   const menuWidth = 200; //_isCollapsed ? 80 : 200;
+  //   const { favorites, favoritesDetail } = node.props;
+  //   //this.changefavorites(favorites);
+  //   const hasChild = !!(favorites && favorites.scjId); // 收藏夹
+  //   setRightClickNodeTreeItem({
+  //     pageX: event.pageX - offsetLeft - 16 - menuWidth,
+  //     pageY: event.target.offsetTop + 28,
+  //     key: node.props.eventKey,
+  //     id: node.props.eventKey,
+  //     title: node.props.title,
+  //     favorites,
+  //     favoritesDetail,
+  //     hasChild
+  //   });
+  // };
+  // //Right node page display
+  // const getNodeTreeRightClickMenu = () => {
+  //   //const { rightClickNodeTreeItem } = this.state;
+  //   const { pageX, pageY, hasChild, key } = { ...rightClickNodeTreeItem };
+  //   const tmpStyle = {
+  //     position: "absolute",
+  //     left: `${pageX}px`,
+  //     top: `${pageY}px`,
+  //     boxShadow: "2px 2px 10px #333333"
+  //   };
+  //   const handleMenuClick = () => {
+  //     console.log("context menu clicked");
+  //   };
+  //   const menuHasNode = (
+  //     <Menu
+  //       onClick={handleMenuClick}
+  //       // style={tmpStyle}
+
+  //       // className={styles.categs_tree_rightmenu}
+  //     >
+  //       <Menu.Item key="1">自动巡查</Menu.Item>
+  //       <Menu.Item key="2">重命名</Menu.Item>
+  //       <Menu.Item key="3">添加同级目录</Menu.Item>
+  //       <Menu.Item key="4">添加子目录</Menu.Item>
+  //       <Menu.Item key="5">删除</Menu.Item>
+  //     </Menu>
+  //   );
+  //   const menuRoot = (
+  //     <Menu
+  //       onClick={handleMenuClick}
+  //       // style={tmpStyle}
+  //       // className={styles.categs_tree_rightmenu}
+  //     >
+  //       <Menu.Item key="1">自动巡查</Menu.Item>
+  //       <Menu.Item key="2">重命名</Menu.Item>
+  //       <Menu.Item key="4">添加子目录</Menu.Item>
+  //     </Menu>
+  //   );
+  //   const menuNoNode = (
+  //     <Menu
+  //       onClick={handleMenuClick}
+  //       // style={tmpStyle}
+  //       // className={styles.categs_tree_rightmenu}
+  //     >
+  //       <Menu.Item key="6">取消收藏</Menu.Item>
+  //     </Menu>
+  //   );
+
+  //   const menu = hasChild
+  //     ? key === "-1"
+  //       ? menuRoot
+  //       : menuHasNode
+  //     : menuNoNode;
+
+  //   //return rightClickNodeTreeItem == null ? "" : menu;
+  //   return <h1>hi</h1>;
+  // };
+
+  // //Hide right-click menu
+  // const hideTreeRight = () => {
+  //   setRightClickNodeTreeItem(null);
+  // };
+
+  // const renderCm=(info)=> {
+  //   if (this.toolTip) {
+  //     ReactDOM.unmountComponentAtNode(this.cmContainer);
+  //     this.toolTip = null;
+  //   }
+  //   this.toolTip = (
+  //     <Tooltip
+  //       trigger="click" placement="bottomRight" prefixCls="rc-tree-contextmenu"
+  //       defaultVisible overlay={<h4>{info.node.props.title}</h4>}
+  //     >
+  //       <span />
+  //     </Tooltip>
+  //   );
+
+  //   const container = this.getContainer();
+  //   Object.assign(this.cmContainer.style, {
+  //     position: 'absolute',
+  //     left: `${info.event.pageX}px`,
+  //     top: `${info.event.pageY}px`,
+  //   });
+
+  //   ReactDOM.render(this.toolTip, container);
+  // }
+
+  //not successful
   const onRightClick = ({ event, node }) => {
-    event.preventDefault();
-    setState({
-      mouseX: event.clientX - 2,
-      mouseY: event.clientY - 4
-    });
-    console.log("imin", event);
-    return { mm };
+    console.log(event, node);
+    setAnchorEl(true);
   };
-  // const contextmenu = (
-  //   <Menu>
-  //     <Menu.Item key="1">1st menu item</Menu.Item>
-  //     <Menu.Item key="2">2nd menu item</Menu.Item>
-  //     <Menu.Item key="3">3rd menu item</Menu.Item>
-  //   </Menu>
-  // );
-  const mm = (
+  //not successful
+  const editMenu = (
     <Menu
+      id="editMenu"
+      anchorEl={anchorEl}
       keepMounted
-      open={state.mouseY !== null}
+      open={true}
       onClose={handleClose}
-      anchorReference="anchorPosition"
-      anchorPosition={
-        state.mouseY !== null && state.mouseX !== null
-          ? { top: state.mouseY, left: state.mouseX }
-          : undefined
-      }
     >
-      <MenuItem onClick={handleClose}>Copy</MenuItem>
-      <MenuItem onClick={handleClose}>Print</MenuItem>
-      <MenuItem onClick={handleClose}>Highlight</MenuItem>
-      <MenuItem onClick={handleClose}>Email</MenuItem>
+      <MenuItem>Edit</MenuItem>
+      <MenuItem>Reset</MenuItem>
     </Menu>
   );
-  /* #endregion */
+  // /* #endregion */
 
   /* #region anttree eventhandler collection */
   const onDragEnter = info => {
@@ -172,7 +273,7 @@ export const SubMenu = props => {
         dispatch(globalVariable({ control: ctr }));
       }
     });
-    dispatch(globalVariable({ menuedit: false }));
+    dispatch(globalVariable({ menuedit: false }));//for hide menu input display in Body.js
   };
   const onDrop = info => {
     const dropKey = info.node.props.eventKey;
@@ -249,7 +350,6 @@ export const SubMenu = props => {
   /* #endregion */
 
   const loop = data => {
-    console.log(data, JSON.parse(localStorage.getItem("subList")));
     return data.map(item => {
       if (item.children && item.children.length) {
         return (
@@ -263,22 +363,23 @@ export const SubMenu = props => {
   };
 
   return (
-    <div id="dvSidebar">
-      {showSidebar ? <SubMenuHead /> : null}
+    <div>
+      {showSidebar ? <SubMenuHead callBack={setReload} /> : null}
       {showSidebar ? (
-        <Tree
-          className="draggable-tree"
-          defaultExpandedKeys={expandedKeys}
-          draggable
-          blockNode
-          onDragEnter={onDragEnter}
-          onDrop={onDrop}
-          onSelect={onSelect}
-          onRightClick={onRightClick}
-        >
-          {loop(gData)}
-          {/* {loop(JSON.parse(localStorage.getItem("subList")))} */}
-        </Tree>
+        <>
+          <Tree
+            className="draggable-tree"
+            defaultExpandedKeys={expandedKeys}
+            draggable
+            blockNode
+            onDragEnter={onDragEnter}
+            onDrop={onDrop}
+            onSelect={onSelect}
+            onRightClick={onRightClick}
+          >
+            {loop(gData)}
+          </Tree>
+        </>
       ) : null}
     </div>
   );

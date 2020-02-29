@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import $ from "jquery";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
@@ -48,13 +48,11 @@ export const HeadEdit = props => {
   const onSave = () => {
     //setState의 모든 내용을 redux에 반영한후 display page로 이동
   };
-  const colors = ["Red", "Green", "Blue", "Yellow", "Black", "White", "Orange"];
+
   const classes = useStyles();
   const history = useHistory();
   const selectedmenu = id => {
     dispatch(globalVariable({ selectedKey: id }));
-    // const sub = directChild(tempMenu, id, "seq");
-    // dispatch(globalVariable({ subMenu: sub }));
     $(".dropli").removeClass("selectli");
     $("#" + id).addClass("selectli");
     forceUpdate();
@@ -75,8 +73,11 @@ export const HeadEdit = props => {
             onChange={(event, ui) => console.log("DOM changed!!!!", event, ui)}
           />
           <div className={classes.title}></div>
-          <Button color="inherit" onClick={onSave}>
-            Save
+          <Button color="inherit">
+            {/* onClick={onSave}>Save */}
+            <Link to="/" style={{ color: "white" }}>
+              Save
+            </Link>
           </Button>
           <Button
             color="inherit"

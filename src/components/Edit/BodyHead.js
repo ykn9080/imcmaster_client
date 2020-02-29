@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useStyle } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
+import { Link, useHistory } from "react-router-dom";
 import useForceUpdate from "use-force-update";
 import _ from "lodash";
 import $ from "jquery";
@@ -53,6 +54,7 @@ export const BodyHead = () => {
   if (typeof ctrList === "undefined") ctrList = [];
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl1, setAnchorEl1] = useState(null);
   const [layoutIndex, setLayoutIndex] = useState(0); //selected layout form index
@@ -159,6 +161,11 @@ export const BodyHead = () => {
     dispatch(globalVariable({ control: [] }));
     handleClose();
   };
+  const handleNavigate = e => {
+    //e.preventDefault();
+    history.push("/controls");
+    handleClose();
+  };
   const handleExpand = () => {
     dispatch(globalVariable({ showSidebar: true }));
 
@@ -227,6 +234,7 @@ export const BodyHead = () => {
     >
       <MenuItem onClick={handleMenuEdit}>Edit</MenuItem>
       <MenuItem onClick={handleReset}>Reset</MenuItem>
+      <MenuItem onClick={handleNavigate}>Navigate</MenuItem>
     </Menu>
   );
   return (

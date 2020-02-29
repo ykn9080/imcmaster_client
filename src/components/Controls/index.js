@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { globalVariable } from "actions";
+import { useHistory } from "react-router-dom";
 import { makeStyles, withTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
+
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
@@ -30,6 +33,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const WizardDialog = ({ id, type, status, status1 }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   let contents = <h1>default</h1>;
   //status: for open/close, status1: just for reload purpose
@@ -51,52 +56,43 @@ const WizardDialog = ({ id, type, status, status1 }) => {
 
   const handleClose = () => {
     setOpen(false);
+    dispatch(globalVariable({ selectedKey: "m2" }));
+    history.push("/Edit");
   };
 
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open full-screen dialog
-      </Button> */}
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-        key={id}
-      >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Sound
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button>
-          </Toolbar>
-        </AppBar>
-        {contents}
-        <List>
-          <ListItem button>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
-          </ListItem>
-        </List>
-      </Dialog>
+      <AppBar className={classes.appBar}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            Control Type
+          </Typography>
+          <Button autoFocus color="inherit" onClick={handleClose}>
+            save
+          </Button>
+        </Toolbar>
+      </AppBar>
+      {contents}
+      <List>
+        <ListItem button>
+          <ListItemText primary="Phone ringtone" secondary="Titania" />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <ListItemText
+            primary="Default notification ringtone"
+            secondary="Tethys"
+          />
+        </ListItem>
+      </List>
     </div>
   );
 };

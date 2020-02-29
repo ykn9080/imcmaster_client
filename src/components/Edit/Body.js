@@ -73,10 +73,11 @@ export const Body = props => {
   const [editMode, setEditMode] = useState(false);
   const [expanded, setExpanded] = useState(false);
   ctrList = useSelector(state => state.global.control);
+  let selectedKey = useSelector(state => state.global.selectedKey);
   if (typeof ctrList == "undefined") ctrList = [];
   useEffect(() => {
     $(".MuiGrid-container").css({ overflow: "hidden" });
-  });
+  }, [selectedKey]);
   ctrList = _.sortBy(ctrList, ["seq"]);
   const handleExpandClick = () => {
     setExpanded(!expanded);

@@ -2,6 +2,7 @@ import React from "react";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
+import { Link, useHistory } from "react-router-dom";
 import useForceUpdate from "use-force-update";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -22,7 +23,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import WizardDialog from "components/Controls/ControlWizard";
+import WizardDialog from "components/Controls";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -53,6 +54,7 @@ export default props => {
   const classes = useStyles();
   const forceUpdate = useForceUpdate();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [expanded, setExpanded] = React.useState(false);
   //
   const [open, setOpen] = React.useState(false);
@@ -71,6 +73,7 @@ export default props => {
     setOpen1(!open1);
     setOpen(true);
     console.log(open, open1);
+    history.push("/controls");
   };
   const resizeControl = (ctrList, _id, direction) => {
     console.log(_id, direction);
@@ -189,12 +192,12 @@ export default props => {
           </CardContent>
         </Collapse>
       </Card>
-      <WizardDialog
+      {/* <WizardDialog
         id={props.data.ctrid}
         type={props.data.type}
         status={open}
         status1={open1}
-      />
+      /> */}
     </>
   );
 };

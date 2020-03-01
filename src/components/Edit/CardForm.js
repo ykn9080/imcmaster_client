@@ -65,7 +65,7 @@ export default props => {
   const removeHandler = () => {
     setExpanded(!expanded);
   };
-  const createControl = (ctrList, _id, direction) => {
+  const createControl = (ctrList, data, direction) => {
     //step1: select control type->step2: select template/create new
     //->step3: edit control
     //->step4-1: save control ->save to control list, return to edit menu,
@@ -74,7 +74,7 @@ export default props => {
     // setOpen(true);
     // console.log(open, open1);
     console.log("im click");
-    history.push("/controls", { params: "Hello World" });
+    history.push("/controls", { data });
   };
   const resizeControl = (ctrList, _id, direction) => {
     console.log(_id, direction);
@@ -127,7 +127,7 @@ export default props => {
         <CardActions disableSpacing>
           <IconButton aria-label="edit">
             <EditIcon
-              onClick={() => createControl(props.ctrList, props.data._id)}
+              onClick={() => createControl(props.ctrList, props.data)}
             />
           </IconButton>{" "}
           <IconButton aria-label="delete">

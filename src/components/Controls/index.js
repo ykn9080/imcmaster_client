@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles, withTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
@@ -31,11 +31,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const WizardDialog = ({ id, type, status, status1 }) => {
+const ControlList = ({ id, type, status, status1 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const [open, setOpen] = React.useState(false);
+  const location = useLocation();
+  console.log("imin");
+  const myparam = location.state.params;
+  console.log(myparam);
+  const [open, setOpen] = useState(false);
   let contents = <h1>default</h1>;
   //status: for open/close, status1: just for reload purpose
   useEffect(() => {
@@ -97,4 +101,4 @@ const WizardDialog = ({ id, type, status, status1 }) => {
   );
 };
 
-export default WizardDialog;
+export default ControlList;

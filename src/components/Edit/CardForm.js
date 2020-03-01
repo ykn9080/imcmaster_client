@@ -23,7 +23,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import WizardDialog from "components/Controls";
+import ControlList from "components/Controls";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -70,10 +70,11 @@ export default props => {
     //->step3: edit control
     //->step4-1: save control ->save to control list, return to edit menu,
     //->step4-2: cancel -> return to edit menu
-    setOpen1(!open1);
-    setOpen(true);
-    console.log(open, open1);
-    history.push("/controls");
+    // setOpen1(!open1);
+    // setOpen(true);
+    // console.log(open, open1);
+    console.log("im click");
+    history.push("/controls", { params: "Hello World" });
   };
   const resizeControl = (ctrList, _id, direction) => {
     console.log(_id, direction);
@@ -192,7 +193,7 @@ export default props => {
           </CardContent>
         </Collapse>
       </Card>
-      {/* <WizardDialog
+      {/* <ControlList
         id={props.data.ctrid}
         type={props.data.type}
         status={open}

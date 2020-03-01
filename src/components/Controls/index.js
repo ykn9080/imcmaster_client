@@ -4,17 +4,13 @@ import { globalVariable } from "actions";
 import { useHistory, useLocation } from "react-router-dom";
 import { makeStyles, withTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
+import ControlList from "./ControlList";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -31,13 +27,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ControlList = ({ id, type, status, status1 }) => {
+const Controls = ({ id, type, status, status1 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   console.log("imin");
-  const myparam = location.state.params;
+  const myparam = location.state.data;
   console.log(myparam);
   const [open, setOpen] = useState(false);
   let contents = <h1>default</h1>;
@@ -85,20 +81,9 @@ const ControlList = ({ id, type, status, status1 }) => {
         </Toolbar>
       </AppBar>
       {contents}
-      <List>
-        <ListItem button>
-          <ListItemText primary="Phone ringtone" secondary="Titania" />
-        </ListItem>
-        <Divider />
-        <ListItem button>
-          <ListItemText
-            primary="Default notification ringtone"
-            secondary="Tethys"
-          />
-        </ListItem>
-      </List>
+      <ControlList />
     </div>
   );
 };
 
-export default ControlList;
+export default Controls;

@@ -9,6 +9,16 @@ import { Provider } from "react-redux";
 import { usePromiseTracker } from "react-promise-tracker";
 import Loader from "react-loader-spinner";
 
+import ApolloClient from "apollo-boost";
+// import { createHttpLink } from "apollo-link-http";
+// import { InMemoryCache } from "apollo-cache-inmemory";
+import { ApolloProvider } from "react-apollo";
+//import { setContext } from "apollo-link-context";
+
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql"
+});
+
 const store = createStore(
   allReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -31,9 +41,12 @@ const LoadingIndicator = props => {
     )
   );
 };
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
     <LoadingIndicator />
   </Provider>,
   document.getElementById("root")

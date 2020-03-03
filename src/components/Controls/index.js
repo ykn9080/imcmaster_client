@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import ControlList from "./ControlList";
+import { BasicQuery } from "graphQuery";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -82,6 +83,7 @@ const Controls = ({ id, type, status, status1 }) => {
       </AppBar>
       {contents}
       <ControlList />
+      <BasicQuery />
     </div>
   );
 };

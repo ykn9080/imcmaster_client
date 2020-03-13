@@ -11,14 +11,21 @@ import { currentsetting } from "components/functions/config";
 import Loader from "react-loader-spinner";
 
 import ApolloClient from "apollo-boost";
-// import { createHttpLink } from "apollo-link-http";
-// import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloProvider } from "react-apollo";
+//import { ApolloClient } from "apollo-client";
+//import { createHttpLink } from "apollo-link-http";
+//import { InMemoryCache } from "apollo-cache-inmemory";
+import { ApolloProvider } from "@apollo/react-hooks";
 //import { setContext } from "apollo-link-context";
 
 const client = new ApolloClient({
   uri: currentsetting.webserviceprefix + "graphql"
 });
+// const link = createHttpLink({
+//   uri: currentsetting.webserviceprefix
+//   //uri: currentsetting.webserviceprefix + "graphql"
+// });
+// const cache = new InMemoryCache();
+// const client = new ApolloClient({ link, cache });
 
 const store = createStore(
   allReducer,

@@ -7,6 +7,7 @@ import { createStore } from "redux";
 import allReducer from "./reducers";
 import { Provider } from "react-redux";
 import { usePromiseTracker } from "react-promise-tracker";
+import { currentsetting } from "components/functions/config";
 import Loader from "react-loader-spinner";
 
 import ApolloClient from "apollo-boost";
@@ -16,7 +17,7 @@ import { ApolloProvider } from "react-apollo";
 //import { setContext } from "apollo-link-context";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql"
+  uri: currentsetting.webserviceprefix + "graphql"
 });
 
 const store = createStore(

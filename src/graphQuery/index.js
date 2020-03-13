@@ -4,32 +4,14 @@ import gql from "graphql-tag";
 
 const qry = gql`
   {
-    allUser {
-      id
-      name
-      username
-      address {
-        street
-        suite
-        city
-        zipcode
-        geo {
-          lat
-          lng
-        }
-      }
-      phone
-      website
-      company {
-        name
-        catchPhrase
-        bs
-      }
-    }
+    menus {
+     title
+     seq
   }
 `;
 
 export const BasicQuery = () => {
+  console.log(qry);
   return (
     <>
       <Query query={qry}>
@@ -39,8 +21,8 @@ export const BasicQuery = () => {
           return (
             <Fragment>
               <ul>
-                {data.allUser.map((v, i) => {
-                  return <li key={i}>{v.name}</li>;
+                {data.menus.map((v, i) => {
+                  return <li key={i}>{v.title}</li>;
                 })}
               </ul>
             </Fragment>

@@ -1,37 +1,60 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-
+import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-// const mutation = gql`
-//   mutation createCompany(
-//     $id: String
-//     $name: String
-//     $language: String
-//     $module: String
-//   ) {
-//     createCompany(id: $id, name: $name, language: $language, module: $module) {
-//       id
-//       name
-//       language
-//     }
-//   }
-// `;
+const CREATE_COMPANY = gql`
+  mutation($id: String, $name: String, $language: String, $module: String) {
+    createCompany(
+      input: { id: $id, name: $name, language: $language, module: $module }
+    ) {
+      name
+      language
+    }
+  }
+`;
 const qry = gql`
   query {
     companies {
-      title
-      seq
+      name
     }
   }
 `;
 
 export const BasicQuery = () => {
   const { loading, data } = useQuery(qry);
-  console.log(data);
-  if (loading)
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [language, setLanguage] = useState("");
+  const [module, setModule] = useState("");
+  const setHandler = e => {
+    switch (e.target.name) {
+      case "id":
+        setId(e.target.value);
+        break;
+      case "name":
+        setName(e.target.value);
+        break;
+      case "language":
+        setLanguage(e.target.value);
+        break;
+      case "module":
+        setModule(e.target.value);
+        break;
+    }
+  };
+
+  const [createCompany, { data1, loading1, error1 }] = useMutation(
+    CREATE_COMPANY,
+    {
+      refetchQueries: [{ query: qry }],
+      awaitRefetchQueries: true
+    }
+  );
+
+  if (loading | loading1)
     return (
       <>
         <CircularProgress />
@@ -41,30 +64,24 @@ export const BasicQuery = () => {
   return (
     <>
       <ul>
-        {data.menues.map((v, i) => {
-          return <li key={i}>{v.title}</li>;
+        {data.companies.map((v, i) => {
+          return <li key={i}>{v.name}</li>;
         })}
       </ul>
-      {/* <Query query={qry}>
-        {({ loading, error, data }) => {
-          if (loading)
-            return (
-              <>
-                <CircularProgress />
-                <h4>Loading ....</h4>
-              </>
-            );
-          return (
-            <Fragment>
-              <ul>
-                {data.menues.map((v, i) => {
-                  return <li key={i}>{v.title}</li>;
-                })}
-              </ul>
-            </Fragment>
-          );
+
+      <input name="id" placeholder="id" onChange={setHandler} />
+      <input name="name" placeholder="name" onChange={setHandler} />
+      <input name="language" placeholder="language" onChange={setHandler} />
+      <input name="module" placeholder="module" onChange={setHandler} />
+      <Button
+        onClick={() => {
+          createCompany({
+            variables: { id, name, language, module }
+          });
         }}
-      </Query> */}
+      >
+        company input
+      </Button>
     </>
   );
 };

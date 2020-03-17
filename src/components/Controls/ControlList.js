@@ -3,8 +3,14 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
+import CardForm from "components/Edit/CardForm";
 
-const ControlList = () => {
+// const ControlList = () => {
+//   return(
+//    null
+//   );
+// }
+const TextList = () => {
   return (
     <List>
       <ListItem button>
@@ -19,6 +25,10 @@ const ControlList = () => {
       </ListItem>
     </List>
   );
+};
+
+const ControlList = () => {
+  return <TextList />;
 };
 
 export default ControlList;

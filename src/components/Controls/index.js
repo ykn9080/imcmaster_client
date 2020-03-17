@@ -11,7 +11,6 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import ControlList from "./ControlList";
-import { BasicQuery } from "graphQuery";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -37,7 +36,7 @@ const Controls = ({ id, type, status, status1 }) => {
   const myparam = location.state.data;
   console.log(myparam);
   const [open, setOpen] = useState(false);
-  let contents = <h1>default</h1>;
+
   //status: for open/close, status1: just for reload purpose
   useEffect(() => {
     setOpen(status);
@@ -81,9 +80,7 @@ const Controls = ({ id, type, status, status1 }) => {
           </Button>
         </Toolbar>
       </AppBar>
-      {contents}
       <ControlList />
-      <BasicQuery />
     </div>
   );
 };

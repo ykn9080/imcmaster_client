@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { globalVariable } from "actions";
 import useForceUpdate from "use-force-update";
 import $ from "jquery";
@@ -8,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import CardForm from "components/Edit/CardForm";
-import ControlIcon from "components/Controls/ControlIcon";
+import CardList from "components/Common/CardList";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 import { BodyHead } from "./BodyHead";
 import { EditForm } from "./EditForm";
@@ -64,14 +65,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Body = props => {
-  const forceUpdate = useForceUpdate();
-  const classes = useStyles();
-
+  // const forceUpdate = useForceUpdate();
+  // const classes = useStyles();
+  // const history = useHistory();
   let ctrList;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const [editMode, setEditMode] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  // const [editMode, setEditMode] = useState(false);
+  // const [expanded, setExpanded] = useState(false);
   ctrList = useSelector(state => state.global.control);
   let selectedKey = useSelector(state => state.global.selectedKey);
   if (typeof ctrList == "undefined") ctrList = [];
@@ -79,39 +80,44 @@ export const Body = props => {
     $(".MuiGrid-container").css({ overflow: "hidden" });
   }, [selectedKey]);
   ctrList = _.sortBy(ctrList, ["seq"]);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  // const handleExpandClick = () => {
+  //   setExpanded(!expanded);
+  // };
+  // const makeNewControl = ctrList => {
+  //   let maxseq = _.maxBy(ctrList, "seq");
 
-  const addNewControl = ctrList => {
-    let maxseq = _.maxBy(ctrList, "seq");
-    if (typeof maxseq === "undefined") maxseq = -1;
-    const _id = new ObjectID();
-    ctrList.push({
-      _id: _id,
-      ctrid: "",
-      type: "",
-      seq: maxseq + 1,
-      size: 6
-    });
-    dispatch(globalVariable({ control: ctrList }));
-    forceUpdate();
-  };
-  const removeControl = (ctrList, _id) => {
-    console.log(ctrList, _id);
-    ctrList.map((e, i) => {
-      console.log(e, _id);
-      if (e._id === _id) ctrList.splice(i, 1);
-    });
-    dispatch(globalVariable({ control: ctrList }));
-    forceUpdate();
-  };
+  //   if (typeof maxseq === "undefined") maxseq = -1;
+  //   else maxseq = maxseq.seq;
+  //   const _id = new ObjectID();
+  //   return {
+  //     _id: _id,
+  //     ctrid: "",
+  //     type: "",
+  //     seq: maxseq + 1,
+  //     size: 6
+  //   };
+  // };
+  // const addNewControl = ctrList => {
+  //   ctrList.push(makeNewControl(ctrList));
+  //   dispatch(globalVariable({ control: ctrList }));
+  //   forceUpdate();
+  // };
+  // const removeControl = (ctrList, _id) => {
+  //   console.log(ctrList, _id);
+  //   ctrList.map((e, i) => {
+  //     console.log(e, _id);
+  //     if (e._id === _id) ctrList.splice(i, 1);
+  //   });
+  //   dispatch(globalVariable({ control: ctrList }));
+  //   forceUpdate();
+  // };
 
   return (
     <div>
       <BodyHead ctrList={ctrList} />
       <EditForm />
-      <Paper variant="outlined" square className={classes.paper1}>
+      <CardList dtList={ctrList} />
+      {/* <Paper variant="outlined" square className={classes.paper1}>
         <Grid container className={classes.root} spacing={1}>
           {ctrList.map((dt, index) => {
             return (
@@ -124,10 +130,11 @@ export const Body = props => {
               </Grid>
             );
           })}
-          <Paper variant="outlined"></Paper>
-          {/* <ControlIcon ctrList={ctrList} addNewControl={addNewControl} /> */}
+          <Grid item xs={3} key={"add_new"} className="draggable-item">
+            <CardForm data={makeNewControl(ctrList)} />
+          </Grid>
         </Grid>
-      </Paper>
+      </Paper> */}
     </div>
   );
 };

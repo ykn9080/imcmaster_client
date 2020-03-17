@@ -20,9 +20,11 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ArrowLeft from "@material-ui/icons/ArrowLeft";
 import ArrowRight from "@material-ui/icons/ArrowRight";
 import DeleteIcon from "@material-ui/icons/Delete";
+import AddBoxOutlinedIcon from "@material-ui/icons/AddBoxOutlined";
 import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ControlIcon from "components/Controls/ControlIcon";
 import ControlList from "components/Controls";
 
 const useStyles = makeStyles(theme => ({
@@ -65,6 +67,22 @@ export default props => {
   const removeHandler = () => {
     setExpanded(!expanded);
   };
+  const BlankCard = ({ data }) => {
+    console.log(data);
+    return (
+      <Card className={classes.card}>
+        <CardContent></CardContent>
+        <CardActions>
+          <AddBoxOutlinedIcon
+            style={{ fontSize: 100, top: "50%", left: "50%" }}
+            onClick={() => {
+              history.push("/controls", { data });
+            }}
+          />
+        </CardActions>
+      </Card>
+    );
+  };
   const createControl = (ctrList, data, direction) => {
     //step1: select control type->step2: select template/create new
     //->step3: edit control
@@ -95,7 +113,8 @@ export default props => {
     dispatch(globalVariable({ control: ctrList }));
     forceUpdate();
   };
-  console.log(open);
+  if (props.data.ctrid === "") return <BlankCard data={props.data} />;
+
   return (
     <>
       <Card className={classes.card}>
@@ -193,6 +212,7 @@ export default props => {
           </CardContent>
         </Collapse>
       </Card>
+
       {/* <ControlList
         id={props.data.ctrid}
         type={props.data.type}

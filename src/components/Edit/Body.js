@@ -8,7 +8,7 @@ import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import CardForm from "components/Edit/CardForm";
+import CardForm from "components/Common/CardForm";
 import CardList from "components/Common/CardList";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 import { BodyHead } from "./BodyHead";
@@ -65,11 +65,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Body = props => {
-  // const forceUpdate = useForceUpdate();
-  // const classes = useStyles();
-  // const history = useHistory();
+  const forceUpdate = useForceUpdate();
+  const classes = useStyles();
+  const history = useHistory();
   let ctrList;
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // const [editMode, setEditMode] = useState(false);
   // const [expanded, setExpanded] = useState(false);
@@ -83,58 +83,56 @@ export const Body = props => {
   // const handleExpandClick = () => {
   //   setExpanded(!expanded);
   // };
-  // const makeNewControl = ctrList => {
-  //   let maxseq = _.maxBy(ctrList, "seq");
+  const createControl = ctrList => {
+    let maxseq = _.maxBy(ctrList, "seq");
 
-  //   if (typeof maxseq === "undefined") maxseq = -1;
-  //   else maxseq = maxseq.seq;
-  //   const _id = new ObjectID();
-  //   return {
-  //     _id: _id,
-  //     ctrid: "",
-  //     type: "",
-  //     seq: maxseq + 1,
-  //     size: 6
-  //   };
-  // };
-  // const addNewControl = ctrList => {
-  //   ctrList.push(makeNewControl(ctrList));
-  //   dispatch(globalVariable({ control: ctrList }));
-  //   forceUpdate();
-  // };
-  // const removeControl = (ctrList, _id) => {
-  //   console.log(ctrList, _id);
-  //   ctrList.map((e, i) => {
-  //     console.log(e, _id);
-  //     if (e._id === _id) ctrList.splice(i, 1);
-  //   });
-  //   dispatch(globalVariable({ control: ctrList }));
-  //   forceUpdate();
-  // };
+    if (typeof maxseq === "undefined") maxseq = -1;
+    else maxseq = maxseq.seq;
+    const _id = new ObjectID();
+    return {
+      _id: _id,
+      ctrid: "",
+      type: "",
+      seq: maxseq + 1,
+      size: 6
+    };
+  };
+  const newData = createControl(ctrList);
+  const addNewControl = ctrList => {
+    //ctrList.push(makeNewControl(ctrList));
+    dispatch(globalVariable({ control: ctrList }));
+    forceUpdate();
+  };
+  const removeControl = ctrList => {
+    // console.log(ctrList, _id);
+    // ctrList.map((e, i) => {
+    //   console.log(e, _id);
+    //   if (e._id === _id) ctrList.splice(i, 1);
+    // });
+    dispatch(globalVariable({ control: ctrList }));
+    forceUpdate();
+  };
 
+  const editControl = data => {
+    history.push("/controls", { data });
+  };
+  const resizeControl = ctrList => {
+    dispatch(globalVariable({ control: ctrList }));
+    forceUpdate();
+  };
   return (
     <div>
       <BodyHead ctrList={ctrList} />
       <EditForm />
-      <CardList dtList={ctrList} />
-      {/* <Paper variant="outlined" square className={classes.paper1}>
-        <Grid container className={classes.root} spacing={1}>
-          {ctrList.map((dt, index) => {
-            return (
-              <Grid item xs={dt.size} key={dt._id} className="draggable-item">
-                <CardForm
-                  removeControl={removeControl}
-                  data={dt}
-                  ctrList={ctrList}
-                />
-              </Grid>
-            );
-          })}
-          <Grid item xs={3} key={"add_new"} className="draggable-item">
-            <CardForm data={makeNewControl(ctrList)} />
-          </Grid>
-        </Grid>
-      </Paper> */}
+      <CardList
+        cardType={"complex"}
+        dtList={ctrList}
+        removeItemHandler={removeControl}
+        resizeItemHandler={resizeControl}
+        newData={newData}
+        addItemHandler={addNewControl}
+        editItemHandler={editControl}
+      />
     </div>
   );
 };

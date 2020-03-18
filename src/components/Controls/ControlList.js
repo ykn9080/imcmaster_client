@@ -3,7 +3,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
-import CardForm from "components/Edit/CardForm";
+import CardForm from "components/Common/CardForm";
 
 // const ControlList = () => {
 //   return(

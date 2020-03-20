@@ -13,16 +13,19 @@ import { directChild, findChild } from "components/functions/findChildrens";
 import IconButton from "@material-ui/core/IconButton";
 import AddBox from "@material-ui/icons/AddCircle";
 import useForceUpdate from "use-force-update";
+import { ObjectID } from "bson"; //_id maker for MongoDB
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
     marginLeft: theme.spacing(1)
   }
 }));
+let firstid;
 export const Sortable = props => {
   let tempMenu = useSelector(state => state.global.tempMenu);
   let keyval = props.pid;
   let selectedKey = useSelector(state => state.global.selectedKey);
+  let login = useSelector(state => state.global.login);
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
   useEffect(() => {
@@ -43,19 +46,24 @@ export const Sortable = props => {
     };
     keyval = selectedKey;
   }, [selectedKey]);
-  console.log("keyval:", keyval, "sel", selectedKey);
+
   const classes = useStyles();
   let menuList = directChild(tempMenu, keyval, "seq");
-  // if (props.depth === "all") menuList = findChild(tempMenu, props.pid, "seq");
+
   const addTopMenu = () => {
     let obj = _.maxBy(menuList, "seq");
+    let type = "user";
+    const findtype = _.filter(menuList, function(o) {
+      return o.hasOwnProperty("type");
+    });
+    if (findtype.length > 0) type = findtype[0].type;
     let newobj = {
-      id: "imsi" + Math.random().toString(),
-      comp: "1",
-      creator: "ykn",
+      _id: new ObjectID(),
+      comp: login.comp,
+      creator: login.user,
       desc: "",
       pid: "",
-      private: false,
+      type: type,
       seq: obj.seq + 1,
       title: "New Menu",
       layout: []
@@ -100,27 +108,30 @@ export const Sortable = props => {
 
 const DropList = props => {
   return props.menuList.map((item, i) => {
-    let delicon = delbtn(item.id);
+    let selectli = "";
+    if (i === 0) selectli = "selectli";
+    let delicon = delbtn(item._id);
     let moduleicon = "";
     let subdata = [];
-    const subMenu = directChild(props.tempMenu, item.id, "seq");
+    const subMenu = directChild(props.tempMenu, item._id, "seq");
     const li = (
       <li
-        key={"droplist" + item.id}
-        id={item.id}
-        className={[props.liclass, "ui-state-default"].join(" ")}
-        onClick={() => props.selectedmenu(item.id)}
+        key={"droplist" + item._id}
+        id={item._id}
+        className={[props.liclass, selectli, "ui-state-default"].join(" ")}
+        onClick={() => props.selectedmenu(item._id)}
       >
         {item.title}
         {delicon}
       </li>
     );
+
     return subMenu.length > 0 && props.depth === "all" ? (
       <li
-        key={"droplist" + item.id}
-        id={item.id}
-        className={[props.liclass, "ui-state-default"].join(" ")}
-        onClick={() => props.selectedmenu(item.id)}
+        key={"droplist" + item._id}
+        id={item._id}
+        className={[props.liclass, selectli, "ui-state-default"].join(" ")}
+        onClick={() => props.selectedmenu(item._id)}
       >
         {item.title}
         <NestedList data={subMenu} tempMenu={props.tempMenu} />
@@ -141,13 +152,13 @@ const NestedList = props => {
     <ul>
       {props.data.map((item, i) => {
         let delicon = delbtn(item.id);
-        let subdata = directChild(props.tempMenu, item.id, "seq");
+        let subdata = directChild(props.tempMenu, item._id, "seq");
         return subdata ? (
           <li
             key={"droplist" + item.id}
             id={item.id}
             className={["ui-state-default"].join(" ")}
-            onClick={() => props.selectedmenu(item.id)}
+            onClick={() => props.selectedmenu(item._id)}
           >
             {item.title}
             <NestedList data={subdata} tempMenu={props.tempMenu} />
@@ -158,7 +169,7 @@ const NestedList = props => {
             key={"droplist" + item.id}
             id={item.id}
             className={["ui-state-default"].join(" ")}
-            onClick={() => props.selectedmenu(item.id)}
+            onClick={() => props.selectedmenu(item._id)}
           >
             {item.title}
             {delicon}

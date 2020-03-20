@@ -117,40 +117,35 @@ let myData = [
   //   layout: []
   // }
 ];
-const menulist = (dt, itemid, compareid) => {
-  console.log(dt);
-  dt.filter(
-    (item, itemIndex) => item.comp === "1" && item.itemid === compareid
-  ).sort(function(a, b) {
-    return a.seq < b.seq ? -1 : 1;
-  });
-  return dt;
-};
+
 const Topmenu = () => {
   const dispatch = useDispatch();
   function handleSelect(selectedKey) {
-    const ctrlist = myData.filter((item, itemIndex) => item.id === selectedKey);
+    const ctrlist = myData.filter(
+      (item, itemIndex) => item._id === selectedKey
+    );
     dispatch(globalVariable({ controls: ctrlist.layout }));
   }
   //const menulist = JSON.parse(localStorage.getItem("imctable")).menu;
 
-  useEffect(() => {
-    //login후 /function/api.js의 remotelogin callback에서 dispatch를 못해서
-    //일단 localStorage에 저장한후 메뉴로 historyback할때 globalVariable로 dispatch시킴
-    let menu = myData;
-    if (localStorage.getItem("menu"))
-      menu = JSON.parse(localStorage.getItem("menu"));
-    // else{
-    //   //openmenu를 fetch해서 가져옴
-    // }
-    dispatch(globalVariable({ menu: menu }));
-  }, []);
+  // useEffect(() => {
+  //   //login후 /function/api.js의 remotelogin callback에서 dispatch를 못해서
+  //   //일단 localStorage에 저장한후 메뉴로 historyback할때 globalVariable로 dispatch시킴
+  //   let menu = myData;
+  //   if (localStorage.getItem("menu"))
+  //     menu = JSON.parse(localStorage.getItem("menu"));
+  //   // else{
+  //   //   //openmenu를 fetch해서 가져옴
+  //   // }
+  //   dispatch(globalVariable({ menu: menu }));
+  // }, []);
   let menuData = useSelector(state => state.global.menu);
+  let login = useSelector(state => state.global.login);
 
   if (!menuData) menuData = myData;
   //const topmenu = menulist(menuData, "");
   const topmenu = menuData
-    .filter((item, itemIndex) => item.comp === "1" && item.pid === "")
+    .filter((item, itemIndex) => item.comp === login.comp && item.pid === null)
     .sort(function(a, b) {
       return a.seq < b.seq ? -1 : 1;
     });
@@ -219,13 +214,15 @@ const NavDropRecur = props => {
 const Head1 = () => {
   let keyval;
   const dispatch = useDispatch();
+  const menu = useSelector(state => state.global.menu);
   function handleSelect(selectedKey) {
     console.log("selected123 " + selectedKey);
     keyval = selectedKey;
     switch (selectedKey) {
       case "edit":
-        const menu = JSON.parse(localStorage.getItem("menu"));
+        //const menu = JSON.parse(localStorage.getItem("menu"));
         //const submenu = directChild(menu, "", "seq");
+
         dispatch(globalVariable({ tempMenu: menu }));
         //dispatch(globalVariable({ subMenu: submenu }));
         break;

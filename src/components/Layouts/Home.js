@@ -35,14 +35,14 @@ library.add(
 
 let menuData = [];
 const Home = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    const menu = localStorage.getItem("menu");
-    if (typeof menu != "undefined")
-      menuData = JSON.parse(localStorage.getItem("menu"));
-    dispatch(globalVariable({ menu: menuData }));
-  }, []);
+  // useEffect(() => {
+  //   const menu = localStorage.getItem("menu");
+  //   if (typeof menu != "undefined")
+  //     menuData = JSON.parse(localStorage.getItem("menu"));
+  //   dispatch(globalVariable({ menu: menuData }));
+  // }, []);
   return (
     <>
       <Head />

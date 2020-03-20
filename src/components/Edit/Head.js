@@ -52,6 +52,7 @@ export const HeadEdit = props => {
   const classes = useStyles();
   const history = useHistory();
   const selectedmenu = id => {
+    console.log(id);
     dispatch(globalVariable({ selectedKey: id }));
     $(".dropli").removeClass("selectli");
     $("#" + id).addClass("selectli");

@@ -88,7 +88,7 @@ export function getChildren(collection, ids) {
   collection.forEach(function iterator(value) {
     // Matching the list of `ids` from the iterated userId.
     // If a match is found, then we set `found` to true.
-    var isStop = ~ids.indexOf(value.id) && (found = true);
+    var isStop = ~ids.indexOf(value._id) && (found = true);
 
     // did we get a match?
     if (found) {

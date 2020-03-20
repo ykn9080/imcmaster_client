@@ -100,8 +100,7 @@ export const Body = props => {
   const newData = createControl(ctrList);
   const addNewControl = ctrList => {
     //ctrList.push(makeNewControl(ctrList));
-    dispatch(globalVariable({ control: ctrList }));
-    forceUpdate();
+    c;
   };
   const removeControl = ctrList => {
     // console.log(ctrList, _id);

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { globalVariable } from "actions";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -18,6 +20,9 @@ import logo from "../../images/logo/imc1_1.png";
 import imclogo from "../../images/logo/imcmaster.png";
 import Icon from "@material-ui/core/Icon";
 import axios from "axios";
+import makeAxios from "components/functions/makeAxios";
+import useAxios from "axios-hooks";
+import { currentsetting } from "components/functions/config";
 
 function Copyright() {
   return (
@@ -52,11 +57,71 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
-  const { values, handleChange, handleSubmit, handleSubmitCallback } = useForm(
-    remotelogin,
-    props
-  );
+  const dispatch = useDispatch();
+  const [values, setValues] = useState({});
+  const handleChange = event => {
+    event.persist();
+    setValues(values => ({
+      ...values,
+      [event.target.name]: event.target.value
+    }));
+  };
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    // const result = await axios({
+    //   method: "post",
+    //   url: currentsetting.webserviceprefix + "login",
+    //   data: values
+    // });
+
+    // dispatch(globalVariable({ ajaxrtn: result }));
+
+    axios
+      .post(currentsetting.webserviceprefix + "login", values)
+      .then(function(response) {
+        const dt = response.data;
+        dispatch(globalVariable({ token: dt.token }));
+        dispatch(globalVariable({ menu: dt.menu }));
+        dispatch(globalVariable({ control: dt.control }));
+        dispatch(globalVariable({ login: dt.user }));
+        axios.defaults.headers.common = { Authorization: `Bearer ${dt.token}` };
+
+        // localStorage.setItem("token", dt.token);
+        // localStorage.setItem(
+        //   "imcsetting",
+        //   JSON.stringify({ login: response.data.user })
+        // );
+        // localStorage.setItem("imcsystem", JSON.stringify(response.data.system));
+        // localStorage.setItem("imctable", response.data.file);
+        // localStorage.setItem("imclist", response.data.list);
+        // localStorage.setItem("imcdata", response.data.dtsrc);
+        // localStorage.setItem("menu", response.data.menu);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
+  // const { values, handleChange, handleSubmit, handleSubmitCallback } = useForm(
+  //   remotelogin,
+  //   props
+  // );
   const classes = useStyles();
+  const [
+    //{ data: putData, loading: putLoading, error: putError },
+    { data, loading, error },
+    reFetch
+  ] = useAxios(
+    {
+      url: currentsetting.webserviceprefix + "login",
+      method: "POST",
+      data: values
+    },
+    { manual: true }
+  );
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!</p>;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -88,7 +153,7 @@ const SignIn = props => {
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
+            name="username"
             autoComplete="email"
             autoFocus
             onBlur={handleChange}
@@ -115,10 +180,12 @@ const SignIn = props => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={handleSubmitCallback}
+            //onClick={handleSubmitCallback}
+            onClick={handleSubmit}
           >
             Sign In
           </Button>
+
           <Link to="/" exact>
             <Button
               type="button"

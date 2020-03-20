@@ -22,17 +22,15 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary
   }
 }));
-const findMenu = (tempMenu, comp, pid) => {
+const findMenu = (tempMenu, pid) => {
   return tempMenu
-    .filter((item, itemIndex) => item.comp === comp && item.pid === pid)
+    .filter((item, itemIndex) => item.pid === pid)
     .sort(function(a, b) {
       return a.seq < b.seq ? -1 : 1;
     });
 };
-const findControl = (tempMenu, comp, id) => {
-  const ctr = tempMenu.filter(
-    (item, itemIndex) => item.comp === comp && item.id === id
-  );
+const findControl = (tempMenu, id) => {
+  const ctr = tempMenu.filter((item, itemIndex) => item.id === id);
 
   if (ctr) {
     return ctr[0].layout.sort(function(a, b) {
@@ -46,24 +44,25 @@ const Edit = props => {
   const [forchg, setForchg] = useState("");
   const dispatch = useDispatch();
   tempMenu = useSelector(state => state.global.tempMenu);
+
   let selectedKey = useSelector(state => state.global.selectedKey);
   let showSidebar = useSelector(state => state.global.showSidebar);
-  console.log("selecctedkey", selectedKey);
+
   if (!tempMenu) {
     tempMenu = JSON.parse(localStorage.getItem("menu"));
-    topMenu = findMenu(tempMenu, "1", "");
+    topMenu = findMenu(tempMenu, "");
     // subMenu = findMenu(tempMenu, "1", topMenu[0].id);
     // dispatch(globalVariable({ subMenu: subMenu }));
     dispatch(globalVariable({ tempMenu: tempMenu }));
     if (!selectedKey) {
-      selectedKey = topMenu[0].id;
+      selectedKey = topMenu[0]["_id"];
 
       dispatch(globalVariable({ selectedKey }));
     }
   }
 
   useEffect(() => {
-    console.log(tempMenu);
+    //console.log(tempMenu);
     //dispatch(globalVariable({ subMenu: subMenu }));
     //$(".dropli:first-child").click();
   }, []);
@@ -79,8 +78,8 @@ const Edit = props => {
   const selectedmenu = id => {
     dispatch(globalVariable({ selectedKey: id }));
     selectedKey = id;
-    const sub = findMenu(tempMenu, "1", id);
-    const ctr = findControl(tempMenu, "1", id);
+    const sub = findMenu(tempMenu, id);
+    const ctr = findControl(tempMenu, id);
     console.log("it's from index", sub);
     //dispatch(globalVariable({ control: ctr }));
     //dispatch(globalVariable({ subMenu: sub }));

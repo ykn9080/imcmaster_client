@@ -58,19 +58,22 @@ const makeSubMenu = (tempMenu, selectedKey) => {
   // 1. convert flatarray to children style
   let treeDt = getTreeFromFlatData({
     flatData: tempMenu.map(node => ({ ...node, title: node.title })),
-    getKey: node => node.id, // resolve a node's key
+    getKey: node => node._id, // resolve a node's key
     getParentKey: node => node.pid, // resolve a node's parent's key
     rootKey: "" // The value of the parent key when there is no parent (i.e., at root level)
   });
+
   //2. select part of treeDt auto converted to flat style again
   const subList = getChildren(treeDt, selectedKey);
+  console.log(subList, treeDt);
   //3. revconvert subList to children style
   treeDt = getTreeFromFlatData({
     flatData: subList.map(node => ({ ...node, title: node.title })),
-    getKey: node => node.id, // resolve a node's key
+    getKey: node => node._id, // resolve a node's key
     getParentKey: node => node.pid, // resolve a node's parent's key
     rootKey: selectedKey // The value of the parent key when there is no parent (i.e., at root level)
   });
+
   //append  0-0-0 type key
   const addKey = (_tns, _preKey) => {
     const preKey = _preKey || "0";
@@ -94,6 +97,7 @@ export const SubMenu = props => {
   const [key, setKey] = useState("");
   const [rightClickNodeTreeItem, setRightClickNodeTreeItem] = useState({});
   let selectedKey = useSelector(state => state.global.selectedKey);
+  const login = useSelector(state => state.global.login);
   let showSidebar = useSelector(state => state.global.showSidebar);
   if (selectedKey !== key) setKey(selectedKey);
   //subMenu data
@@ -259,21 +263,24 @@ export const SubMenu = props => {
     //find id from key
     let key = "";
     if (selectedKeys.length === 1) key = selectedKeys[0];
-    const dt = JSON.parse(localStorage.getItem("subList"));
+    //const dt = JSON.parse(localStorage.getItem("subList"));
+    const dt = gData;
     const flatData = getFlatDataFromTree({
       treeData: dt,
-      getNodeKey: ({ node }) => node.id, // This ensures your "id" properties are exported in the path
+      getNodeKey: ({ node }) => node._id, // This ensures your "id" properties are exported in the path
       ignoreCollapsed: false // Makes sure you traverse every node in the tree, not just the visible ones
     });
+    console.log(dt, flatData);
     const rtn1 = _.map(flatData, "node"); //select node from each object
     rtn1.map(v => {
       console.log(v, key);
       if (v.key === key) {
-        const ctr = findControl(tempMenu, "1", v.id);
+        const ctr = findControl(tempMenu, v._id);
+        console.log(ctr);
         dispatch(globalVariable({ control: ctr }));
       }
     });
-    dispatch(globalVariable({ menuedit: false }));//for hide menu input display in Body.js
+    dispatch(globalVariable({ menuedit: false })); //for hide menu input display in Body.js
   };
   const onDrop = info => {
     const dropKey = info.node.props.eventKey;
@@ -336,10 +343,8 @@ export const SubMenu = props => {
     forceUpdate();
   };
 
-  const findControl = (tempMenu, comp, id) => {
-    const ctr = tempMenu.filter(
-      (item, itemIndex) => item.comp === comp && item.id === id
-    );
+  const findControl = (tempMenu, id) => {
+    const ctr = tempMenu.filter((item, itemIndex) => item._id === id);
 
     if (ctr) {
       return ctr[0].layout.sort(function(a, b) {

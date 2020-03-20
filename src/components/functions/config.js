@@ -118,6 +118,7 @@ const globalVar = {
   ff: "",
   vv: "",
   tt: "",
+  login: "",
   selectedKey: "",
   menuedit: false,
   showSidebar: true

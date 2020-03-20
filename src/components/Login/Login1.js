@@ -20,9 +20,8 @@ import logo from "../../images/logo/imc1_1.png";
 import imclogo from "../../images/logo/imcmaster.png";
 import Icon from "@material-ui/core/Icon";
 import axios from "axios";
-import makeAxios from "components/functions/makeAxios";
-import useAxios from "axios-hooks";
 import { currentsetting } from "components/functions/config";
+import { sweetmsg, sweetmsgautoclose } from "fromImc/Common_make";
 
 function Copyright() {
   return (
@@ -36,7 +35,16 @@ function Copyright() {
     </Typography>
   );
 }
-
+function appendPid(menu) {
+  //append pid for
+  menu.map((k, i) => {
+    if (!k.hasOwnProperty("pid")) {
+      k.pid = "";
+      menu.slice(i, 1, k);
+    }
+  });
+  return menu;
+}
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(4),
@@ -81,22 +89,26 @@ const SignIn = props => {
       .post(currentsetting.webserviceprefix + "login", values)
       .then(function(response) {
         const dt = response.data;
+        const menu = appendPid(JSON.parse(dt.menu));
         dispatch(globalVariable({ token: dt.token }));
-        dispatch(globalVariable({ menu: dt.menu }));
+        dispatch(globalVariable({ menu: menu }));
         dispatch(globalVariable({ control: dt.control }));
-        dispatch(globalVariable({ login: dt.user }));
+        dispatch(globalVariable({ login: JSON.parse(dt.user) }));
         axios.defaults.headers.common = { Authorization: `Bearer ${dt.token}` };
 
-        // localStorage.setItem("token", dt.token);
+        localStorage.setItem("token", dt.token);
         // localStorage.setItem(
         //   "imcsetting",
         //   JSON.stringify({ login: response.data.user })
         // );
-        // localStorage.setItem("imcsystem", JSON.stringify(response.data.system));
-        // localStorage.setItem("imctable", response.data.file);
-        // localStorage.setItem("imclist", response.data.list);
-        // localStorage.setItem("imcdata", response.data.dtsrc);
-        // localStorage.setItem("menu", response.data.menu);
+        localStorage.setItem("imcsystem", JSON.stringify(response.data.system));
+        //localStorage.setItem("imctable", response.data.file);
+        //localStorage.setItem("imclist", response.data.list);
+        //localStorage.setItem("imcdata", response.data.dtsrc);
+        localStorage.setItem("menu", JSON.stringify(menu));
+
+        sweetmsgautoclose("success", "very bood");
+        props.history.push(`/`);
       })
       .catch(function(error) {
         console.log(error);
@@ -108,21 +120,6 @@ const SignIn = props => {
   //   props
   // );
   const classes = useStyles();
-  const [
-    //{ data: putData, loading: putLoading, error: putError },
-    { data, loading, error },
-    reFetch
-  ] = useAxios(
-    {
-      url: currentsetting.webserviceprefix + "login",
-      method: "POST",
-      data: values
-    },
-    { manual: true }
-  );
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error!</p>;
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

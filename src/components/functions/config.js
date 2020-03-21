@@ -120,6 +120,7 @@ const globalVar = {
   tt: "",
   login: "",
   selectedKey: "",
+  menu: [],
   menuedit: false,
   showSidebar: true
 };

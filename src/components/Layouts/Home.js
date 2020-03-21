@@ -8,6 +8,8 @@ import { globalVariable } from "actions";
 //  import { pageInit } from "../fromImc/core";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faAngry } from "@fortawesome/free-regular-svg-icons";
+import axios from "axios";
+import { currentsetting } from "components/functions/config";
 import {
   faCheckSquare,
   faCoffee,
@@ -34,15 +36,25 @@ library.add(
 );
 
 let menuData = [];
-const Home = () => {
-  // const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const menu = localStorage.getItem("menu");
-  //   if (typeof menu != "undefined")
-  //     menuData = JSON.parse(localStorage.getItem("menu"));
-  //   dispatch(globalVariable({ menu: menuData }));
-  // }, []);
+//1. chk redux menu
+//2. if not redux openmenu
+//3. if not fetch openmenu->dispatch openmenu,
+const Home = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios
+      .get(currentsetting.webserviceprefix + "menu/any?type=open")
+      .then(response => {
+        localStorage.setItem("openmenu", JSON.stringify(response.data));
+      });
+
+    // const menu = localStorage.getItem("menu");
+    // if (typeof menu != "undefined")
+    //   menuData = JSON.parse(localStorage.getItem("menu"));
+    // dispatch(globalVariable({ menu: menuData }));
+  }, []);
   return (
     <>
       <Head />

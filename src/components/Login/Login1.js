@@ -89,11 +89,12 @@ const SignIn = props => {
       .post(currentsetting.webserviceprefix + "login", values)
       .then(function(response) {
         const dt = response.data;
+        console.log(dt);
         const menu = appendPid(JSON.parse(dt.menu));
         dispatch(globalVariable({ token: dt.token }));
         dispatch(globalVariable({ menu: menu }));
         dispatch(globalVariable({ control: dt.control }));
-        dispatch(globalVariable({ login: JSON.parse(dt.user) }));
+        dispatch(globalVariable({ login: dt.user }));
         axios.defaults.headers.common = { Authorization: `Bearer ${dt.token}` };
 
         localStorage.setItem("token", dt.token);

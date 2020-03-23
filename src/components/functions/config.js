@@ -119,6 +119,7 @@ const globalVar = {
   vv: "",
   tt: "",
   login: "",
+  token: "",
   selectedKey: "",
   menu: [],
   menuedit: false,

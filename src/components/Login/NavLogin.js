@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Button, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import "../../styles/Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Login from "./Login";
-import Join from "./Join";
+import Login from "./Login_old";
+import Join from "./Join_old";
 import logo from "../../images/logo/imc1_1.png";
 import imclogo from "../../images/logo/imcmaster.png";
 

@@ -18,9 +18,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ActiveLastBreadcrumb } from "./BreadCrumb";
 import { MultiDispatch, GlobalDispatch } from "reducers/multipleDispatch";
 import logo from "images/logo/imc1_1.png";
-import Signin from "components/Login/Login1";
+import Signin from "components/Login/Login";
 import imclogo from "images/logo/imcmaster.png";
 import { directChild } from "components/functions/findChildrens";
+import { isLoggedIn } from "components/Login/Login";
 
 const element = <FontAwesomeIcon icon="user" size="lg" />;
 let myData = [
@@ -215,6 +216,7 @@ const Head1 = () => {
   let keyval;
   const dispatch = useDispatch();
   const menu = useSelector(state => state.global.menu);
+  const token = useSelector(state => state.global.token);
   function handleSelect(selectedKey) {
     console.log("selected123 " + selectedKey);
     keyval = selectedKey;
@@ -240,6 +242,11 @@ const Head1 = () => {
   const notyet = () => {
     alert("comming soon!!!");
   };
+  const logout = () => {
+    dispatch(globalVariable({ token: "" }));
+    //aft login menu delete
+    //user delete
+  };
   const topright = (
     <Nav onSelect={handleSelect}>
       <Nav.Link>
@@ -250,11 +257,26 @@ const Head1 = () => {
           <NavDropdown.Item>
             <Link to="/Join">Join</Link>
           </NavDropdown.Item>
+        </NavDropdown>
+      </Nav.Link>
+
+      <Nav.Link href="#link" onClick={notyet}>
+        <FontAwesomeIcon
+          icon="question-circle"
+          size="lg"
+          style={{ marginTop: "10" }}
+        />
+      </Nav.Link>
+    </Nav>
+  );
+  const toprightAfterLogin = (
+    <Nav onSelect={handleSelect}>
+      <Nav.Link>
+        <NavDropdown title={navDropdownTitle} id="basic-nav-dropdown1">
           <NavDropdown.Item>
-            <Link to="/Login1">Log1 In</Link>
-          </NavDropdown.Item>
-          <NavDropdown.Item>
-            <Link to="/Join1">Join1 In</Link>
+            <Link to="/" onClick={logout}>
+              Log Out
+            </Link>
           </NavDropdown.Item>
         </NavDropdown>
       </Nav.Link>
@@ -279,16 +301,29 @@ const Head1 = () => {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-        {topbrand}
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Topmenu />
-          <Form inline style={{ paddingRight: "40" }}>
-            {topright}
-          </Form>
-        </Navbar.Collapse>
-      </Navbar>
+      {token !== "" ? (
+        <Navbar bg="dark" variant="dark">
+          {topbrand}
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Topmenu />
+            <Form inline style={{ paddingRight: "40" }}>
+              {toprightAfterLogin}
+            </Form>
+          </Navbar.Collapse>
+        </Navbar>
+      ) : (
+        <Navbar bg="dark" variant="dark">
+          {topbrand}
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Topmenu />
+            <Form inline style={{ paddingRight: "40" }}>
+              {topright}
+            </Form>
+          </Navbar.Collapse>
+        </Navbar>
+      )}
       <ActiveLastBreadcrumb keyval={keyval} />
     </>
   );

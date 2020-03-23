@@ -81,8 +81,7 @@ const Controls = ({ id, type, status, status1 }) => {
   const history = useHistory();
   const location = useLocation();
   console.log("imin");
-  const myparam = location.state.data;
-  console.log(myparam);
+
   const [open, setOpen] = useState(false);
   const [ctype, setCtype] = useState(true);
   //status: for open/close, status1: just for reload purpose

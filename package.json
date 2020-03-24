@@ -38,6 +38,7 @@
     "react-scripts": "3.3.0",
     "react-smooth-dnd": "^0.11.1",
     "react-sortable-tree": "^2.7.1",
+    "react-table": "^7.0.0",
     "reactstrap": "^8.3.2",
     "redux": "^4.0.5",
     "sweetalert2": "^9.6.0",

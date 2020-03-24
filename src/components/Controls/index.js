@@ -22,7 +22,7 @@ import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ControlList from "./ControlList";
 import ControlCard from "./ControlCard";
-import Rtable from "components/Controls/Table";
+
 const useStyles = makeStyles(theme => ({
   appBar: {
     position: "relative"
@@ -169,7 +169,6 @@ const Controls = ({ id, type, status, status1 }) => {
         </Toolbar>
       </AppBar>
       {ctype ? <ControlCard /> : <ControlList />}
-      <Rtable />
     </div>
   );
 };

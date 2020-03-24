@@ -6,6 +6,7 @@ import Home from "components/Layouts/Home";
 import Login from "components/Login/Login";
 import Join from "components/Login/Join";
 import Controls from "components/Controls";
+import CtrEdit from "components/ControlEdit";
 import Auth from "utilities/Authenticate";
 import Edit from "components/Edit";
 import {
@@ -54,6 +55,7 @@ const App = props => {
           <Route path="/join" component={Join} />
           <Route path="/login" component={Login} />
           <Route path="/join" component={Join} />
+          <Route exact path="/controledit" component={CtrEdit} />
           <PrivateRoute path="/edit" component={Edit} />
           <PrivateRoute path="/controls" component={Controls} />
         </Switch>

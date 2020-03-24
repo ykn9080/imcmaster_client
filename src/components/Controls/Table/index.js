@@ -1,75 +1,75 @@
-import React, { Component } from "react";
-import ReactTable from "react-table";
-import "react-table/react-table.css";
-const Rtable = () => {
-  const tableData = [
-    {
-      name: "Aman",
-      age: 20,
-      course: "BCA"
-    },
-    {
-      name: "Anubhav",
-      age: 21,
-      course: "MCA"
-    },
-    {
-      name: "Akash",
-      age: 22,
-      course: "MCA"
-    },
-    {
-      name: "Amit",
-      age: 20,
-      course: "BCA"
-    },
-    {
-      name: "Keshav",
-      age: 21,
-      course: "MCA"
-    },
-    {
-      name: "Kailash",
-      age: 20,
-      course: "B.sc"
-    },
-    {
-      name: "Govind",
-      age: 20,
-      course: "B.com"
-    },
-    {
-      name: "Raghav",
-      age: 21,
-      course: "MCA"
-    }
-  ];
-  const columns = [
-    {
-      Header: "Name",
-      accessor: "name"
-    },
-    {
-      Header: "Age",
-      accessor: "age"
-    },
-    {
-      Header: "Course",
-      accessor: "course"
-    }
-  ];
-  return (
-    <center>
-      <div>
-        <ReactTable
-          data={tableData}
-          columns={columns}
-          defaultPageSize={2}
-          pageSizeOptions={[2, 4, 6, 8]}
-        />
-      </div>
-    </center>
-  );
-};
+import React, { useState } from "react";
+import { useTable, useFilters, useSortBy } from "react-table";
 
-export default Rtable;
+export function Table({ columns, data }) {
+  const [filterInput, setFilterInput] = useState("");
+  // Use the state and functions returned from useTable to build your UI
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    setFilter
+  } = useTable(
+    {
+      columns,
+      data
+    },
+    useFilters,
+    useSortBy
+  );
+
+  const handleFilterChange = e => {
+    const value = e.target.value || undefined;
+    setFilter("show.name", value);
+    setFilterInput(value);
+  };
+
+  // Render the UI for your table
+  return (
+    <>
+      <input
+        value={filterInput}
+        onChange={handleFilterChange}
+        placeholder={"Search name"}
+      />
+      <table {...getTableProps()}>
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className={
+                    column.isSorted
+                      ? column.isSortedDesc
+                        ? "sort-desc"
+                        : "sort-asc"
+                      : ""
+                  }
+                >
+                  {column.render("Header")}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
+  );
+}

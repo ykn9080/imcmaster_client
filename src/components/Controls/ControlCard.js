@@ -56,7 +56,9 @@ const ControlCard = props => {
   };
 
   const editControl = data => {
-    history.push("/controls", { data });
+    //history.push("/controls", { data });
+    console.log(data);
+    history.push("/controledit", { data });
   };
   const resizeControl = ctrList => {
     dispatch(globalVariable({ control: ctrList }));

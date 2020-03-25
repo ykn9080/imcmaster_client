@@ -123,7 +123,8 @@ const globalVar = {
   selectedKey: "",
   menu: [],
   menuedit: false,
-  showSidebar: true
+  showSidebar: true,
+  apiUrl: ""
 };
 
 export { currentsetting, globalVar };

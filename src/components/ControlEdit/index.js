@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import DataSrc from "./DataSrc";
 
 const useStyles = makeStyles({
   root: {
@@ -71,11 +72,9 @@ export default function IconLabelTabs() {
         </Tabs>
       </Paper>
       <TabPanel value={value} index={0}>
-        Item One
+        <DataSrc />
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
+      <TabPanel value={value} index={1}></TabPanel>
       <TabPanel value={value} index={2}>
         Item Three
       </TabPanel>

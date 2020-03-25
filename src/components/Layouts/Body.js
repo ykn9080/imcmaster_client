@@ -12,11 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import MultiDispatch, { gb } from "reducers/multipleDispatch";
 import CardForm from "components/Common/CardForm";
 import { Rtable } from "components/Controls/Table/ReactTable";
-import {
-  GriddleTable,
-  RDG,
-  BootTable
-} from "components/Controls/Table/Griddle";
+//import BootTable from "components/Controls/Table/BootStrapTable2";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -131,7 +127,7 @@ export const CenteredGrid = props => {
     <>
       <p className={classes.primary}>This page is {keyval}</p>
       {/* <Rtable /><RDG /> */}
-      <BootTable />
+      {/* //<BootTable /> */}
       <Grid container justify="center" className={classes.root} spacing={2}>
         {newArr.map((dt, index) => {
           return dt.col != dt.val ? (

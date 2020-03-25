@@ -7,6 +7,7 @@ import Login from "components/Login/Login";
 import Join from "components/Login/Join";
 import Controls from "components/Controls";
 import CtrEdit from "components/ControlEdit";
+import CtrEdit1 from "components/ControlEdit/index1";
 import Auth from "utilities/Authenticate";
 import Edit from "components/Edit";
 import {
@@ -56,8 +57,9 @@ const App = props => {
           <Route path="/login" component={Login} />
           <Route path="/join" component={Join} />
           <Route exact path="/controledit" component={CtrEdit} />
-          <PrivateRoute path="/edit" component={Edit} />
-          <PrivateRoute path="/controls" component={Controls} />
+          <Route exact path="/controledit1" component={CtrEdit1} />
+          <Route path="/edit" component={Edit} />
+          <Route path="/controls" component={Controls} />
         </Switch>
       </userContext.Provider>
     </Router>

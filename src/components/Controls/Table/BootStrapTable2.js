@@ -62,7 +62,7 @@ const BootTable = ({ dt, apiUrl, keyfield, attr }) => {
         onClick={() => {
           axios.get("http://localhost:3001/results").then(response => {
             console.log(response);
-            //setState({ ...state, products: response.data });
+            setState({ ...state, dataList: response.data.results });
           });
         }}
       >

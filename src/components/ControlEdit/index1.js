@@ -15,6 +15,8 @@ import {
 import classnames from "classnames";
 import DataSrc from "./DataSrc";
 import Summary from "./Summary";
+import DynamicForm from "components/Common/DynamicForm";
+import BootstrapForm from "components/Common/BootstrapForm";
 
 const EditTab = props => {
   const [activeTab, setActiveTab] = useState("1");
@@ -46,7 +48,7 @@ const EditTab = props => {
         <TabPane tabId="1">
           <Row>
             <Col sm="6">
-              <Summary />
+              <BootstrapForm />
             </Col>
             <Col sm="6">
               <Button>Go somewhere</Button>

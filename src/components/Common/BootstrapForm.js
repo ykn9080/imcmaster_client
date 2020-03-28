@@ -10,6 +10,7 @@ const BootstrapForm = () => {
     {
       controlId: "formEmail",
       labelText: "Email",
+      name: "email",
       controlType: "email",
       placeholder: "test placeholder",
       formText: "We'll never share your email with anyone else."
@@ -17,19 +18,54 @@ const BootstrapForm = () => {
     {
       controlId: "formPass",
       as: "row",
+      name: "password",
       labelText: "Password",
       controlType: "password",
       placeholder: "passwordr"
     },
     {
+      labelText: "Email",
+      as: "row",
+      controlId: "formPlaniText",
+      defaultValue: "email@example.com",
+      controlType: "plaintext"
+    },
+    {
+      controlId: "radi",
+      labelText: "formRadio",
+      as: "row",
+      controlType: "radio",
+      name: "formctlname",
+      optionArray: [
+        { text: "korea", value: 0 },
+        { text: "China", value: 1 },
+        { text: "usa", value: 2 }
+      ],
+      formText: "Please select your favorite country"
+    },
+    {
+      controlId: "radi1",
+      labelText: "formRadio1",
+      as: "row",
+      controlType: "radio",
+      name: "formctlname1",
+      optionArray: [
+        { text: "korea1", value: 10 },
+        { text: "China1", value: 11 },
+        { text: "usa1", value: 12 }
+      ]
+    },
+    {
       controlId: "formCheckbox",
-      labelText: "Check me out",
+      name: "formcheckbox",
+      label: "Check me out",
       controlType: "checkbox",
       formText: "This for testing checkbox"
     },
     {
       controlId: "formSelect",
       labelText: "Country",
+      name: "country",
       controlType: "select",
       placeholder: "Choose please...",
       optionArray: [
@@ -72,12 +108,19 @@ const BootstrapForm = () => {
 
   const [values, setValues] = useState({});
   const handleChange = event => {
-    event.persist();
+    console.log(event.target.value, event.target.name);
+    let val = event.target.value;
+    let name = event.target.name;
+    setCtrlname(val);
+    event.preventDefault();
     setValues(values => ({
       ...values,
-      [event.target.name]: event.target.value
+      [name]: val
     }));
   };
+
+  //radio의 target.name을 인식하지 못하여
+  const [ctrlname, setCtrlname] = useState({});
   const dispatch = useDispatch();
   const handleSubmit = async e => {
     e.preventDefault();
@@ -90,16 +133,105 @@ const BootstrapForm = () => {
     //   .catch(function(error) {
     //     console.log(error);
     //   });
+    console.log(values);
   };
-  const FormLabel = props => {
-    if (props.as === "row" && props.labelText !== "undefined")
-      return <Form.Label sm="2">{props.labelText}</Form.Label>;
-    else if (props.labelText !== "undefined")
-      return <Form.Label>{props.labelText}</Form.Label>;
-    else return null;
-  };
+
   const FormControl = props => {
-    console.log(props);
+    const FormLabel = props => {
+      if (props.as === "row" && props.labelText !== "undefined")
+        return (
+          <Form.Label column sm="2">
+            {props.labelText}
+          </Form.Label>
+        );
+      else if (props.labelText !== "undefined")
+        return <Form.Label>{props.labelText}</Form.Label>;
+      else return null;
+    };
+    const FormControlSwitch = props => {
+      switch (props.controlType) {
+        case "select":
+          let optph = props.placeholder;
+          if (optph === "undefined") optph = "Select...";
+          return (
+            <>
+              <Form.Control
+                as="select"
+                name={props.name}
+                value={props.formControlValue}
+                onChange={handleChange}
+              >
+                <option value="" selected disabled hidden>
+                  {optph}
+                </option>
+                {props.optionArray.map((k, index) => {
+                  return <option value={k.value}>{k.text}</option>;
+                })}
+              </Form.Control>
+            </>
+          );
+        case "plaintext":
+          return (
+            <Form.Control
+              plaintext
+              readOnly
+              defaultValue={props.defaultValue}
+            />
+          );
+        case "checkbox":
+          return (
+            <Form.Check
+              custom
+              type={props.type}
+              label={props.label}
+              onChange={(this, e) => {
+                console.log(this, e);
+                e.preventDefault();
+                setValues(values => ({
+                  ...values,
+                  [props.name]: k.value
+                }));
+              }}
+            />
+          );
+        case "radio":
+          return (
+            <Col sm={10}>
+              {props.optionArray.map((k, index) => {
+                return (
+                  <Form.Check
+                    custom={true}
+                    inline={true}
+                    type="radio"
+                    label={k.text}
+                    id={props.name + index}
+                    checked={k.value === values[props.name]}
+                    onChange={e => {
+                      e.preventDefault();
+                      setValues(values => ({
+                        ...values,
+                        [props.name]: k.value
+                      }));
+                    }}
+                  />
+                );
+              })}
+            </Col>
+          );
+        default:
+          return (
+            <>
+              <Form.Control
+                type={props.controlType}
+                placeholder={props.placeholder}
+                name={props.labelText}
+                value={values[props.labelText]}
+                onBlur={handleChange}
+              />
+            </>
+          );
+      }
+    };
     return (
       <>
         <FormLabel {...props} />
@@ -113,51 +245,7 @@ const BootstrapForm = () => {
       </>
     );
   };
-  const FormControlSwitch = props => {
-    switch (props.controlType) {
-      case "select":
-        let optph = props.placeholder;
-        if (optph === "undefined") optph = "Select...";
-        return (
-          <>
-            <Form.Control as="select" value={props.formControlValue}>
-              <option value="" selected disabled hidden>
-                {optph}
-              </option>
-              {props.optionArray.map((k, index) => {
-                return <option value={k.value}>{k.text}</option>;
-              })}
-            </Form.Control>
-          </>
-        );
-      case "checkbox":
-        return <Form.Check type="checkbox" label={props.labelText} />;
-      case "radio":
-        return (
-          <Col sm={10}>
-            {props.radioArray.map((k, index) => {
-              return (
-                <Form.Check
-                  type="radio"
-                  label={k.label}
-                  name={k.name}
-                  id={k.name + index}
-                />
-              );
-            })}
-          </Col>
-        );
-      default:
-        return (
-          <>
-            <Form.Control
-              type={props.controlType}
-              placeholder={props.placeholder}
-            />
-          </>
-        );
-    }
-  };
+
   const FormText = ({ text }) => {
     return typeof text === "undefined" ? null : (
       <Form.Text className="text-muted">{text}</Form.Text>
@@ -165,7 +253,6 @@ const BootstrapForm = () => {
   };
 
   const FormRow = props => {
-    console.log(props);
     return (
       <Form.Row>
         {props.rowArray.map((k, i) => {
@@ -175,9 +262,9 @@ const BootstrapForm = () => {
     );
   };
   const FormGroup = props => {
-    // if (props.as === "row") props = { ...props, as: { Row } };
-    return props.as !== "undefined" ? (
-      <Form.Group controlId={props.controlId} as={props.as}>
+    //if (props.as === "row") props = { ...props, as: { Row } };
+    return props.as === "row" ? (
+      <Form.Group controlId={props.controlId} as={Row}>
         <FormControl {...props} />
         <FormText text={props.formText} />
       </Form.Group>
@@ -196,7 +283,7 @@ const BootstrapForm = () => {
     if (props.controlType != "undefined") type = props.controlType;
     if (props.labelText != "undefined") label = props.labelText;
     return (
-      <Button variant={variant} type={type} onClick={props.onClick}>
+      <Button variant={variant} type={type} onClick={handleSubmit}>
         {label}
       </Button>
     );
@@ -218,113 +305,52 @@ const BootstrapForm = () => {
               return <FormGroup {...k} />;
           }
         })}
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
-        </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Submit1
-        </Button>
       </Form>
       <Form>
-        <Form.Row>
-          <Col>
-            <Form.Group controlId="formBasicPassword1">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Control placeholder="Last name" />
-          </Col>
-          <Col>
-            <Form.Control placeholder="Last name" />
-          </Col>
-          <Col>
-            <Form.Control placeholder="Last name" />
-          </Col>
-          <Col>
-            <Form.Control placeholder="Last name" />
-          </Col>
-        </Form.Row>
-        <Form.Row>
-          <Form.Group as={Col} controlId="formGridCity">
-            <Form.Label>City</Form.Label>
-            <Form.Control />
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridState">
-            <Form.Label>State</Form.Label>
-            <Form.Control as="select" value="Choose...">
-              <option>Choose...</option>
-              <option>...</option>
-            </Form.Control>
-          </Form.Group>
-
-          <Form.Group as={Col} controlId="formGridZip">
-            <Form.Label>Zip</Form.Label>
-            <Form.Control />
-          </Form.Group>
-        </Form.Row>
-      </Form>
-
-      <Form>
-        <Form.Group>
-          <Form.Row>
-            <Form.Label>Large Text</Form.Label>
-            <Col>
-              <Form.Control size="lg" type="text" placeholder="Large text" />
-            </Col>
-          </Form.Row>
-          <br />
-          <Form.Row>
-            <Form.Label column lg={2}>
-              Normal Text
-            </Form.Label>
-            <Col>
-              <Form.Control type="text" placeholder="Normal text" />
-            </Col>
-          </Form.Row>
-          <br />
-          <Form.Row>
-            <Form.Label column="sm" lg={2}>
-              Small Text
-            </Form.Label>
-            <Col>
-              <Form.Control size="sm" type="text" placeholder="Small text" />
-            </Col>
-          </Form.Row>
-        </Form.Group>
-      </Form>
-
-      <Form>
-        <Form.Group as={Row} controlId="formPlaintextEmail">
-          <Form.Label column sm="2">
-            Email
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control plaintext readOnly defaultValue="email@example.com" />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} controlId="formPlaintextPassword">
-          <Form.Label column sm="2">
+        <Form.Group as={Row} controlId="formHorizontalPassword">
+          <Form.Label column sm={2}>
             Password
           </Form.Label>
-          <Col sm="10">
+          <Col sm={10}>
             <Form.Control type="password" placeholder="Password" />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm={2}>
+            Radios
+          </Form.Label>
+          <Col sm={10}>
+            <Form.Check
+              type="radio"
+              label="first radio"
+              name="formHorizontalRadios"
+              id="formHorizontalRadios1"
+            />
+            <Form.Check
+              type="radio"
+              label="second radio"
+              name="formHorizontalRadios"
+              id="formHorizontalRadios2"
+            />
+            <Form.Check
+              type="radio"
+              label="third radio"
+              name="formHorizontalRadios"
+              id="formHorizontalRadios3"
+            />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row} controlId="formHorizontalCheck">
+          <Col sm={{ span: 10, offset: 2 }}>
+            <Form.Check label="Remember me" />
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Col sm={{ span: 10, offset: 2 }}>
+            <Button type="submit">Sign in</Button>
           </Col>
         </Form.Group>
       </Form>

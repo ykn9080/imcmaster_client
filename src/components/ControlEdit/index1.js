@@ -16,7 +16,8 @@ import classnames from "classnames";
 import DataSrc from "./DataSrc";
 import Summary from "./Summary";
 import DynamicForm from "components/Common/DynamicForm";
-import BootstrapForm from "components/Common/BootstrapForm";
+import BootFormBuilder from "components/Common/BootFormBuilder";
+import BootFormDisplay from "components/Common/BootFormDisplay";
 
 const EditTab = props => {
   const [activeTab, setActiveTab] = useState("1");
@@ -47,10 +48,9 @@ const EditTab = props => {
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
           <Row>
+            <Col sm="6"></Col>
             <Col sm="6">
-              <BootstrapForm />
-            </Col>
-            <Col sm="6">
+              <BootFormBuilder />
               <Button>Go somewhere</Button>
             </Col>
             {/* <Col sm="6">

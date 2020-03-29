@@ -4,9 +4,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import BootFormBuilder from "./BootFormBuilder";
+import AddBox from "@material-ui/icons/AddBox";
+import CreateIcon from "@material-ui/icons/Create";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
 
-const BootstrapForm = () => {
-  const formArray = [
+const BootFormDisplay = ({ formArray, edit }) => {
+  const formArray1 = [
     {
       controlId: "formEmail",
       labelText: "Email",
@@ -108,7 +116,7 @@ const BootstrapForm = () => {
       variant: "secondary"
     }
   ];
-
+  console.log("thisis form array:", formArray);
   const [values, setValues] = useState({});
   const handleChange = event => {
     let val = event.target.value;
@@ -295,26 +303,95 @@ const BootstrapForm = () => {
       </Button>
     );
   };
+  const EditDel = props => {
+    const deleteHandler = id => {
+      console.log(id);
+    };
+    const editHandler = id => {
+      console.log(id);
+    };
+    return props.edit ? (
+      <Grid
+        container
+        alignItems="flex-start"
+        justify="flex-end"
+        direction="row"
+      >
+        <IconButton aria-label="delete control">
+          <DeleteIcon onClick={() => deleteHandler(props.controlId)} />
+        </IconButton>
+        <IconButton aria-label="edit control">
+          <CreateIcon onClick={() => editHandler(props.controlId)} />
+        </IconButton>
+        <Divider />
+      </Grid>
+    ) : null;
+  };
   return (
     <>
       <Form>
         {formArray.map((k, i) => {
           let type = k.controlType;
+          let rtn;
           if (k.as == "row") type = "row";
           switch (type) {
             case "button":
-              return <Btn {...k} />;
+              return (
+                <>
+                  <Btn {...k} />
+                  <EditDel {...k} edit={edit} />
+                </>
+              );
             case "formRow":
-              return <FormRow {...k} />;
+              return (
+                <>
+                  <FormRow {...k} />
+                  <EditDel {...k} edit={edit} />
+                </>
+              );
             case "row":
-              return <FormGroup {...k} as="row" />;
+              return (
+                <>
+                  <FormGroup {...k} as="row" />
+                  <EditDel {...k} edit={edit} />
+                </>
+              );
             default:
-              return <FormGroup {...k} />;
+              return (
+                <>
+                  <FormGroup {...k} />
+                  <EditDel {...k} edit={edit} />
+                </>
+              );
           }
+
+          // switch (type) {
+          //   case "button":
+          //     rtn = <Btn {...k} />;
+          //     break;
+          //   case "formRow":
+          //     rtn = <FormRow {...k} />;
+          //     break;
+          //   case "row":
+          //     rtn = <FormGroup {...k} as="row" />;
+          //     break;
+          //   default:
+          //     rtn = <FormGroup {...k} />;
+          //     break;
+          // }
+          // return <EditDel />;
+          // <Grid container spacing={1}>
+          //   <Grid item xs>
+          //     <EditDel />
+          //   </Grid>
+          //   <Grid item xs={10}>
+          //     rtn
+          //   </Grid>
+          // </Grid>
         })}
       </Form>
     </>
   );
 };
 
-export default BootstrapForm;
+export default BootFormDisplay;

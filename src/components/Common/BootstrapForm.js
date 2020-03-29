@@ -79,12 +79,14 @@ const BootstrapForm = () => {
       rowArray: [
         {
           controlId: "formGridCity",
+          name: "city",
           labelText: "City",
           controlType: "input"
         },
         {
           controlId: "formSelect1",
           labelText: "Country1",
+          name: "country1",
           controlType: "select",
           optionArray: [
             { text: "Japan", value: 0 },
@@ -93,6 +95,7 @@ const BootstrapForm = () => {
         },
         {
           controlId: "formGridzip",
+          name: "zip",
           labelText: "Zip",
           controlType: "input"
         }
@@ -108,7 +111,6 @@ const BootstrapForm = () => {
 
   const [values, setValues] = useState({});
   const handleChange = event => {
-    console.log(event.target.value, event.target.name);
     let val = event.target.value;
     let name = event.target.name;
     setCtrlname(val);
@@ -179,17 +181,22 @@ const BootstrapForm = () => {
             />
           );
         case "checkbox":
+          if (typeof values[props.name] === "undefined")
+            setValues(values => ({
+              ...values,
+              [props.name]: false
+            }));
           return (
             <Form.Check
               custom
               type={props.type}
               label={props.label}
-              onChange={(this, e) => {
-                console.log(this, e);
+              checked={values[props.name]}
+              onChange={e => {
                 e.preventDefault();
                 setValues(values => ({
                   ...values,
-                  [props.name]: k.value
+                  [props.name]: !values[props.name]
                 }));
               }}
             />
@@ -305,54 +312,6 @@ const BootstrapForm = () => {
               return <FormGroup {...k} />;
           }
         })}
-      </Form>
-      <Form>
-        <Form.Group as={Row} controlId="formHorizontalPassword">
-          <Form.Label column sm={2}>
-            Password
-          </Form.Label>
-          <Col sm={10}>
-            <Form.Control type="password" placeholder="Password" />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm={2}>
-            Radios
-          </Form.Label>
-          <Col sm={10}>
-            <Form.Check
-              type="radio"
-              label="first radio"
-              name="formHorizontalRadios"
-              id="formHorizontalRadios1"
-            />
-            <Form.Check
-              type="radio"
-              label="second radio"
-              name="formHorizontalRadios"
-              id="formHorizontalRadios2"
-            />
-            <Form.Check
-              type="radio"
-              label="third radio"
-              name="formHorizontalRadios"
-              id="formHorizontalRadios3"
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} controlId="formHorizontalCheck">
-          <Col sm={{ span: 10, offset: 2 }}>
-            <Form.Check label="Remember me" />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Col sm={{ span: 10, offset: 2 }}>
-            <Button type="submit">Sign in</Button>
-          </Col>
-        </Form.Group>
       </Form>
     </>
   );

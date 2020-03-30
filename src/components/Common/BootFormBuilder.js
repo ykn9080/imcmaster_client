@@ -3,16 +3,18 @@ import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import BootFormDisplay from "./BootFormDisplay";
 import { Button } from "reactstrap";
+import SpeedDialButton from "./SpeedDial";
+import { PlusSquareOutlined } from "@ant-design/icons";
 
-const BootFormBuilder = () => {
-  const pathname = encodeURIComponent(window.location.pathname);
+const BootFormBuilder = props => {
+  //const pathname = encodeURIComponent(window.location.pathname);
   let [formArray, setFormArray] = useState([]);
   useEffect(() => {
     axios
-      .get(`${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`)
+      .get(
+        `${currentsetting.webserviceprefix}bootform/id?pathname=${props.pathname}`
+      )
       .then(function(response) {
-        console.log(response.data[0].data);
-        console.log(response.data[0].data);
         // if (response.data.data != "undefined")
         setFormArray(JSON.parse(response.data[0].data));
       })
@@ -123,23 +125,23 @@ const BootFormBuilder = () => {
         variant: "secondary"
       }
     ];
-    const tt = {
-      name: "first",
-      desc: "input form test",
-      pathname: "/controledit1",
-      seq: 1,
-      comp: "5d37e3627fefc084e3f05e82",
-      data: JSON.stringify(formArray1)
-    };
-    axios.put(
-      `${currentsetting.webserviceprefix}bootform/5e8054063346b1dd6ce970aa`,
-      tt
-    );
+    // const tt = {
+    //   name: "first",
+    //   desc: "input form test",
+    //   pathname: "/controledit1",
+    //   seq: 1,
+    //   comp: "5d37e3627fefc084e3f05e82",
+    //   data: JSON.stringify(formArray1)
+    // };
+    // axios.put(
+    //   `${currentsetting.webserviceprefix}bootform/5e8054063346b1dd6ce970aa`,
+    //   tt
+    // );
   };
   return (
     <>
       <BootFormDisplay formArray={formArray} edit={true} />
-      <Button onClick={run}>Click</Button>
+      <SpeedDialButton />
     </>
   );
 };

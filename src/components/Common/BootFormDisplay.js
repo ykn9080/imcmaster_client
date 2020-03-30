@@ -32,14 +32,14 @@ const useStyles = makeStyles(theme => ({
 
 const BootFormDisplay = props => {
   const formArray1 = [
-    {
-      controlId: "formEmail",
-      labelText: "Email",
-      name: "email",
-      controlType: "email",
-      placeholder: "test placeholder",
-      formText: "We'll never share your email with anyone else."
-    },
+    // {
+    //   controlId: "formEmail",
+    //   labelText: "Email",
+    //   name: "email",
+    //   controlType: "email",
+    //   placeholder: "test placeholder",
+    //   formText: "We'll never share your email with anyone else."
+    // },
     {
       controlId: "formPass",
       as: "row",
@@ -48,57 +48,57 @@ const BootFormDisplay = props => {
       controlType: "password",
       placeholder: "passwordr"
     },
-    {
-      labelText: "Email",
-      as: "row",
-      controlId: "formPlaniText",
-      defaultValue: "email@example.com",
-      controlType: "plaintext"
-    },
-    {
-      controlId: "radi",
-      labelText: "formRadio",
-      as: "row",
-      controlType: "radio",
-      name: "formctlname",
-      optionArray: [
-        { text: "korea", value: 0 },
-        { text: "China", value: 1 },
-        { text: "usa", value: 2 }
-      ],
-      formText: "Please select your favorite country"
-    },
-    {
-      controlId: "radi1",
-      labelText: "formRadio1",
-      as: "row",
-      controlType: "radio",
-      name: "formctlname1",
-      optionArray: [
-        { text: "korea1", value: 10 },
-        { text: "China1", value: 11 },
-        { text: "usa1", value: 12 }
-      ]
-    },
-    {
-      controlId: "formCheckbox",
-      name: "formcheckbox",
-      label: "Check me out",
-      controlType: "checkbox",
-      formText: "This for testing checkbox"
-    },
-    {
-      controlId: "formSelect",
-      labelText: "Country",
-      name: "country",
-      controlType: "select",
-      placeholder: "Choose please...",
-      optionArray: [
-        { text: "korea", value: 0 },
-        { text: "China", value: 1 }
-      ],
-      formText: "Please select your favorite country"
-    },
+    // {
+    //   labelText: "Email",
+    //   as: "row",
+    //   controlId: "formPlaniText",
+    //   defaultValue: "email@example.com",
+    //   controlType: "plaintext"
+    // },
+    // {
+    //   controlId: "radi",
+    //   labelText: "formRadio",
+    //   as: "row",
+    //   controlType: "radio",
+    //   name: "formctlname",
+    //   optionArray: [
+    //     { text: "korea", value: 0 },
+    //     { text: "China", value: 1 },
+    //     { text: "usa", value: 2 }
+    //   ],
+    //   formText: "Please select your favorite country"
+    // },
+    // {
+    //   controlId: "radi1",
+    //   labelText: "formRadio1",
+    //   as: "row",
+    //   controlType: "radio",
+    //   name: "formctlname1",
+    //   optionArray: [
+    //     { text: "korea1", value: 10 },
+    //     { text: "China1", value: 11 },
+    //     { text: "usa1", value: 12 }
+    //   ]
+    // },
+    // {
+    //   controlId: "formCheckbox",
+    //   name: "formcheckbox",
+    //   label: "Check me out",
+    //   controlType: "checkbox",
+    //   formText: "This for testing checkbox"
+    // },
+    // {
+    //   controlId: "formSelect",
+    //   labelText: "Country",
+    //   name: "country",
+    //   controlType: "select",
+    //   placeholder: "Choose please...",
+    //   optionArray: [
+    //     { text: "korea", value: 0 },
+    //     { text: "China", value: 1 }
+    //   ],
+    //   formText: "Please select your favorite country"
+    // },
     {
       controlType: "formRow",
       rowArray: [
@@ -125,13 +125,13 @@ const BootFormDisplay = props => {
           controlType: "input"
         }
       ]
-    },
-    {
-      controlId: "formButton",
-      labelText: "Enter",
-      controlType: "button",
-      variant: "secondary"
     }
+    // {
+    //   controlId: "formButton",
+    //   labelText: "Enter",
+    //   controlType: "button",
+    //   variant: "secondary"
+    // }
   ];
   console.log("thisis form array:", props.formArray);
   const classes = useStyles();
@@ -188,9 +188,7 @@ const BootFormDisplay = props => {
     };
 
     const FormLabel = props => {
-      const editHandler = e => {
-        console.log("edit");
-      };
+      console.log(props);
       if (props.as === "row" && props.labelText !== "undefined")
         return (
           <>
@@ -200,7 +198,8 @@ const BootFormDisplay = props => {
             </Form.Label>
           </>
         );
-      else if (props.labelText !== "undefined")
+      else if (props.labelText !== "undefined") {
+        console.log("here", props);
         return (
           <>
             <Form.Label>
@@ -209,12 +208,10 @@ const BootFormDisplay = props => {
             </Form.Label>
           </>
         );
-      else
-        return (
-          <>
-            <EditDel {...props} />
-          </>
-        );
+      } else return null;
+      // <>
+      //   <EditDel {...props} />
+      // </>
     };
     const FormControlSwitch = props => {
       switch (props.controlType) {
@@ -271,10 +268,11 @@ const BootFormDisplay = props => {
           return (
             <Col sm={10}>
               {props.optionArray.map((k, index) => {
+                let inlinee = k.inline;
                 return (
                   <Form.Check
                     custom={true}
-                    inline={true}
+                    inline={inlinee}
                     type="radio"
                     label={k.text}
                     id={props.name + index}
@@ -329,7 +327,7 @@ const BootFormDisplay = props => {
     return (
       <Form.Row>
         {props.rowArray.map((k, i) => {
-          return <FormGroup {...k} as={Col} />;
+          return <FormGroup {...k} as={Col} edit={props.edit} />;
         })}
       </Form.Row>
     );
@@ -371,54 +369,14 @@ const BootFormDisplay = props => {
           if (k.as == "row") type = "row";
           switch (type) {
             case "button":
-              return (
-                <>
-                  <Btn {...k} edit={props.edit} />
-                </>
-              );
+              return <Btn {...k} edit={props.edit} />;
             case "formRow":
-              return (
-                <>
-                  <FormRow {...k} edit={props.edit} />
-                </>
-              );
+              return <FormRow {...k} edit={props.edit} />;
             case "row":
-              return (
-                <>
-                  <FormGroup {...k} edit={props.edit} as="row" />
-                </>
-              );
+              return <FormGroup {...k} edit={props.edit} as="row" />;
             default:
-              return (
-                <>
-                  <FormGroup {...k} edit={props.edit} />
-                </>
-              );
+              return <FormGroup {...k} edit={props.edit} />;
           }
-
-          // switch (type) {
-          //   case "button":
-          //     rtn = <Btn {...k} />;
-          //     break;
-          //   case "formRow":
-          //     rtn = <FormRow {...k} />;
-          //     break;
-          //   case "row":
-          //     rtn = <FormGroup {...k} as="row" />;
-          //     break;
-          //   default:
-          //     rtn = <FormGroup {...k} />;
-          //     break;
-          // }
-          // return <EditDel />;
-          // <Grid container spacing={1}>
-          //   <Grid item xs>
-          //     <EditDel />
-          //   </Grid>
-          //   <Grid item xs={10}>
-          //     rtn
-          //   </Grid>
-          // </Grid>
         })}
       </Form>
     </>

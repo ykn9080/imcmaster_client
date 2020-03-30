@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { globalVariable } from "actions";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import BootFormDisplay from "./BootFormDisplay";
 import { Button } from "reactstrap";
 import SpeedDialButton from "./SpeedDial";
 import { PlusSquareOutlined } from "@ant-design/icons";
+import DialogFull from "./DialogFull";
+import Switchs from "./Switch";
+import Grid from "@material-ui/core/Grid";
+import CheckboxLabels from "./CheckboxLabels";
 
 const BootFormBuilder = props => {
   //const pathname = encodeURIComponent(window.location.pathname);
   let [formArray, setFormArray] = useState([]);
+  const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+  //   useEffect(() => {
+  //     setOpen(props.open);
+  //   }, [props.open]);
+
   useEffect(() => {
     axios
       .get(
@@ -138,10 +150,30 @@ const BootFormBuilder = props => {
     //   tt
     // );
   };
+
+  let open = useSelector(state => state.global.openDialog);
+  const openHandler = () => {
+    dispatch(globalVariable({ openDialog: true }));
+    open = true;
+  };
+  const handleChange = state => {
+    setShow(state);
+  };
   return (
     <>
-      <BootFormDisplay formArray={formArray} edit={true} />
+      {/* <Grid
+        container
+        direction="row"
+        justify="flex-end"
+        alignItems="flex-start"
+      >
+       
+      </Grid> */}
+      <BootFormDisplay formArray={formArray} edit={show} />
+      <CheckboxLabels handleChange={handleChange} />
       <SpeedDialButton />
+      {/* <Button onClick={openHandler}>Edit</Button> */}
+      <DialogFull open={open} />
     </>
   );
 };

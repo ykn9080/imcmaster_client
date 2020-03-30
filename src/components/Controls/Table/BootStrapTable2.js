@@ -10,8 +10,8 @@ import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 const BootTable = ({ dt, apiUrl, keyfield, attr }) => {
   // let condensed = "";
   // if (props.condensed) condensed = props.condensed;
-  let hover = "",
-    striped = "";
+  let hover = false,
+    striped = false;
   let selectRow = {
     mode: "checkbox",
     clickToSelect: true,

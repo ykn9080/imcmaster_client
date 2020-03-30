@@ -39,6 +39,8 @@ const EditTab = props => {
       </NavItem>
     );
   };
+  const pathname = encodeURIComponent(window.location.pathname);
+
   return (
     <div style={{ padding: 10 }}>
       <Nav tabs>
@@ -48,9 +50,10 @@ const EditTab = props => {
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
           <Row>
-            <Col sm="6"></Col>
             <Col sm="6">
-              <BootFormBuilder />
+              <BootFormBuilder pathname={pathname} edit={true} />
+            </Col>
+            <Col sm="6">
               <Button>Go somewhere</Button>
             </Col>
             {/* <Col sm="6">

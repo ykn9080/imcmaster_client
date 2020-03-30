@@ -133,7 +133,8 @@ const BootFormDisplay = props => {
     //   variant: "secondary"
     // }
   ];
-  console.log("thisis form array:", props.formArray);
+  let formArray = props.formArray;
+  if (formArray === "undefined") formArray = [];
   const classes = useStyles();
   const [values, setValues] = useState({});
   const handleChange = event => {
@@ -172,7 +173,7 @@ const BootFormDisplay = props => {
       const editHandler = id => {
         console.log(id);
       };
-      console.log(props);
+
       return props.edit ? (
         <>
           <EditOutlined
@@ -188,7 +189,6 @@ const BootFormDisplay = props => {
     };
 
     const FormLabel = props => {
-      console.log(props);
       if (props.as === "row" && props.labelText !== "undefined")
         return (
           <>
@@ -199,7 +199,6 @@ const BootFormDisplay = props => {
           </>
         );
       else if (props.labelText !== "undefined") {
-        console.log("here", props);
         return (
           <>
             <Form.Label>
@@ -226,11 +225,15 @@ const BootFormDisplay = props => {
                 value={props.formControlValue}
                 onChange={handleChange}
               >
-                <option value="" selected disabled hidden>
+                <option value="" defaultValue disabled hidden>
                   {optph}
                 </option>
                 {props.optionArray.map((k, index) => {
-                  return <option value={k.value}>{k.text}</option>;
+                  return (
+                    <option key={k.value} value={k.value}>
+                      {k.text}
+                    </option>
+                  );
                 })}
               </Form.Control>
             </>
@@ -271,6 +274,7 @@ const BootFormDisplay = props => {
                 let inlinee = k.inline;
                 return (
                   <Form.Check
+                    key={k.value}
                     custom={true}
                     inline={inlinee}
                     type="radio"
@@ -327,7 +331,9 @@ const BootFormDisplay = props => {
     return (
       <Form.Row>
         {props.rowArray.map((k, i) => {
-          return <FormGroup {...k} as={Col} edit={props.edit} />;
+          return (
+            <FormGroup {...k} key={k.controlId} as={Col} edit={props.edit} />
+          );
         })}
       </Form.Row>
     );
@@ -335,12 +341,12 @@ const BootFormDisplay = props => {
   const FormGroup = props => {
     //if (props.as === "row") props = { ...props, as: { Row } };
     return props.as === "row" ? (
-      <Form.Group controlId={props.controlId} as={Row}>
+      <Form.Group key={props.controlId} controlId={props.controlId} as={Row}>
         <FormControl {...props} />
         <FormText text={props.formText} />
       </Form.Group>
     ) : (
-      <Form.Group controlId={props.controlId}>
+      <Form.Group key={props.controlId} controlId={props.controlId}>
         <FormControl {...props} />
         <FormText text={props.formText} />
       </Form.Group>
@@ -363,7 +369,7 @@ const BootFormDisplay = props => {
   return (
     <>
       <Form>
-        {props.formArray.map((k, i) => {
+        {formArray.map((k, i) => {
           let type = k.controlType;
           let rtn;
           if (k.as == "row") type = "row";

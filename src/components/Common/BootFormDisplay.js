@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BootFormDisplay = ({ formArray, edit }) => {
+const BootFormDisplay = props => {
   const formArray1 = [
     {
       controlId: "formEmail",
@@ -133,7 +133,7 @@ const BootFormDisplay = ({ formArray, edit }) => {
       variant: "secondary"
     }
   ];
-  console.log("thisis form array:", formArray);
+  console.log("thisis form array:", props.formArray);
   const classes = useStyles();
   const [values, setValues] = useState({});
   const handleChange = event => {
@@ -172,13 +172,21 @@ const BootFormDisplay = ({ formArray, edit }) => {
       const editHandler = id => {
         console.log(id);
       };
+      console.log(props);
       return props.edit ? (
         <>
-          <EditOutlined />
-          <DeleteOutlined />
+          <EditOutlined
+            className={classes.icon}
+            onClick={() => editHandler(props.controlId)}
+          />
+          <DeleteOutlined
+            className={classes.icon}
+            onClick={() => deleteHandler(props.controlId)}
+          />
         </>
       ) : null;
     };
+
     const FormLabel = props => {
       const editHandler = e => {
         console.log("edit");
@@ -187,8 +195,7 @@ const BootFormDisplay = ({ formArray, edit }) => {
         return (
           <>
             <Form.Label column sm="2">
-              <EditOutlined className={classes.icon} onClick={editHandler} />
-              <DeleteOutlined className={classes.icon} />
+              <EditDel {...props} />
               {props.labelText}
             </Form.Label>
           </>
@@ -196,16 +203,16 @@ const BootFormDisplay = ({ formArray, edit }) => {
       else if (props.labelText !== "undefined")
         return (
           <>
-            <EditOutlined className={classes.icon} />
-            <DeleteOutlined className={classes.icon} />
-            <Form.Label>{props.labelText}</Form.Label>
+            <Form.Label>
+              <EditDel {...props} />
+              {props.labelText}
+            </Form.Label>
           </>
         );
       else
         return (
           <>
-            <EditOutlined style={{ marginRight: 3 }} />
-            <DeleteOutlined />
+            <EditDel {...props} />
           </>
         );
     };
@@ -358,7 +365,7 @@ const BootFormDisplay = ({ formArray, edit }) => {
   return (
     <>
       <Form>
-        {formArray.map((k, i) => {
+        {props.formArray.map((k, i) => {
           let type = k.controlType;
           let rtn;
           if (k.as == "row") type = "row";
@@ -366,25 +373,25 @@ const BootFormDisplay = ({ formArray, edit }) => {
             case "button":
               return (
                 <>
-                  <Btn {...k} />
+                  <Btn {...k} edit={props.edit} />
                 </>
               );
             case "formRow":
               return (
                 <>
-                  <FormRow {...k} />
+                  <FormRow {...k} edit={props.edit} />
                 </>
               );
             case "row":
               return (
                 <>
-                  <FormGroup {...k} as="row" />
+                  <FormGroup {...k} edit={props.edit} as="row" />
                 </>
               );
             default:
               return (
                 <>
-                  <FormGroup {...k} />
+                  <FormGroup {...k} edit={props.edit} />
                 </>
               );
           }

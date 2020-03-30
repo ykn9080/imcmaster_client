@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
+import { makeStyles } from "@material-ui/core/styles";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import BootFormBuilder from "./BootFormBuilder";
@@ -12,6 +13,22 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
+import "antd/dist/antd.css";
+import {
+  HomeOutlined,
+  SettingFilled,
+  SmileOutlined,
+  SyncOutlined,
+  LoadingOutlined,
+  EditOutlined,
+  DeleteOutlined
+} from "@ant-design/icons";
+
+const useStyles = makeStyles(theme => ({
+  icon: {
+    marginRight: 2
+  }
+}));
 
 const BootFormDisplay = ({ formArray, edit }) => {
   const formArray1 = [
@@ -117,6 +134,7 @@ const BootFormDisplay = ({ formArray, edit }) => {
     }
   ];
   console.log("thisis form array:", formArray);
+  const classes = useStyles();
   const [values, setValues] = useState({});
   const handleChange = event => {
     let val = event.target.value;
@@ -147,16 +165,49 @@ const BootFormDisplay = ({ formArray, edit }) => {
   };
 
   const FormControl = props => {
+    const EditDel = props => {
+      const deleteHandler = id => {
+        console.log(id);
+      };
+      const editHandler = id => {
+        console.log(id);
+      };
+      return props.edit ? (
+        <>
+          <EditOutlined />
+          <DeleteOutlined />
+        </>
+      ) : null;
+    };
     const FormLabel = props => {
+      const editHandler = e => {
+        console.log("edit");
+      };
       if (props.as === "row" && props.labelText !== "undefined")
         return (
-          <Form.Label column sm="2">
-            {props.labelText}
-          </Form.Label>
+          <>
+            <Form.Label column sm="2">
+              <EditOutlined className={classes.icon} onClick={editHandler} />
+              <DeleteOutlined className={classes.icon} />
+              {props.labelText}
+            </Form.Label>
+          </>
         );
       else if (props.labelText !== "undefined")
-        return <Form.Label>{props.labelText}</Form.Label>;
-      else return null;
+        return (
+          <>
+            <EditOutlined className={classes.icon} />
+            <DeleteOutlined className={classes.icon} />
+            <Form.Label>{props.labelText}</Form.Label>
+          </>
+        );
+      else
+        return (
+          <>
+            <EditOutlined style={{ marginRight: 3 }} />
+            <DeleteOutlined />
+          </>
+        );
     };
     const FormControlSwitch = props => {
       switch (props.controlType) {
@@ -303,30 +354,7 @@ const BootFormDisplay = ({ formArray, edit }) => {
       </Button>
     );
   };
-  const EditDel = props => {
-    const deleteHandler = id => {
-      console.log(id);
-    };
-    const editHandler = id => {
-      console.log(id);
-    };
-    return props.edit ? (
-      <Grid
-        container
-        alignItems="flex-start"
-        justify="flex-end"
-        direction="row"
-      >
-        <IconButton aria-label="delete control">
-          <DeleteIcon onClick={() => deleteHandler(props.controlId)} />
-        </IconButton>
-        <IconButton aria-label="edit control">
-          <CreateIcon onClick={() => editHandler(props.controlId)} />
-        </IconButton>
-        <Divider />
-      </Grid>
-    ) : null;
-  };
+
   return (
     <>
       <Form>
@@ -339,28 +367,24 @@ const BootFormDisplay = ({ formArray, edit }) => {
               return (
                 <>
                   <Btn {...k} />
-                  <EditDel {...k} edit={edit} />
                 </>
               );
             case "formRow":
               return (
                 <>
                   <FormRow {...k} />
-                  <EditDel {...k} edit={edit} />
                 </>
               );
             case "row":
               return (
                 <>
                   <FormGroup {...k} as="row" />
-                  <EditDel {...k} edit={edit} />
                 </>
               );
             default:
               return (
                 <>
                   <FormGroup {...k} />
-                  <EditDel {...k} edit={edit} />
                 </>
               );
           }

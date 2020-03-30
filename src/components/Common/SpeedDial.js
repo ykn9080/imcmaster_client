@@ -1,20 +1,17 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Backdrop from "@material-ui/core/Backdrop";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import PrintIcon from "@material-ui/icons/Print";
-import ShareIcon from "@material-ui/icons/Share";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: 380,
+    height: 30,
     transform: "translateZ(0px)",
     flexGrow: 1
   },
@@ -45,12 +42,11 @@ const SpeedDialButton = () => {
 
   return (
     <div className={classes.root}>
-      <Backdrop open={open} />
       <SpeedDial
-        ariaLabel="SpeedDial tooltip example"
+        ariaLabel="SpeedDial openIcon example"
         className={classes.speedDial}
         hidden={hidden}
-        icon={<SpeedDialIcon />}
+        icon={<SpeedDialIcon openIcon={<AddIcon />} />}
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}
@@ -60,11 +56,7 @@ const SpeedDialButton = () => {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            tooltipOpen
-            onClick={e => {
-              e.preventDefault();
-              handleClose(action.name);
-            }}
+            onClick={handleClose}
           />
         ))}
       </SpeedDial>

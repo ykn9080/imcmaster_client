@@ -116,6 +116,7 @@ const globalVar = {
   eventparam: {},
   helpdiagramobj: "",
   openDialog: false,
+  formEdit: false,
   login: "",
   token: "",
   selectedKey: "",

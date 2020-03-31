@@ -44,7 +44,7 @@ const EditTab = props => {
 
   return (
     <>
-      <DenseAppBar />
+      <DenseAppBar showEdit={true} />
       <div style={{ paddingLeft: 5, marginTop: 10 }}>
         <Nav tabs>
           <NItem indx={"1"} title={"Summary"} />

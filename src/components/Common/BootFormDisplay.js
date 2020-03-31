@@ -147,6 +147,7 @@ const BootFormDisplay = props => {
       [name]: val
     }));
   };
+  let edit = useSelector(state => state.global.formEdit);
 
   //radio의 target.name을 인식하지 못하여
   const [ctrlname, setCtrlname] = useState({});
@@ -174,7 +175,7 @@ const BootFormDisplay = props => {
         console.log(id);
       };
 
-      return props.edit ? (
+      return edit ? (
         <>
           <EditOutlined
             className={classes.icon}

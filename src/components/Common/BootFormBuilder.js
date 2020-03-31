@@ -10,7 +10,6 @@ import { PlusSquareOutlined } from "@ant-design/icons";
 import DialogFull from "./DialogFull";
 import Switchs from "./Switch";
 import Grid from "@material-ui/core/Grid";
-import CheckboxLabels from "./CheckboxLabels";
 
 const BootFormBuilder = props => {
   //const pathname = encodeURIComponent(window.location.pathname);
@@ -152,12 +151,10 @@ const BootFormBuilder = props => {
   };
 
   let open = useSelector(state => state.global.openDialog);
+
   const openHandler = () => {
     dispatch(globalVariable({ openDialog: true }));
     open = true;
-  };
-  const handleChange = state => {
-    setShow(state);
   };
 
   return (
@@ -170,11 +167,10 @@ const BootFormBuilder = props => {
       >
        
       </Grid> */}
-      <BootFormDisplay formArray={formArray} edit={show} />
-      <CheckboxLabels handleChange={handleChange} />
+      <BootFormDisplay formArray={formArray} />
       <SpeedDialButton />
-      {/* <Button onClick={openHandler}>Edit</Button> */}
-      <DialogFull open={open} />
+      <Button onClick={openHandler}>Edit</Button>
+      <DialogFull open={open}></DialogFull>
     </>
   );
 };

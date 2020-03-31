@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
+import $ from "jquery";
+import "jquery-ui-bundle";
+import "jquery-ui-bundle/jquery-ui.min.css";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,6 +26,7 @@ import {
   EditOutlined,
   DeleteOutlined
 } from "@ant-design/icons";
+import SpeedDialButton from "./SpeedDial";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -137,6 +141,40 @@ const BootFormDisplay = props => {
   if (formArray === "undefined") formArray = [];
   const classes = useStyles();
   const [values, setValues] = useState({});
+
+  useEffect(() => {
+    //$(refs.sortable);
+    const $node = $(".SortForm");
+
+    $node.sortable({
+      opacity: 0.8,
+      start: function(event, ui) {
+        var start_pos = ui.item.index();
+        ui.item.data("start_pos", start_pos);
+      },
+      update: function(event, ui) {
+        var start_pos = ui.item.data("start_pos");
+        var end_pos = ui.item.index();
+        //$('#sortable li').removeClass('highlights');
+        console.log(start_pos, end_pos);
+      }
+
+      // Get the incoming onChange function
+      // and invoke it on the Sortable `change` event
+      // drop: function(event, ui) {
+      //   //onChange(event, ui);
+      //   console.log(event);
+      // },
+      // change: (event, ui) => {
+      //   //onChange = (event, ui) => console.log("DOM changed!!!!", event, ui);
+      //   console.log(event);
+      // }
+    });
+    return () => {
+      $node.sortable();
+    };
+  }, []);
+
   const handleChange = event => {
     let val = event.target.value;
     let name = event.target.name;
@@ -175,18 +213,20 @@ const BootFormDisplay = props => {
         console.log(id);
       };
 
-      return edit ? (
-        <>
-          <EditOutlined
-            className={classes.icon}
-            onClick={() => editHandler(props.controlId)}
-          />
-          <DeleteOutlined
-            className={classes.icon}
-            onClick={() => deleteHandler(props.controlId)}
-          />
-        </>
-      ) : null;
+      return (
+        edit && (
+          <>
+            <EditOutlined
+              className={classes.icon}
+              onClick={() => editHandler(props.controlId)}
+            />
+            <DeleteOutlined
+              className={classes.icon}
+              onClick={() => deleteHandler(props.controlId)}
+            />
+          </>
+        )
+      );
     };
 
     const FormLabel = props => {
@@ -369,7 +409,7 @@ const BootFormDisplay = props => {
 
   return (
     <>
-      <Form>
+      <Form className={"SortForm"}>
         {formArray.map((k, i) => {
           let type = k.controlType;
           let rtn;
@@ -386,6 +426,7 @@ const BootFormDisplay = props => {
           }
         })}
       </Form>
+      {edit && <SpeedDialButton />}
     </>
   );
 };

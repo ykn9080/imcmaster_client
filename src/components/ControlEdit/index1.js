@@ -18,6 +18,7 @@ import Summary from "./Summary";
 import DynamicForm from "components/Common/DynamicForm";
 import BootFormBuilder from "components/Common/BootFormBuilder";
 import BootFormDisplay from "components/Common/BootFormDisplay";
+import DenseAppBar from "components/Common/AppBar";
 
 const EditTab = props => {
   const [activeTab, setActiveTab] = useState("1");
@@ -42,21 +43,23 @@ const EditTab = props => {
   const pathname = encodeURIComponent(window.location.pathname);
 
   return (
-    <div style={{ padding: 10 }}>
-      <Nav tabs>
-        <NItem indx={"1"} title={"Summary"} />
-        <NItem indx={"2"} title={"DataSource"} />
-      </Nav>
-      <TabContent activeTab={activeTab}>
-        <TabPane tabId="1">
-          <Row>
-            <Col sm="6">
-              <BootFormBuilder pathname={pathname} edit={true} />
-            </Col>
-            <Col sm="6">
-              <Button>Go somewhere</Button>
-            </Col>
-            {/* <Col sm="6">
+    <>
+      <DenseAppBar />
+      <div style={{ paddingLeft: 5, marginTop: 10 }}>
+        <Nav tabs>
+          <NItem indx={"1"} title={"Summary"} />
+          <NItem indx={"2"} title={"DataSource"} />
+        </Nav>
+        <TabContent activeTab={activeTab}>
+          <TabPane tabId="1">
+            <Row>
+              <Col sm="6">
+                <BootFormBuilder pathname={pathname} edit={true} />
+              </Col>
+              <Col sm="6">
+                <Button>Go somewhere</Button>
+              </Col>
+              {/* <Col sm="6">
               <Card body>
                 <CardTitle>Special Title Treatment</CardTitle>
                 <Summary />
@@ -69,17 +72,18 @@ const EditTab = props => {
                 <Button>Go somewhere</Button>
               </Card>
             </Col> */}
-          </Row>
-        </TabPane>
-        <TabPane tabId="2">
-          <Row>
-            <Col sm="12">
-              <DataSrc />
-            </Col>
-          </Row>
-        </TabPane>
-      </TabContent>
-    </div>
+            </Row>
+          </TabPane>
+          <TabPane tabId="2">
+            <Row>
+              <Col sm="12">
+                <DataSrc />
+              </Col>
+            </Row>
+          </TabPane>
+        </TabContent>
+      </div>
+    </>
   );
 };
 

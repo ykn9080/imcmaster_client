@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { globalVariable } from "actions";
 import {
   TabContent,
   TabPane,
@@ -19,6 +22,8 @@ import DynamicForm from "components/Common/DynamicForm";
 import BootFormBuilder from "components/Common/BootFormBuilder";
 import BootFormDisplay from "components/Common/BootFormDisplay";
 import DenseAppBar from "components/Common/AppBar";
+import IconBtn from "components/Common/IconButton";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 const EditTab = props => {
   const [activeTab, setActiveTab] = useState("1");
@@ -42,9 +47,21 @@ const EditTab = props => {
   };
   const pathname = encodeURIComponent(window.location.pathname);
 
+  //for right icon at DenseAppBar for edit BootFormDisplay
+  const dispatch = useDispatch();
+  let edit = useSelector(state => state.global.formEdit);
+  const handleEdit = () => {
+    dispatch(globalVariable({ formEdit: !edit }));
+  };
+  const right = (
+    <IconBtn tooltip={"Edit Page"} handleClick={handleEdit}>
+      <SettingsIcon />
+    </IconBtn>
+  );
+
   return (
     <>
-      <DenseAppBar showEdit={true} />
+      <DenseAppBar title={"Control Edit"} right={right} />
       <div style={{ paddingLeft: 5, marginTop: 10 }}>
         <Nav tabs>
           <NItem indx={"1"} title={"Summary"} />

@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -7,6 +8,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconBtn from "./IconButton";
@@ -22,17 +24,32 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1
+  },
+  body: {
+    flexGrow: 6
   }
 }));
 
 export default function DenseAppBar(props) {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  let left = props.left;
+
+  let body = props.body;
+  let right = props.right;
+  if (typeof left === "undefined")
+    left = (
+      <>
+        <Link to="/" style={{ color: "white" }}>
+          <HomeIcon />
+        </Link>
+      </>
+    );
+
+  if (typeof body === "undefined") body = "";
+  if (typeof right === "undefined") right = "";
+
   let showEdit = props.showEdit;
-  let edit = useSelector(state => state.global.formEdit);
-  const handleEdit = () => {
-    dispatch(globalVariable({ formEdit: !edit }));
-  };
+
   return (
     <div className={classes.root}>
       <AppBar
@@ -46,17 +63,13 @@ export default function DenseAppBar(props) {
             color="inherit"
             aria-label="menu"
           >
-            <MenuIcon />
+            {left}
           </IconButton>
-
           <Typography variant="h6" color="inherit" className={classes.title}>
-            Photos
+            {props.title}
           </Typography>
-          {showEdit && (
-            <IconBtn tooltip={"Edit Page"} handleClick={handleEdit}>
-              <SettingsIcon />
-            </IconBtn>
-          )}
+          {body}
+          {right}
         </Toolbar>
       </AppBar>
     </div>

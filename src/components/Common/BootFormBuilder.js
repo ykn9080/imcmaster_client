@@ -5,7 +5,7 @@ import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import BootFormDisplay from "./BootFormDisplay";
 import { Button } from "reactstrap";
-import SpeedDialButton from "./SpeedDial";
+
 import { PlusSquareOutlined } from "@ant-design/icons";
 import DialogFull from "./DialogFull";
 import Switchs from "./Switch";
@@ -151,7 +151,6 @@ const BootFormBuilder = props => {
   };
 
   let open = useSelector(state => state.global.openDialog);
-
   const openHandler = () => {
     dispatch(globalVariable({ openDialog: true }));
     open = true;
@@ -168,7 +167,7 @@ const BootFormBuilder = props => {
        
       </Grid> */}
       <BootFormDisplay formArray={formArray} />
-      <SpeedDialButton />
+
       <Button onClick={openHandler}>Edit</Button>
       <DialogFull open={open}></DialogFull>
     </>

@@ -58,34 +58,28 @@ const ElementList = props => {
   }, [eltype]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={6}>
-        <div className={classes.root}>
-          {elArray.map((k, i) => {
-            return (
-              <Paper key={i}>
-                <Grid container spacing={1}>
-                  <Grid item xs={2}>
-                    <Radio
-                      checked={selectedValue.toString() === i.toString()}
-                      onChange={handleChange}
-                      value={i}
-                      name="radio-button-demo"
-                      inputProps={{ "aria-label": i }}
-                    />
-                  </Grid>
-
-                  <Grid item xs>
-                    <BootFormElement {...k} />
-                  </Grid>
-                </Grid>
-              </Paper>
-            );
-          })}
-        </div>
-      </Grid>
-      <Grid item xs></Grid>
-    </Grid>
+    <div className={classes.root}>
+      {elArray.map((k, i) => {
+        return (
+          <Paper key={i}>
+            <Grid container spacing={1}>
+              <Grid item xs={2}>
+                <Radio
+                  checked={selectedValue.toString() === i.toString()}
+                  onChange={handleChange}
+                  value={i}
+                  name="radio-button-demo"
+                  inputProps={{ "aria-label": i }}
+                />
+              </Grid>
+              <Grid item xs>
+                <BootFormElement {...k} />
+              </Grid>
+            </Grid>
+          </Paper>
+        );
+      })}
+    </div>
   );
 };
 

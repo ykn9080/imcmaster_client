@@ -5,6 +5,8 @@ import "jquery-ui-bundle";
 import "jquery-ui-bundle/jquery-ui.min.css";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
+import axios from "axios";
+import { currentsetting } from "components/functions/config";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -28,6 +30,8 @@ import {
 } from "@ant-design/icons";
 import SpeedDialButton from "./SpeedDial";
 import BootFormElement from "./BootFormElement";
+import ElementInput from "Admin/ElementInput";
+import DialogFull from "./DialogFull";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -138,12 +142,28 @@ const BootFormDisplay = props => {
     //   variant: "secondary"
     // }
   ];
-  let formArray = props.formArray;
-  if (formArray === "undefined") formArray = [];
+  console.log(props);
+  //let formArray = useSelector(state => state.global.formData);
+
+  // if (formArray === "undefined") formArray = [];
   const classes = useStyles();
   const [values, setValues] = useState({});
-
+  //let [formArray, setFormArray] = useState([]);
   useEffect(() => {
+    // axios
+    //   .get(
+    //     `${currentsetting.webserviceprefix}bootform/id?pathname=${props.pathname}`
+    //   )
+    //   .then(function(response) {
+    //     setFormArray(response.data[0].data);
+    //   })
+    //   .catch(function(error) {
+    //     console.log(error);
+    //   });
+    // console.log(props.formArray);
+    // if (props.formArray !== "undefined")
+    //setFormArray(props.formArray);
+
     //$(refs.sortable);
     const $node = $(".SortForm");
 
@@ -159,277 +179,34 @@ const BootFormDisplay = props => {
         //$('#sortable li').removeClass('highlights');
         console.log(start_pos, end_pos);
       }
-
-      // Get the incoming onChange function
-      // and invoke it on the Sortable `change` event
-      // drop: function(event, ui) {
-      //   //onChange(event, ui);
-      //   console.log(event);
-      // },
-      // change: (event, ui) => {
-      //   //onChange = (event, ui) => console.log("DOM changed!!!!", event, ui);
-      //   console.log(event);
-      // }
     });
     return () => {
       $node.sortable();
     };
   }, []);
 
-  const handleChange = event => {
-    let val = event.target.value;
-    let name = event.target.name;
-    setCtrlname(val);
-    event.preventDefault();
-    setValues(values => ({
-      ...values,
-      [name]: val
-    }));
-  };
   let edit = useSelector(state => state.global.formEdit);
+  //let elData = useSelector(state => state.global.elementData);
+  let open = useSelector(state => state.global.openDialog);
 
   //radio의 target.name을 인식하지 못하여
-  const [ctrlname, setCtrlname] = useState({});
   const dispatch = useDispatch();
-  const handleSubmit = async e => {
-    e.preventDefault();
-    // axios
-    //   .post(`${currentsetting.webserviceprefix}login`, values)
-    //   .then(function(response) {
-    //     const dt = response.data;
-    //     dispatch(globalVariable({ token: dt.token }));
-    //   })
-    //   .catch(function(error) {
-    //     console.log(error);
-    //   });
-    console.log(values);
-  };
-
-  // const FormControl = props => {
-  //   const EditDel = props => {
-  //     const deleteHandler = id => {
-  //       console.log(id);
-  //     };
-  //     const editHandler = id => {
-  //       console.log(id);
-  //     };
-
-  //     return (
-  //       edit && (
-  //         <>
-  //           <EditOutlined
-  //             className={classes.icon}
-  //             onClick={() => editHandler(props.controlId)}
-  //           />
-  //           <DeleteOutlined
-  //             className={classes.icon}
-  //             onClick={() => deleteHandler(props.controlId)}
-  //           />
-  //         </>
-  //       )
-  //     );
-  //   };
-
-  //   const FormLabel = props => {
-  //     if (props.as === "row" && props.labelText !== "undefined")
-  //       return (
-  //         <>
-  //           <Form.Label column sm="2">
-  //             <EditDel {...props} />
-  //             {props.labelText}
-  //           </Form.Label>
-  //         </>
-  //       );
-  //     else if (props.labelText !== "undefined") {
-  //       return (
-  //         <>
-  //           <Form.Label>
-  //             <EditDel {...props} />
-  //             {props.labelText}
-  //           </Form.Label>
-  //         </>
-  //       );
-  //     } else return null;
-  //     // <>
-  //     //   <EditDel {...props} />
-  //     // </>
-  //   };
-  //   const FormControlSwitch = props => {
-  //     switch (props.controlType) {
-  //       case "select":
-  //         let optph = props.placeholder;
-  //         if (optph === "undefined") optph = "Select...";
-  //         return (
-  //           <>
-  //             <Form.Control
-  //               as="select"
-  //               name={props.name}
-  //               value={props.formControlValue}
-  //               onChange={handleChange}
-  //             >
-  //               <option value="" defaultValue disabled hidden>
-  //                 {optph}
-  //               </option>
-  //               {props.optionArray.map((k, index) => {
-  //                 return (
-  //                   <option key={k.value} value={k.value}>
-  //                     {k.text}
-  //                   </option>
-  //                 );
-  //               })}
-  //             </Form.Control>
-  //           </>
-  //         );
-  //       case "plaintext":
-  //         return (
-  //           <Form.Control
-  //             plaintext
-  //             readOnly
-  //             defaultValue={props.defaultValue}
-  //           />
-  //         );
-  //       case "checkbox":
-  //         if (typeof values[props.name] === "undefined")
-  //           setValues(values => ({
-  //             ...values,
-  //             [props.name]: false
-  //           }));
-  //         return (
-  //           <Form.Check
-  //             custom
-  //             type={props.type}
-  //             label={props.label}
-  //             checked={values[props.name]}
-  //             onChange={e => {
-  //               e.preventDefault();
-  //               setValues(values => ({
-  //                 ...values,
-  //                 [props.name]: !values[props.name]
-  //               }));
-  //             }}
-  //           />
-  //         );
-  //       case "radio":
-  //         return (
-  //           <Col sm={10}>
-  //             {props.optionArray.map((k, index) => {
-  //               let inlinee = k.inline;
-  //               return (
-  //                 <Form.Check
-  //                   key={k.value}
-  //                   custom={true}
-  //                   inline={inlinee}
-  //                   type="radio"
-  //                   label={k.text}
-  //                   id={props.name + index}
-  //                   checked={k.value === values[props.name]}
-  //                   onChange={e => {
-  //                     e.preventDefault();
-  //                     setValues(values => ({
-  //                       ...values,
-  //                       [props.name]: k.value
-  //                     }));
-  //                   }}
-  //                 />
-  //               );
-  //             })}
-  //           </Col>
-  //         );
-  //       default:
-  //         return (
-  //           <>
-  //             <Form.Control
-  //               type={props.controlType}
-  //               placeholder={props.placeholder}
-  //               name={props.labelText}
-  //               value={values[props.labelText]}
-  //               onBlur={handleChange}
-  //             />
-  //           </>
-  //         );
-  //     }
-  //   };
-  //   return (
-  //     <>
-  //       <FormLabel {...props} />
-  //       {props.as === "row" ? (
-  //         <Col sm="10">
-  //           <FormControlSwitch {...props} />
-  //         </Col>
-  //       ) : (
-  //         <FormControlSwitch {...props} />
-  //       )}
-  //     </>
-  //   );
-  // };
-
-  // const FormText = ({ text }) => {
-  //   return typeof text === "undefined" ? null : (
-  //     <Form.Text className="text-muted">{text}</Form.Text>
-  //   );
-  // };
-
-  // const FormRow = props => {
-  //   return (
-  //     <Form.Row>
-  //       {props.rowArray.map((k, i) => {
-  //         return (
-  //           <FormGroup {...k} key={k.controlId} as={Col} edit={props.edit} />
-  //         );
-  //       })}
-  //     </Form.Row>
-  //   );
-  // };
-  // const FormGroup = props => {
-  //   //if (props.as === "row") props = { ...props, as: { Row } };
-  //   return props.as === "row" ? (
-  //     <Form.Group key={props.controlId} controlId={props.controlId} as={Row}>
-  //       <FormControl {...props} />
-  //       <FormText text={props.formText} />
-  //     </Form.Group>
-  //   ) : (
-  //     <Form.Group key={props.controlId} controlId={props.controlId}>
-  //       <FormControl {...props} />
-  //       <FormText text={props.formText} />
-  //     </Form.Group>
-  //   );
-  // };
-  // const Btn = props => {
-  //   let variant = "primary",
-  //     type = "submit",
-  //     label = "Submit";
-  //   if (props.variant != "undefined") variant = props.varient;
-  //   if (props.controlType != "undefined") type = props.controlType;
-  //   if (props.labelText != "undefined") label = props.labelText;
-  //   return (
-  //     <Button variant={variant} type={type} onClick={handleSubmit}>
-  //       {label}
-  //     </Button>
-  //   );
-  // };
 
   return (
     <>
       <Form className={"SortForm"}>
-        {formArray.map((k, i) => {
-          return <BootFormElement {...k} />;
-
-          // let type = k.controlType;
-          // let rtn;
-          // if (k.as == "row") type = "row";
-          // switch (type) {
-          //   case "button":
-          //     return <Btn {...k} edit={props.edit} />;
-          //   case "formRow":
-          //     return <FormRow {...k} edit={props.edit} />;
-          //   case "row":
-          //     return <FormGroup {...k} edit={props.edit} as="row" />;
-          //   default:
-          //     return <FormGroup {...k} edit={props.edit} />;
-          // }
+        {props.formArray.map((k, i) => {
+          return <BootFormElement {...k} key={i} />;
         })}
       </Form>
-      {edit && <SpeedDialButton />}
+      {edit && (
+        <>
+          <SpeedDialButton />
+          <DialogFull open={open}>
+            <ElementInput />
+          </DialogFull>
+        </>
+      )}
     </>
   );
 };

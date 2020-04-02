@@ -4,24 +4,10 @@ import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
-import { Card, Button, Col, Row } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import CardSimple from "components/Common/CardSimple";
 import BootFormElement from "components/Common/BootFormElement";
 import Paper from "@material-ui/core/Paper";
 import Radio from "@material-ui/core/Radio";
-import { withStyles } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
-
-const GreenRadio = withStyles({
-  root: {
-    color: green[400],
-    "&$checked": {
-      color: green[600]
-    }
-  },
-  checked: {}
-})(props => <Radio color="default" {...props} />);
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     "& > *": {
       margin: theme.spacing(1),
       padding: theme.spacing(1),
-      width: theme.spacing(40),
-      height: theme.spacing(30)
+      minWidth: theme.spacing(40),
+      minHeight: theme.spacing(20)
     }
   }
 }));
@@ -72,22 +58,34 @@ const ElementList = props => {
   }, [eltype]);
 
   return (
-    <div className={classes.root}>
-      {elArray.map((k, i) => {
-        return (
-          <Paper elevation={3} key={i}>
-            <Radio
-              checked={selectedValue.toString() === i.toString()}
-              onChange={handleChange}
-              value={i}
-              name="radio-button-demo"
-              inputProps={{ "aria-label": i }}
-            />
-            <BootFormElement {...k} />
-          </Paper>
-        );
-      })}
-    </div>
+    <Grid container spacing={1}>
+      <Grid item xs={6}>
+        <div className={classes.root}>
+          {elArray.map((k, i) => {
+            return (
+              <Paper key={i}>
+                <Grid container spacing={1}>
+                  <Grid item xs={2}>
+                    <Radio
+                      checked={selectedValue.toString() === i.toString()}
+                      onChange={handleChange}
+                      value={i}
+                      name="radio-button-demo"
+                      inputProps={{ "aria-label": i }}
+                    />
+                  </Grid>
+
+                  <Grid item xs>
+                    <BootFormElement {...k} />
+                  </Grid>
+                </Grid>
+              </Paper>
+            );
+          })}
+        </div>
+      </Grid>
+      <Grid item xs></Grid>
+    </Grid>
   );
 };
 

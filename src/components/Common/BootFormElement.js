@@ -1,32 +1,12 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-import $ from "jquery";
-import "jquery-ui-bundle";
-import "jquery-ui-bundle/jquery-ui.min.css";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import BootFormBuilder from "./BootFormBuilder";
-import AddBox from "@material-ui/icons/AddBox";
-import CreateIcon from "@material-ui/icons/Create";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
 import "antd/dist/antd.css";
-import {
-  HomeOutlined,
-  SettingFilled,
-  SmileOutlined,
-  SyncOutlined,
-  LoadingOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from "@ant-design/icons";
-import SpeedDialButton from "./SpeedDial";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -54,12 +34,17 @@ const BootFormElement = props => {
   const [ctrlname, setCtrlname] = useState({});
   const dispatch = useDispatch();
 
+  let open = useSelector(state => state.global.openDialog);
+
   const FormControl = props => {
     const EditDel = props => {
       const deleteHandler = id => {
         console.log(id);
       };
       const editHandler = id => {
+        dispatch(globalVariable({ openDialog: true }));
+        dispatch(globalVariable({ elementData: props }));
+        open = true;
         console.log(id);
       };
 
@@ -104,10 +89,13 @@ const BootFormElement = props => {
       // </>
     };
     const FormControlSwitch = props => {
+      let val = "";
+      if (typeof props.value !== "undefined") val = props.value;
       switch (props.controlType) {
         case "select":
           let optph = props.placeholder;
           if (optph === "undefined") optph = "Select...";
+
           return (
             <>
               <Form.Control
@@ -120,7 +108,11 @@ const BootFormElement = props => {
                   {optph}
                 </option>
                 {props.optionArray.map((k, index) => {
-                  return (
+                  return val === k.value ? (
+                    <option key={k.value} value={k.value} selected>
+                      {k.text}
+                    </option>
+                  ) : (
                     <option key={k.value} value={k.value}>
                       {k.text}
                     </option>
@@ -191,7 +183,7 @@ const BootFormElement = props => {
                 type={props.controlType}
                 placeholder={props.placeholder}
                 name={props.labelText}
-                value={values[props.labelText]}
+                value={val}
                 onBlur={handleChange}
               />
             </>

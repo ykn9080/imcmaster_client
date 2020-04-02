@@ -139,12 +139,6 @@ const BootFormBuilder = props => {
     }
   ];
 
-  let open = useSelector(state => state.global.openDialog);
-  const openHandler = () => {
-    dispatch(globalVariable({ openDialog: true }));
-    open = true;
-  };
-
   return (
     <>
       {/* <Grid
@@ -156,9 +150,6 @@ const BootFormBuilder = props => {
        
       </Grid> */}
       <BootFormDisplay formArray={formArray} />
-
-      <Button onClick={openHandler}>Edit</Button>
-      <DialogFull open={open}></DialogFull>
     </>
   );
 };

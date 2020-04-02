@@ -11,6 +11,7 @@ import CtrEdit1 from "components/ControlEdit/index1";
 import Auth from "utilities/Authenticate";
 import Edit from "components/Edit";
 import Admin from "Admin";
+import Element from "Admin/ElementBuild";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -61,7 +62,8 @@ const App = props => {
           <Route exact path="/controledit1" component={CtrEdit1} />
           <Route path="/edit" component={Edit} />
           <Route path="/controls" component={Controls} />
-          <Route path="/admin" component={Admin} />
+          <Route exact path="/admin" component={Admin} />
+          <Route path="/admin/element" component={Element} />
         </Switch>
       </userContext.Provider>
     </Router>

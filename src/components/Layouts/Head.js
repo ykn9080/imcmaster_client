@@ -22,7 +22,7 @@ import Signin from "components/Login/Login";
 import imclogo from "images/logo/imcmaster.png";
 import { directChild } from "components/functions/findChildrens";
 import { isLoggedIn } from "components/Login/Login";
-
+import "./Head.css";
 const element = <FontAwesomeIcon icon="user" size="lg" />;
 let myData = [
   {
@@ -232,7 +232,7 @@ const Head1 = () => {
   }
   const topbrand = (
     <Navbar.Brand href="#home">
-      <img src={logo} className="d-inline-block align-top" width="40" />{" "}
+      {/* <img src={logo} className="d-inline-block align-top" width="40" />{" "} */}
       IMCMaster
     </Navbar.Brand>
   );

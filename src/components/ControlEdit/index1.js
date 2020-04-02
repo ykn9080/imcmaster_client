@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { currentsetting } from "components/functions/config";
 import { Link } from "react-router-dom";
 import { globalVariable } from "actions";
 import {
@@ -27,7 +29,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 
 const EditTab = props => {
   const [activeTab, setActiveTab] = useState("1");
-
+  const [formArray, setFormArray] = useState([]);
   const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
@@ -45,10 +47,22 @@ const EditTab = props => {
       </NavItem>
     );
   };
-  const pathname = encodeURIComponent(window.location.pathname);
-
-  //for right icon at DenseAppBar for edit BootFormDisplay
   const dispatch = useDispatch();
+  const pathname = encodeURIComponent(window.location.pathname);
+  useEffect(() => {
+    console.log(pathname);
+    axios
+      .get(`${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`)
+      .then(function(response) {
+        setFormArray(response.data[0].data);
+        //dispatch(globalVariable({ formData: response.data[0].data }));
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }, []);
+  //for right icon at DenseAppBar for edit BootFormDisplay
+
   let edit = useSelector(state => state.global.formEdit);
   const handleEdit = () => {
     dispatch(globalVariable({ formEdit: !edit }));
@@ -71,7 +85,7 @@ const EditTab = props => {
           <TabPane tabId="1">
             <Row>
               <Col sm="6">
-                <BootFormBuilder pathname={pathname} edit={true} />
+                <BootFormDisplay edit={true} formArray={formArray} />
               </Col>
               <Col sm="6">
                 <Button>Go somewhere</Button>

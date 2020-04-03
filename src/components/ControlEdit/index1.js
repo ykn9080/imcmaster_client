@@ -86,11 +86,10 @@ const EditTab = props => {
           <TabPane tabId="1">
             <Row>
               <Col sm="6">
-                {/* <BootFormDisplay edit={true} formArray={formArray} /> */}
-                <AntForm />
+                <BootFormDisplay edit={true} formArray={formArray} />
               </Col>
               <Col sm="6">
-                <Button>Go somewhere</Button>
+                <AntForm />
               </Col>
               {/* <Col sm="6">
               <Card body>

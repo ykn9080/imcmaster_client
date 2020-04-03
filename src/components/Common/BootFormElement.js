@@ -23,6 +23,7 @@ const BootFormElement = props => {
   const [ctrlname, setCtrlname] = useState({});
 
   const handleChange = event => {
+    console.log(values);
     let val = event.target.value;
     let name = event.target.name;
     // console.log(val, name);
@@ -217,13 +218,21 @@ const BootFormElement = props => {
           return (
             <>
               <Form.Control
-                type={props.controlType}
-                //type="datetime-local"
+                //type={props.controlType}
+                type="text"
                 placeholder={props.placeholder}
                 name={props.labelText}
                 value={values[props.labelText]}
                 onBlur={handleChange}
               />
+              {/* <input
+                type="text"
+                class="form-control"
+                placeholder={props.placeholder}
+                name={props.labelText}
+                value={values[props.labelText]}
+                onBlur={handleChange}
+              /> */}
             </>
           );
       }

@@ -191,10 +191,22 @@ const BootFormDisplay = props => {
 
   //radio의 target.name을 인식하지 못하여
   const dispatch = useDispatch();
-
+  const [vals, setVals] = useState();
+  const handle = e => {
+    e.preventDefault();
+    console.log(e.target.name, e.target.value);
+    setVals(vals => ({
+      ...vals,
+      [e.target.name]: e.target.value
+    }));
+    console.log(vals);
+  };
+  const chk = () => {
+    console.log(vals);
+  };
   return (
     <>
-      <Form className={"SortForm"}>
+      {/* <Form className={"SortForm"}>
         {props.formArray.map((k, i) => {
           return <BootFormElement {...k} key={i} />;
         })}
@@ -206,7 +218,36 @@ const BootFormDisplay = props => {
             <ElementInput />
           </DialogFull>
         </>
-      )}
+      )} */}
+      <Form>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            onChange={handle}
+          />
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            onChange={handle}
+          />
+        </Form.Group>
+        <Form.Group controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Check me out" onChange={handle} />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+        <Button onClick={chk}>chk</Button>
+      </Form>
     </>
   );
 };

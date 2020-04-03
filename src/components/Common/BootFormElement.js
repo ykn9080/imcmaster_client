@@ -7,6 +7,7 @@ import { Form, Button, Col, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "antd/dist/antd.css";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useConfirm } from "material-ui-confirm";
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -16,22 +17,29 @@ const useStyles = makeStyles(theme => ({
 
 const BootFormElement = props => {
   const classes = useStyles();
-  const [values, setValues] = useState({});
+  const confirm = useConfirm();
+  const [values, setValues] = useState({ name: "bill" });
+  //radio의 target.name을 인식하지 못하여
+  const [ctrlname, setCtrlname] = useState({});
 
   const handleChange = event => {
     let val = event.target.value;
     let name = event.target.name;
+    // console.log(val, name);
+    event.persist();
     setCtrlname(val);
-    event.preventDefault();
     setValues(values => ({
       ...values,
       [name]: val
     }));
   };
+  const testHandle = e => {
+    console.log(values);
+  };
+  const [formsave, setFormsave] = useState({});
+
   let edit = useSelector(state => state.global.formEdit);
 
-  //radio의 target.name을 인식하지 못하여
-  const [ctrlname, setCtrlname] = useState({});
   const dispatch = useDispatch();
 
   let open = useSelector(state => state.global.openDialog);
@@ -39,7 +47,9 @@ const BootFormElement = props => {
   const FormControl = props => {
     const EditDel = props => {
       const deleteHandler = id => {
-        console.log(id);
+        confirm({ description: "This action is permanent!" }).then(() => {
+          console.log(id);
+        });
       };
       const editHandler = id => {
         dispatch(globalVariable({ openDialog: true }));
@@ -102,7 +112,14 @@ const BootFormElement = props => {
                 as="select"
                 name={props.name}
                 value={props.formControlValue}
-                onChange={handleChange}
+                onChange={e => {
+                  e.persist();
+                  setValues(values => ({
+                    ...values,
+                    [props.name]: !values[props.name]
+                  }));
+                  console.log(values[props.name], props.name, values);
+                }}
               >
                 <option value="" defaultValue disabled hidden>
                   {optph}
@@ -142,11 +159,12 @@ const BootFormElement = props => {
               label={props.label}
               checked={values[props.name]}
               onChange={e => {
-                e.preventDefault();
+                e.persist();
                 setValues(values => ({
                   ...values,
                   [props.name]: !values[props.name]
                 }));
+                console.log(values[props.name], props.name, values);
               }}
             />
           );
@@ -165,25 +183,45 @@ const BootFormElement = props => {
                     id={props.name + index}
                     checked={k.value === values[props.name]}
                     onChange={e => {
-                      e.preventDefault();
+                      e.persist();
                       setValues(values => ({
                         ...values,
                         [props.name]: k.value
                       }));
+                      console.log(
+                        k.value,
+                        values[props.name],
+                        props.name,
+                        values
+                      );
                     }}
                   />
                 );
               })}
             </Col>
           );
+        // case "range":case "color": case "datetime-local":
+        //   return (
+        //     <>
+        //       <Form.Control
+        //         //type={props.controlType}
+        //         type="color"
+        //         placeholder={props.placeholder}
+        //         name={props.labelText}
+        //         value={val}
+        //         onChange={handleChange}
+        //       />
+        //     </>
+        //   );
         default:
           return (
             <>
               <Form.Control
                 type={props.controlType}
+                //type="datetime-local"
                 placeholder={props.placeholder}
                 name={props.labelText}
-                value={val}
+                value={values[props.labelText]}
                 onBlur={handleChange}
               />
             </>
@@ -275,7 +313,12 @@ const BootFormElement = props => {
           case "row":
             return <FormGroup {...props} edit={props.edit} as="row" />;
           default:
-            return <FormGroup {...props} edit={props.edit} />;
+            return (
+              <>
+                <FormGroup {...props} edit={props.edit} />
+                <Button onClick={testHandle}>test</Button>
+              </>
+            );
         }
       })()}
     </>

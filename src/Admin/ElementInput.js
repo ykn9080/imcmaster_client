@@ -69,7 +69,7 @@ const ElementInput = props => {
         { text: "Text", value: "text" },
         { text: "Email", value: "email" },
         { text: "Password", value: "password" },
-        { text: "Datetime", value: "datetime" },
+        { text: "Datetime", value: "datetime-local" },
         { text: "Number", value: "number" },
         { text: "Color", value: "color" }
       ]

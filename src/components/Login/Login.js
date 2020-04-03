@@ -23,7 +23,7 @@ import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import { sweetmsg, sweetmsgautoclose } from "fromImc/Common_make";
 import Snack from "utilities/Snackbar";
-
+import AntForm from "components/Common/AntForm";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -82,6 +82,7 @@ const SignIn = props => {
       ...values,
       [event.target.name]: event.target.value
     }));
+    console.log(values);
   };
   const keyEnter = event => {
     if (event.key === "Enter") {
@@ -90,6 +91,7 @@ const SignIn = props => {
   };
   const handleSubmit = async e => {
     e.preventDefault();
+
     axios
       .post(`${currentsetting.webserviceprefix}login`, values)
       .then(function(response) {
@@ -128,102 +130,105 @@ const SignIn = props => {
   // );
   const classes = useStyles();
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Icon>star</Icon>
-      <Link to="/" exact>
-        <Grid container className={classes.logo} justify="flex-start">
-          <Grid item>
-            <img
-              src={logo}
-              className="d-inline-block align-bottom"
-              width="60"
-            />
-          </Grid>
-          <Grid item>
-            <img src={imclogo} className="d-inline-block align-top" />
-          </Grid>
-        </Grid>
-      </Link>
-      <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Log in
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="username"
-            autoComplete="email"
-            autoFocus
-            onBlur={handleChange}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onBlur={handleChange}
-            onKeyPress={keyEnter}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            //onClick={handleSubmitCallback}
-          >
-            Sign In
-          </Button>
-
-          <Link to="/" exact>
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              color="default"
-              className={classes.submit}
-            >
-              Cancel
-            </Button>
-          </Link>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Icon>star</Icon>
+        <Link to="/" exact>
+          <Grid container className={classes.logo} justify="flex-start">
+            <Grid item>
+              <img
+                src={logo}
+                className="d-inline-block align-bottom"
+                width="60"
+              />
             </Grid>
             <Grid item>
-              <Link to="/Join" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <img src={imclogo} className="d-inline-block align-top" />
             </Grid>
           </Grid>
-          <Snack
-            message={"Not authorized!! Please log in."}
-            warning={warning}
-            severity={"error"}
-          />
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+        </Link>
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h5">
+            Log in
+          </Typography>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="username"
+              autoComplete="email"
+              autoFocus
+              onBlur={handleChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onBlur={handleChange}
+              onKeyPress={keyEnter}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              //onClick={handleSubmitCallback}
+            >
+              Sign In
+            </Button>
+
+            <Link to="/" exact>
+              <Button
+                type="button"
+                fullWidth
+                variant="contained"
+                color="default"
+                className={classes.submit}
+              >
+                Cancel
+              </Button>
+            </Link>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link to="/Join" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+            <Snack
+              message={"Not authorized!! Please log in."}
+              warning={warning}
+              severity={"error"}
+            />
+          </form>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+      <AntForm />
+    </>
   );
 };
 // export function isLoggedIn() {

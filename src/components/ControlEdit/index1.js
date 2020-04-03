@@ -21,6 +21,7 @@ import classnames from "classnames";
 import DataSrc from "./DataSrc";
 import Summary from "./Summary";
 import DynamicForm from "components/Common/DynamicForm";
+import AntForm from "components/Common/AntForm";
 import BootFormBuilder from "components/Common/BootFormBuilder";
 import BootFormDisplay from "components/Common/BootFormDisplay";
 import DenseAppBar from "components/Common/AppBar";
@@ -85,7 +86,8 @@ const EditTab = props => {
           <TabPane tabId="1">
             <Row>
               <Col sm="6">
-                <BootFormDisplay edit={true} formArray={formArray} />
+                {/* <BootFormDisplay edit={true} formArray={formArray} /> */}
+                <AntForm />
               </Col>
               <Col sm="6">
                 <Button>Go somewhere</Button>

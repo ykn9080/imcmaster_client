@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import { usePromiseTracker } from "react-promise-tracker";
 import { currentsetting } from "components/functions/config";
 import Loader from "react-loader-spinner";
-
+import { ConfirmProvider } from "material-ui-confirm";
 import ApolloClient from "apollo-boost";
 //import { ApolloClient } from "apollo-client";
 //import { createHttpLink } from "apollo-link-http";
@@ -53,7 +53,9 @@ const LoadingIndicator = props => {
 ReactDOM.render(
   <Provider store={store}>
     <ApolloProvider client={client}>
-      <App />
+      <ConfirmProvider>
+        <App />
+      </ConfirmProvider>
     </ApolloProvider>
     <LoadingIndicator />
   </Provider>,

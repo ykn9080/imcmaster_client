@@ -22,7 +22,7 @@ import DataSrc from "./DataSrc";
 import Summary from "./Summary";
 import DynamicForm from "components/Common/DynamicForm";
 import AntForm from "components/Common/AntForm";
-import BootFormBuilder from "components/Common/BootFormBuilder";
+import AntFormBuild from "components/Common/AntFormBuild";
 import BootFormDisplay from "components/Common/BootFormDisplay";
 import DenseAppBar from "components/Common/AppBar";
 import IconBtn from "components/Common/IconButton";
@@ -77,6 +77,7 @@ const EditTab = props => {
   return (
     <>
       <DenseAppBar title={"Control Edit"} right={right} />
+
       <div style={{ paddingLeft: 5, marginTop: 10 }}>
         <Nav tabs>
           <NItem indx={"1"} title={"Summary"} />
@@ -88,28 +89,14 @@ const EditTab = props => {
               <Col sm="6">
                 <BootFormDisplay edit={true} formArray={formArray} />
               </Col>
-              <Col sm="6">
-                <AntForm />
-              </Col>
-              {/* <Col sm="6">
-              <Card body>
-                <CardTitle>Special Title Treatment</CardTitle>
-                <Summary />
-              </Card>
-            </Col>
-            <Col sm="6">
-              <Card body>
-                <CardTitle>Special Title Treatment</CardTitle>
-
-                <Button>Go somewhere</Button>
-              </Card>
-            </Col> */}
+              <Col sm="6"></Col>
             </Row>
           </TabPane>
           <TabPane tabId="2">
             <Row>
               <Col sm="12">
                 <DataSrc />
+                <AntForm />
               </Col>
             </Row>
           </TabPane>

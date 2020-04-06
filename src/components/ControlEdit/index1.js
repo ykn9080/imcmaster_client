@@ -28,6 +28,65 @@ import DenseAppBar from "components/Common/AppBar";
 import IconBtn from "components/Common/IconButton";
 import SettingsIcon from "@material-ui/icons/Settings";
 
+const formData = {
+  setting: {
+    formItemLayout: {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
+    },
+    layout: "vertical",
+    size: "middle",
+    initialValues: { name: "hhh" },
+    onFinish: values => {
+      console.log("Received values of form: ", values);
+    },
+    onFinishFailed: (values, errorFields, outOfDate) => {
+      console.log(values, errorFields, outOfDate);
+    }
+  },
+  list: [
+    { label: "Name", name: "name", type: "input", seq: 1 },
+    {
+      label: "Pass",
+      name: "password",
+      type: "input.password",
+      rules: [{ required: true, message: "enter!!!" }],
+      seq: 2
+    },
+    {
+      type: "button",
+      seq: 1000,
+      tailLayout: {
+        wrapperCol: { offset: 8, span: 16 }
+      },
+      btnArr: [
+        {
+          btnLabel: "Submit",
+          btnStyle: "secondary",
+          htmlType: "submit",
+          seq: 0
+        },
+        {
+          btnLabel: "Cancel",
+          btnStyle: "primary",
+          htmlType: "button",
+          seq: 1
+        }
+      ]
+    },
+
+    {
+      label: "Date",
+      name: "date",
+      type: "datepicker",
+      rules: [
+        { type: "object", required: true, message: "Please select time!" }
+      ],
+      seq: 0
+    }
+  ]
+};
+
 const EditTab = props => {
   const [activeTab, setActiveTab] = useState("1");
   const [formArray, setFormArray] = useState([]);
@@ -87,7 +146,7 @@ const EditTab = props => {
           <TabPane tabId="1">
             <Row>
               <Col sm="6">
-                <BootFormDisplay edit={true} formArray={formArray} />
+                <AntFormBuild {...formData} />
               </Col>
               <Col sm="6"></Col>
             </Row>
@@ -96,7 +155,7 @@ const EditTab = props => {
             <Row>
               <Col sm="12">
                 <DataSrc />
-                <AntForm />
+                {/* <BootFormDisplay edit={true} formArray={formArray} /> */}
               </Col>
             </Row>
           </TabPane>

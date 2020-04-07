@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
@@ -15,7 +15,7 @@ import {
   CardTitle,
   CardText,
   Row,
-  Col,
+  Col
 } from "reactstrap";
 import classnames from "classnames";
 import DataSrc from "./DataSrc";
@@ -86,13 +86,35 @@ import SettingsIcon from "@material-ui/icons/Settings";
 //     },
 //   ],
 // };
+const Fetch = () => {
+  const dispatch = useDispatch();
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    (async () => {
+      // let res = await fetch(
+      //   "http://localhost:3001/bootform/5e8054063346b1dd6ce970aa" //example and simple data
+      // );
+      const result = await axios.get(
+        "http://localhost:3001/bootform/5e8054063346b1dd6ce970aa"
+      );
+      // let response = await res.json();
+      dispatch(globalVariable({ formData: result.data.data }));
+      setData(JSON.stringify(result.data.data));
+      console.log(result.data.data);
+    })();
+  }, []);
+  return <div>{data}</div>;
+};
 
-const EditTab = (props) => {
+const EditTab = props => {
   const [activeTab, setActiveTab] = useState("1");
   const [formArray, setFormArray] = useState("");
-  const toggle = (tab) => {
+  const [isFetching, setFetching] = useState(false);
+  const toggle = tab => {
     if (activeTab !== tab) setActiveTab(tab);
   };
+  let setting = {},
+    list = [];
   const NItem = ({ indx, title }) => {
     return (
       <NavItem>
@@ -109,22 +131,29 @@ const EditTab = (props) => {
   };
   const dispatch = useDispatch();
   const pathname = encodeURIComponent(window.location.pathname);
+  console.log(pathname);
   // useEffect(() => {
-  //   console.log(pathname);
-  //   axios
-  //     .get(`${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`)
-  //     .then(function (response) {
-  //       setFormArray(response.data[0].data);
-  //       //dispatch(globalVariable({ formData: response.data[0].data }));
-  //       console.log(response.data[0].data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }, []);
-  //for right icon at DenseAppBar for edit BootFormDisplay
+  //   setFetching(true);
+  //   fetch(
+  //     `${currentsetting.webserviceprefix}bootform/5e8054063346b1dd6ce970aa`
+  //   ).then(response =>
+  //     dispatch(globalVariable({ formData: response.data[0].data }))
+  //   );
+  //   setFetching(false);
 
-  let edit = useSelector((state) => state.global.formEdit);
+  // }, []);
+
+  // useEffect(async () => {
+  //   const result = await axios.get(
+  //     `${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`
+  //   );
+  //   dispatch(globalVariable({ formData: result.data.data }));
+  //   setting = result.data.data.setting;
+  //   list = result.data.data.list;
+  //   console.log(result.data.data, result);
+  // }, []);
+
+  let edit = useSelector(state => state.global.formEdit);
   const handleEdit = () => {
     dispatch(globalVariable({ formEdit: !edit }));
   };
@@ -147,7 +176,8 @@ const EditTab = (props) => {
           <TabPane tabId="1">
             <Row>
               <Col sm="6">
-                <AntFormBuild pathname={pathname} />
+                {" "}
+                <AntFormBuild />{" "}
               </Col>
               <Col sm="6"></Col>
             </Row>

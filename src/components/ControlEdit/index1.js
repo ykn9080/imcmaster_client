@@ -15,7 +15,7 @@ import {
   CardTitle,
   CardText,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 import classnames from "classnames";
 import DataSrc from "./DataSrc";
@@ -28,69 +28,69 @@ import DenseAppBar from "components/Common/AppBar";
 import IconBtn from "components/Common/IconButton";
 import SettingsIcon from "@material-ui/icons/Settings";
 
-const formData = {
-  setting: {
-    formItemLayout: {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
-    },
-    layout: "vertical",
-    size: "middle",
-    initialValues: { name: "hhh" },
-    onFinish: values => {
-      console.log("Received values of form: ", values);
-    },
-    onFinishFailed: (values, errorFields, outOfDate) => {
-      console.log(values, errorFields, outOfDate);
-    }
-  },
-  list: [
-    { label: "Name", name: "name", type: "input", seq: 1 },
-    {
-      label: "Pass",
-      name: "password",
-      type: "input.password",
-      rules: [{ required: true, message: "enter!!!" }],
-      seq: 2
-    },
-    {
-      type: "button",
-      seq: 1000,
-      tailLayout: {
-        wrapperCol: { offset: 8, span: 16 }
-      },
-      btnArr: [
-        {
-          btnLabel: "Submit",
-          btnStyle: "secondary",
-          htmlType: "submit",
-          seq: 0
-        },
-        {
-          btnLabel: "Cancel",
-          btnStyle: "primary",
-          htmlType: "button",
-          seq: 1
-        }
-      ]
-    },
+// const formData = {
+//   setting: {
+//     formItemLayout: {
+//       labelCol: { span: 8 },
+//       wrapperCol: { span: 16 },
+//     },
+//     layout: "horizontal",
+//     size: "middle",
+//     initialValues: { name: "hhh" },
+//     onFinish: (values) => {
+//       console.log("Received values of form: ", values);
+//     },
+//     onFinishFailed: (values, errorFields, outOfDate) => {
+//       console.log(values, errorFields, outOfDate);
+//     },
+//   },
+//   list: [
+//     { label: "Name", name: "name", type: "input", seq: 1 },
+//     {
+//       label: "Pass",
+//       name: "password",
+//       type: "input.password",
+//       rules: [{ required: true, message: "enter!!!" }],
+//       seq: 2,
+//     },
+//     {
+//       type: "button",
+//       seq: 1000,
+//       tailLayout: {
+//         wrapperCol: { offset: 8, span: 16 },
+//       },
+//       btnArr: [
+//         {
+//           btnLabel: "Submit",
+//           btnStyle: "secondary",
+//           htmlType: "submit",
+//           seq: 0,
+//         },
+//         {
+//           btnLabel: "Cancel",
+//           btnStyle: "primary",
+//           htmlType: "button",
+//           seq: 1,
+//         },
+//       ],
+//     },
 
-    {
-      label: "Date",
-      name: "date",
-      type: "datepicker",
-      rules: [
-        { type: "object", required: true, message: "Please select time!" }
-      ],
-      seq: 0
-    }
-  ]
-};
+//     {
+//       label: "Date",
+//       name: "date",
+//       type: "datepicker",
+//       rules: [
+//         { type: "object", required: true, message: "Please select time!" },
+//       ],
+//       seq: 0,
+//     },
+//   ],
+// };
 
-const EditTab = props => {
+const EditTab = (props) => {
   const [activeTab, setActiveTab] = useState("1");
-  const [formArray, setFormArray] = useState([]);
-  const toggle = tab => {
+  const [formArray, setFormArray] = useState("");
+  const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
   const NItem = ({ indx, title }) => {
@@ -109,21 +109,22 @@ const EditTab = props => {
   };
   const dispatch = useDispatch();
   const pathname = encodeURIComponent(window.location.pathname);
-  useEffect(() => {
-    console.log(pathname);
-    axios
-      .get(`${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`)
-      .then(function(response) {
-        setFormArray(response.data[0].data);
-        //dispatch(globalVariable({ formData: response.data[0].data }));
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   console.log(pathname);
+  //   axios
+  //     .get(`${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`)
+  //     .then(function (response) {
+  //       setFormArray(response.data[0].data);
+  //       //dispatch(globalVariable({ formData: response.data[0].data }));
+  //       console.log(response.data[0].data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }, []);
   //for right icon at DenseAppBar for edit BootFormDisplay
 
-  let edit = useSelector(state => state.global.formEdit);
+  let edit = useSelector((state) => state.global.formEdit);
   const handleEdit = () => {
     dispatch(globalVariable({ formEdit: !edit }));
   };
@@ -146,7 +147,7 @@ const EditTab = props => {
           <TabPane tabId="1">
             <Row>
               <Col sm="6">
-                <AntFormBuild {...formData} />
+                <AntFormBuild pathname={pathname} />
               </Col>
               <Col sm="6"></Col>
             </Row>

@@ -13,7 +13,7 @@ import {
   InputNumber,
   TreeSelect,
   Switch,
-  Cascader
+  Cascader,
 } from "antd";
 
 const { Option } = Select;
@@ -32,16 +32,16 @@ const { Option } = Select;
 //   }
 // };
 
-const AntFormElement = props => {
+const AntFormElement = (props) => {
   console.log(props);
   const formItemProps = {
     label: props.label,
     name: props.name,
-    ...(props.rules !== "undefined" && { rules: props.rules })
+    ...(props.rules !== "undefined" && { rules: props.rules }),
   };
   const tailLayout = {
     ...(props.type === "button" &&
-      props.tailLayout != null && { ...props.tailLayout })
+      props.tailLayout != null && { ...props.tailLayout }),
   };
   console.log(tailLayout);
   return (
@@ -68,7 +68,7 @@ const AntFormElement = props => {
 
                   let btnProps = {
                     type: btnStyle,
-                    htmlType: k.htmlType
+                    htmlType: k.htmlType,
                   };
                   return <Button {...btnProps}>{btnLabel}</Button>;
                 })}

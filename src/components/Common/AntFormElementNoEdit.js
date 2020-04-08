@@ -1,11 +1,7 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "actions";
-import _ from "lodash";
+import React from "react";
 import "antd/dist/antd.css";
-import { useConfirm } from "material-ui-confirm";
+import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
   Form,
   Input,
@@ -21,29 +17,15 @@ import {
 } from "antd";
 
 const { Option } = Select;
-// const layout = {
-//   labelCol: {
-//     span: 8
-//   },
-//   wrapperCol: {
-//     span: 16
-//   }
-// };
-// const tailLayout = {
-//   wrapperCol: {
-//     offset: 8,
-//     span: 16
-//   }
-// };
+
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: 2,
   },
 }));
 
-const AntFormElement = (props) => {
+const AntFormElementNoEdit = (props) => {
   const classes = useStyles();
-  const confirm = useConfirm();
   const formItemProps = {
     label: props.label,
     name: props.name,
@@ -53,40 +35,7 @@ const AntFormElement = (props) => {
     ...(props.type === "button" &&
       props.tailLayout != null && { ...props.tailLayout }),
   };
-  let edit = useSelector((state) => state.global.formEdit);
 
-  const dispatch = useDispatch();
-
-  let open = useSelector((state) => state.global.openDialog);
-
-  const EditDel = (props) => {
-    const deleteHandler = (id) => {
-      confirm({ description: "This action is permanent!" }).then(() => {
-        console.log(id);
-      });
-    };
-    const editHandler = (id) => {
-      dispatch(globalVariable({ openDialog: true }));
-      dispatch(globalVariable({ elementData: props }));
-      open = true;
-      console.log(id);
-    };
-
-    return (
-      edit && (
-        <div className="dvEditIcon">
-          <EditOutlined
-            className={classes.icon}
-            onClick={() => editHandler(props.controlId)}
-          />
-          <DeleteOutlined
-            className={classes.icon}
-            onClick={() => deleteHandler(props.controlId)}
-          />
-        </div>
-      )
-    );
-  };
   return (
     <>
       <Form.Item {...formItemProps} {...tailLayout}>
@@ -122,9 +71,8 @@ const AntFormElement = (props) => {
               break;
           }
         })()}
-        <EditDel {...props} />
       </Form.Item>
     </>
   );
 };
-export default AntFormElement;
+export default AntFormElementNoEdit;

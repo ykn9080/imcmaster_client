@@ -12,22 +12,23 @@ import AntFormElement from "./AntFormElement";
 import SpeedDialButton from "./SpeedDial";
 import ElementInput from "Admin/ElementInput";
 import DialogFull from "./DialogFull";
+import AntFormEdit from "./AntFormEdit";
 
 const formData = {
   setting: {
     formItemLayout: {
       labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
+      wrapperCol: { span: 16 },
     },
     layout: "horizontal",
     size: "middle",
     initialValues: { name: "hhh" },
-    onFinish: values => {
+    onFinish: (values) => {
       console.log("Received values of form: ", values);
     },
     onFinishFailed: (values, errorFields, outOfDate) => {
       console.log(values, errorFields, outOfDate);
-    }
+    },
   },
   list: [
     { label: "Name", name: "name", type: "input", seq: 1 },
@@ -36,28 +37,28 @@ const formData = {
       name: "password",
       type: "input.password",
       rules: [{ required: true, message: "enter!!!" }],
-      seq: 2
+      seq: 2,
     },
     {
       type: "button",
       seq: 1000,
       tailLayout: {
-        wrapperCol: { offset: 8, span: 16 }
+        wrapperCol: { offset: 8, span: 16 },
       },
       btnArr: [
         {
           btnLabel: "Submit",
           btnStyle: "secondary",
           htmlType: "submit",
-          seq: 0
+          seq: 0,
         },
         {
           btnLabel: "Cancel",
           btnStyle: "primary",
           htmlType: "button",
-          seq: 1
-        }
-      ]
+          seq: 1,
+        },
+      ],
     },
 
     {
@@ -65,19 +66,19 @@ const formData = {
       name: "date",
       type: "datepicker",
       rules: [
-        { type: "object", required: true, message: "Please select time!" }
+        { type: "object", required: true, message: "Please select time!" },
       ],
-      seq: 0
-    }
-  ]
+      seq: 0,
+    },
+  ],
 };
 
 const AntFormBuild = () => {
   const [formArray, setFormArray] = useState("");
   const [form] = Form.useForm();
-  let edit = useSelector(state => state.global.formEdit);
+  let edit = useSelector((state) => state.global.formEdit);
   //let elData = useSelector(state => state.global.elementData);
-  let open = useSelector(state => state.global.openDialog);
+  let open = useSelector((state) => state.global.openDialog);
   let list = formArray.list;
   //let layout = formArray.setting.layout;
   let layout = "",
@@ -102,7 +103,7 @@ const AntFormBuild = () => {
     let newArr = [];
     let list = _.sortBy(arr.data.list, ["seq"]);
     if (start_pos < end_pos)
-      _.forEach(list, function(value, key) {
+      _.forEach(list, function (value, key) {
         if (value.type !== "button") {
           if (value.seq <= end_pos && value.seq > start_pos) value.seq--;
           else if (value.seq === start_pos) value.seq = end_pos;
@@ -110,7 +111,7 @@ const AntFormBuild = () => {
         newArr.push(value);
       });
     if (start_pos > end_pos)
-      _.forEach(list, function(value, key) {
+      _.forEach(list, function (value, key) {
         if (value.type !== "button") {
           if (value.seq >= end_pos && value.seq < start_pos) value.seq++;
           else if (value.seq === start_pos) value.seq = end_pos;
@@ -122,7 +123,7 @@ const AntFormBuild = () => {
     setFormArray(arr.data);
     axios
       .put(`${currentsetting.webserviceprefix}bootform/${_id}`, arr)
-      .then(r => console.log(r));
+      .then((r) => console.log(r));
     //st>ed -> st prev +1 st->ed
   };
   const pathname = encodeURIComponent(window.location.pathname);
@@ -138,28 +139,27 @@ const AntFormBuild = () => {
     $node.sortable({
       opacity: 0.8,
       placeholder: "ui-state-highlight",
-      start: function(event, ui) {
+      start: function (event, ui) {
         var start_pos = ui.item.index();
         ui.item.data("start_pos", start_pos);
       },
-      update: function(event, ui) {
+      update: function (event, ui) {
         var start_pos = ui.item.data("start_pos");
         var end_pos = ui.item.index();
         //$('#sortable li').removeClass('highlights');
         ReOrder(start_pos, end_pos);
-      }
+      },
     });
     return () => {
       $node.sortable({
-        placeholder: "ui-state-highlight"
+        placeholder: "ui-state-highlight",
       });
     };
   }, []);
 
-  // if (typeof initial === "undefined") initial = {};
-
   return (
     <>
+      {edit ? <AntFormEdit /> : null}
       <Form
         name="validate_other"
         className="SortForm"

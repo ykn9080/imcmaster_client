@@ -106,35 +106,37 @@ const AntFormEdit = () => {
   };
   return (
     <>
-      <PageHeader
-        className="site-page-header"
-        onBack={() => window.history.back()}
-        title="Title"
-        subTitle="This is a subtitle"
-      >
-        <Form
-          name="Form_Edit"
-          className="FormEdit"
-          {...formItemLayout}
-          layout={layout}
-          form={form}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          initialValues={initial}
-          size={size}
+      <div className="site-page-header-ghost-wrapper">
+        <PageHeader
+          className="site-page-header"
+          onBack={() => window.history.back()}
+          title="Title"
+          subTitle="This is a subtitle"
         >
-          <Row gutter={24}>
-            <Element
-              col={col}
-              layout={layout}
-              formItemLayout={formItemLayout}
-            />
-          </Row>
-          {/* {_.orderBy(list, ["seq"]).map((k, i) => {
+          <Form
+            name="Form_Edit"
+            className="FormEdit"
+            {...formItemLayout}
+            layout={layout}
+            form={form}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            initialValues={initial}
+            size={size}
+          >
+            <Row gutter={24}>
+              <Element
+                col={col}
+                layout={layout}
+                formItemLayout={formItemLayout}
+              />
+            </Row>
+            {/* {_.orderBy(list, ["seq"]).map((k, i) => {
           return <AntFormElement {...k} col={2} editable={false} />;
         })} */}
-        </Form>
-      </PageHeader>
+          </Form>
+        </PageHeader>
+      </div>
     </>
   );
 };

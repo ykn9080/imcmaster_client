@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import _ from "lodash";
+import { Col } from "antd";
 import "antd/dist/antd.css";
 import { useConfirm } from "material-ui-confirm";
 import { makeStyles } from "@material-ui/core/styles";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Grid from "@material-ui/core/Grid";
 import {
   Form,
   Input,
@@ -36,12 +38,16 @@ const { Option } = Select;
 //   }
 // };
 const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
   icon: {
     marginRight: 2,
   },
 }));
 
 const AntFormElement = (props) => {
+  console.log(props);
   const classes = useStyles();
   const confirm = useConfirm();
   const formItemProps = {
@@ -49,9 +55,13 @@ const AntFormElement = (props) => {
     name: props.name,
     ...(props.rules !== "undefined" && { rules: props.rules }),
   };
+
   const tailLayout = {
     ...(props.type === "button" &&
-      props.tailLayout != null && { ...props.tailLayout }),
+      props.tailLayout != null &&
+      props.layout === "horizontal" && {
+        wrapperCol: props.formItemLayout.label,
+      }),
   };
   let edit = useSelector((state) => state.global.formEdit);
 
@@ -87,9 +97,10 @@ const AntFormElement = (props) => {
       )
     );
   };
-  return (
-    <>
-      <Form.Item {...formItemProps} {...tailLayout}>
+
+  const formItem = (
+    <div className={classes.root}>
+      <Form.Item {...formItemProps} {...tailLayout} key={props.seq}>
         {(() => {
           switch (props.type) {
             case "input":
@@ -122,9 +133,25 @@ const AntFormElement = (props) => {
               break;
           }
         })()}
-        <EditDel {...props} />
       </Form.Item>
-    </>
+    </div>
+  );
+
+  let colnum = 24;
+  if (props.col > 1) colnum = colnum / props.col;
+  return !props.editable ? (
+    <Col span={colnum}>{formItem}</Col>
+  ) : (
+    <Col span={colnum}>
+      <Grid container spacing={2}>
+        <Grid item xs>
+          {formItem}
+        </Grid>
+        <Grid item xs>
+          <EditDel {...props} />
+        </Grid>
+      </Grid>
+    </Col>
   );
 };
 export default AntFormElement;

@@ -9,6 +9,7 @@ import "./Antd.css";
 import { Form, Row, Col } from "antd";
 import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
 import AntFormElement from "./AntFormElement";
+import AntFormElementNoEdit from "./AntFormElementNoEdit";
 import SpeedDialButton from "./SpeedDial";
 import ElementInput from "Admin/ElementInput";
 import DialogFull from "./DialogFull";
@@ -17,16 +18,17 @@ import AntFormEdit from "./AntFormEdit";
 const formData = {
   setting: {
     formItemLayout: {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
     },
     layout: "horizontal",
+    colnum: 1,
     size: "middle",
     initialValues: { name: "hhh" },
-    onFinish: (values) => {
+    onFinish2: (values) => {
       console.log("Received values of form: ", values);
     },
-    onFinishFailed: (values, errorFields, outOfDate) => {
+    onFinishFailed2: (values, errorFields, outOfDate) => {
       console.log(values, errorFields, outOfDate);
     },
   },
@@ -74,28 +76,33 @@ const formData = {
 };
 
 const AntFormBuild = () => {
-  const [formArray, setFormArray] = useState("");
+  const [formArray, setFormArray] = useState(formData);
   const [form] = Form.useForm();
   let edit = useSelector((state) => state.global.formEdit);
   //let elData = useSelector(state => state.global.elementData);
   let open = useSelector((state) => state.global.openDialog);
-  let list = formArray.list;
+  let list = _.orderBy(formArray.list, ["seq"]);
   //let layout = formArray.setting.layout;
   let layout = "",
+    colnum = 1,
     formItemLayout = {},
-    onFinish,
-    onFinishFailed,
+    onFinish2,
+    onFinishFailed2,
     initial = {},
     size = "middle";
   if (typeof formArray.setting != "undefined") {
     let st = formArray.setting;
     layout = st.layout;
-    formItemLayout = st.formItemLayout;
-    onFinish = st.onFinish;
-    onFinishFailed = st.onFinishFailed;
+    layout = "horizontal";
+    colnum = 2; //st.colnum;
+    formItemLayout = layout === "horizontal" ? st.formItemLayout : null;
+
+    onFinish2 = st.onFinish2;
+    onFinishFailed2 = st.onFinishFailed2;
     initial = st.initialValues;
     size = st.size;
   }
+
   const ReOrder = (start_pos, end_pos) => {
     let arr = localStorage.getItem("formData");
     arr = JSON.parse(arr);
@@ -128,14 +135,14 @@ const AntFormBuild = () => {
   };
   const pathname = encodeURIComponent(window.location.pathname);
   useEffect(async () => {
-    const result = await axios.get(
-      `${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`
-    );
-    setFormArray(result.data[0].data);
-    localStorage.setItem("formData", JSON.stringify(result.data[0]));
+    // const result = await axios.get(
+    //   `${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`
+    // );
+    // setFormArray(result.data[0].data);
+    // localStorage.setItem("formData", JSON.stringify(result.data[0]));
 
     //$(refs.sortable);
-    const $node = $(".SortForm");
+    const $node = $(".SortForm>div:first-child");
     $node.sortable({
       opacity: 0.8,
       placeholder: "ui-state-highlight",
@@ -156,7 +163,17 @@ const AntFormBuild = () => {
       });
     };
   }, []);
-
+  const Element = (props) => {
+    return list.map((k, i) => {
+      return <AntFormElement {...k} {...props} />;
+    });
+  };
+  const onFinish1 = (values) => {
+    console.log(values);
+  };
+  const onFinishFailed1 = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
     <>
       {edit ? <AntFormEdit /> : null}
@@ -166,14 +183,20 @@ const AntFormBuild = () => {
         {...formItemLayout}
         layout={layout}
         form={form}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish={onFinish2}
+        onFinishFailed={onFinishFailed2}
         initialValues={initial}
         size={size}
       >
-        {_.orderBy(list, ["seq"]).map((k, i) => {
-          return <AntFormElement {...k} />;
-        })}
+        {/* <Element col={colnum} layout={layout} formItemLayout={formItemLayout} /> */}
+        <Row gutter={24}>
+          <Element
+            col={colnum}
+            layout={layout}
+            formItemLayout={formItemLayout}
+            editable={true}
+          />
+        </Row>
       </Form>
       {edit && (
         <>

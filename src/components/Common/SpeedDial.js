@@ -9,22 +9,22 @@ import SaveIcon from "@material-ui/icons/Save";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import AddIcon from "@material-ui/icons/Add";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: 30,
     transform: "translateZ(0px)",
-    flexGrow: 1
+    flexGrow: 1,
   },
   speedDial: {
     position: "absolute",
     bottom: theme.spacing(2),
-    right: theme.spacing(2)
-  }
+    right: theme.spacing(2),
+  },
 }));
 
 const actions = [
   { icon: <AddBoxIcon />, name: "New" },
-  { icon: <SaveIcon />, name: "Save" }
+  { icon: <SaveIcon />, name: "Save" },
 ];
 const SpeedDialButton = () => {
   const classes = useStyles();
@@ -35,9 +35,8 @@ const SpeedDialButton = () => {
     setOpen(true);
   };
 
-  const handleClose = name => {
+  const handleClose = (name) => {
     setOpen(false);
-    console.log(name);
   };
 
   return (
@@ -51,7 +50,7 @@ const SpeedDialButton = () => {
         onOpen={handleOpen}
         open={open}
       >
-        {actions.map(action => (
+        {actions.map((action) => (
           <SpeedDialAction
             key={action.name}
             icon={action.icon}

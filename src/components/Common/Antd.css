@@ -5,3 +5,20 @@
   height: 6em;
   line-height: 6em;
 }
+/*below 3 for removing row minus left,right margin*/
+.row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+/* .ant-row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.ant-col:first-child {
+  padding-left: 0 !important;
+}
+
+.ant-col:last-child {
+  padding-right: 0 !important;
+} */

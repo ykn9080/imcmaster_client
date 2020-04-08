@@ -15,7 +15,7 @@ import {
   CardTitle,
   CardText,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 import classnames from "classnames";
 import DataSrc from "./DataSrc";
@@ -106,11 +106,11 @@ const Fetch = () => {
   return <div>{data}</div>;
 };
 
-const EditTab = props => {
+const EditTab = (props) => {
   const [activeTab, setActiveTab] = useState("1");
   const [formArray, setFormArray] = useState("");
   const [isFetching, setFetching] = useState(false);
-  const toggle = tab => {
+  const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
   let setting = {},
@@ -153,7 +153,7 @@ const EditTab = props => {
   //   console.log(result.data.data, result);
   // }, []);
 
-  let edit = useSelector(state => state.global.formEdit);
+  let edit = useSelector((state) => state.global.formEdit);
   const handleEdit = () => {
     dispatch(globalVariable({ formEdit: !edit }));
   };
@@ -175,11 +175,9 @@ const EditTab = props => {
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <Row>
-              <Col sm="6">
-                {" "}
-                <AntFormBuild />{" "}
+              <Col sm="12">
+                <AntFormBuild />
               </Col>
-              <Col sm="6"></Col>
             </Row>
           </TabPane>
           <TabPane tabId="2">

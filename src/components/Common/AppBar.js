@@ -13,28 +13,28 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconBtn from "./IconButton";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     boxShadow: "none",
     backgroundColor: "#cccccc",
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   body: {
-    flexGrow: 6
-  }
+    flexGrow: 1,
+  },
 }));
 
 export default function DenseAppBar(props) {
   const classes = useStyles();
   let left = props.left;
 
-  let body = props.body;
+  let body = props.children;
   let right = props.right;
   if (typeof left === "undefined")
     left = (
@@ -68,7 +68,8 @@ export default function DenseAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.title}>
             {props.title}
           </Typography>
-          {body}
+          <span className={classes.body}>{body}</span>
+
           {right}
         </Toolbar>
       </AppBar>

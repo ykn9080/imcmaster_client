@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import _ from "lodash";
-import { Col } from "antd";
+import { Row, Col } from "antd";
 import "antd/dist/antd.css";
 import { useConfirm } from "material-ui-confirm";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,6 +21,8 @@ import {
   TreeSelect,
   Switch,
   Cascader,
+  Slider,
+  Rate,
 } from "antd";
 const { MonthPicker, RangePicker } = DatePicker;
 const { Option } = Select;
@@ -111,7 +113,11 @@ const AntFormElement = (props) => {
               return <Input.Password />;
               break;
             case "inputnumber":
-              return <InputNumber />;
+              return props.min ? (
+                <InputNumber min={props.min} max={props.max} />
+              ) : (
+                <InputNumber />
+              );
               break;
             case "input.textarea":
               return <Input.TextArea />;
@@ -134,6 +140,36 @@ const AntFormElement = (props) => {
               break;
             case "timepicker":
               return <TimePicker />;
+              break;
+            case "plaintext":
+              return <span className="ant-form-text">{props.text}</span>;
+              break;
+            case "switch":
+              return <Switch />;
+              break;
+            case "slicer":
+              return <Slider marks={props.marks} />;
+              break;
+            case "rate":
+              return <Rate />;
+              break;
+            case "select":
+              return (
+                <Select placeholder={props.placeholder}>
+                  {props.optionArray.map((k, i) => {
+                    return <Option value={k.value}>{k.text}</Option>;
+                  })}
+                </Select>
+              );
+              break;
+            case "select.multiple":
+              return (
+                <Select mode="multiple" placeholder={props.placeholder}>
+                  {props.optionArray.map((k, i) => {
+                    return <Option value={k.value}>{k.text}</Option>;
+                  })}
+                </Select>
+              );
               break;
             case "radio.group":
               return (

@@ -9,7 +9,7 @@ import {
   NavItem,
   Button,
   Form,
-  FormControl
+  FormControl,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -41,10 +41,10 @@ let myData = [
         _id: "5e3a94873858705598b09294",
         rowseq: 0,
         colseq: 0,
-        ctrid: ""
-      }
+        ctrid: "",
+      },
     ],
-    __v: 0
+    __v: 0,
   },
   // {
   //   access: [],
@@ -70,14 +70,14 @@ let myData = [
       {
         rowseq: 0,
         colseq: 0,
-        ctrid: ""
-      }
+        ctrid: "",
+      },
     ],
     pid: "",
     private: false,
     seq: 0,
-    title: "FristMenu"
-  }
+    title: "FristMenu",
+  },
   // {
   //   access: [],
   //   _id: "5e3bcb7f069da0e31aa6eb92",
@@ -140,14 +140,14 @@ const Topmenu = () => {
   //   // }
   //   dispatch(globalVariable({ menu: menu }));
   // }, []);
-  let menuData = useSelector(state => state.global.menu);
-  let login = useSelector(state => state.global.login);
+  let menuData = useSelector((state) => state.global.menu);
+  let login = useSelector((state) => state.global.login);
 
   if (!menuData) menuData = myData;
   //const topmenu = menulist(menuData, "");
   const topmenu = menuData
     .filter((item, itemIndex) => item.comp === login.comp && item.pid === null)
-    .sort(function(a, b) {
+    .sort(function (a, b) {
       return a.seq < b.seq ? -1 : 1;
     });
   console.log(menuData, topmenu);
@@ -157,7 +157,7 @@ const Topmenu = () => {
         //const ddList = menulist(dt, dt.id);
         const ddList = menuData
           .filter((item, itemIndex) => item.pid === dt.id)
-          .sort(function(a, b) {
+          .sort(function (a, b) {
             return a.seq < b.seq ? -1 : 1;
           });
         return ddList.length === 0 ? (
@@ -176,14 +176,14 @@ const Topmenu = () => {
   );
 };
 
-const NavDropRecur = props => {
+const NavDropRecur = (props) => {
   {
     /*make menu recursive, */
   }
-  const subfilter = id => {
+  const subfilter = (id) => {
     return props.myData
       .filter((item, itemIndex) => id === item.pid)
-      .sort(function(a, b) {
+      .sort(function (a, b) {
         return a.seq < b.seq ? -1 : 1;
       });
   };
@@ -212,11 +212,11 @@ const NavDropRecur = props => {
   );
 };
 
-const Head1 = () => {
+const Head1 = (props) => {
   let keyval;
   const dispatch = useDispatch();
-  const menu = useSelector(state => state.global.menu);
-  const token = useSelector(state => state.global.token);
+  const menu = useSelector((state) => state.global.menu);
+  const token = useSelector((state) => state.global.token);
   function handleSelect(selectedKey) {
     console.log("selected123 " + selectedKey);
     keyval = selectedKey;
@@ -227,6 +227,8 @@ const Head1 = () => {
 
         dispatch(globalVariable({ tempMenu: menu }));
         //dispatch(globalVariable({ subMenu: submenu }));
+        break;
+      case "admin":
         break;
     }
   }
@@ -285,7 +287,9 @@ const Head1 = () => {
           <NavDropdown.Item eventKey={"edit"}>
             <Link to="/Edit">Edit</Link>
           </NavDropdown.Item>
-          <NavDropdown.Item eventKey={"admin"}>Admin</NavDropdown.Item>
+          <NavDropdown.Item eventKey={"admin"}>
+            <Link to="/admin">Admin</Link>
+          </NavDropdown.Item>
         </NavDropdown>
       </Nav.Link>
 

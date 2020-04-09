@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { globalVariable } from "actions";
 import logo from "./logo.svg";
 import "./App.css";
 import Home from "components/Layouts/Home";
@@ -16,7 +17,7 @@ import {
   BrowserRouter as Router,
   Redirect,
   Route,
-  Switch
+  Switch,
 } from "react-router-dom";
 import { userContext } from "components/functions/userContext";
 
@@ -24,14 +25,14 @@ let isLoggedIn = false;
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       isLoggedIn ? (
         <Component {...props} />
       ) : (
         <Redirect
           to={{
             pathname: "Login",
-            state: { needsLogin: true, from: props.location }
+            state: { needsLogin: true, from: props.location },
           }}
         />
       )
@@ -39,10 +40,18 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   />
 );
 
-const App = props => {
+const App = (props) => {
   const [gvalue, setGvalue] = useState([{ test: "ok", hello: "hi" }]);
+  const dispatch = useDispatch();
 
-  const token = useSelector(state => state.global.token);
+  useEffect(() => {
+    //maintain login status: change in memory or HttpOnly later !!!!!
+    const isToken = localStorage.getItem("token"); // 로그인 정보를 로컬스토리지에서 가져옵니다.
+    if (!isToken) return; // 로그인 정보가 없다면 여기서 멈춥니다.
+    dispatch(globalVariable({ token: isToken }));
+  }, []);
+
+  const token = useSelector((state) => state.global.token);
   if (token !== "") isLoggedIn = true;
   return (
     <Router>
@@ -51,7 +60,7 @@ const App = props => {
           <Route path="/" exact component={Home} />
           <Route
             path="/login"
-            render={props => (
+            render={(props) => (
               <Login {...props} title={`Props through render`} />
             )}
           />

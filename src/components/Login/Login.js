@@ -46,26 +46,26 @@ function appendPid(menu) {
   });
   return menu;
 }
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   logo: {
-    margin: theme.spacing(4, 0, 4)
+    margin: theme.spacing(4, 0, 4),
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(5),
   },
   submit: {
-    margin: theme.spacing(1, 0, 1)
-  }
+    margin: theme.spacing(1, 0, 1),
+  },
 }));
 
-const SignIn = props => {
+const SignIn = (props) => {
   //for snackBar props
   let warning = false;
   const state = props.location.state;
@@ -76,35 +76,36 @@ const SignIn = props => {
   // }
   const dispatch = useDispatch();
   const [values, setValues] = useState({});
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.persist();
-    setValues(values => ({
+    setValues((values) => ({
       ...values,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     }));
     console.log(values);
   };
-  const keyEnter = event => {
+  const keyEnter = (event) => {
     if (event.key === "Enter") {
       handleSubmit(event);
     }
   };
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     axios
       .post(`${currentsetting.webserviceprefix}login`, values)
-      .then(function(response) {
+      .then(function (response) {
         const dt = response.data;
         console.log(dt);
         const menu = appendPid(JSON.parse(dt.menu));
         dispatch(globalVariable({ token: dt.token }));
         dispatch(globalVariable({ menu: menu }));
+        dispatch(globalVariable({ adminmenu: dt.adminmenu }));
         dispatch(globalVariable({ control: dt.control }));
         dispatch(globalVariable({ login: dt.user }));
         axios.defaults.headers.common = { Authorization: `Bearer ${dt.token}` };
 
-        //localStorage.setItem("token", dt.token);
+        localStorage.setItem("token", dt.token);
         // localStorage.setItem(
         //   "imcsetting",
         //   JSON.stringify({ login: response.data.user })
@@ -114,12 +115,13 @@ const SignIn = props => {
         //localStorage.setItem("imclist", response.data.list);
         //localStorage.setItem("imcdata", response.data.dtsrc);
         localStorage.setItem("menu", JSON.stringify(menu));
+        localStorage.setItem("adminmenu", JSON.stringify(dt.adminmenu));
 
         sweetmsgautoclose("success", "very bood");
         //props.history.push(`/`);
         props.history.push(`${from.pathname}`);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   };

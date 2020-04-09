@@ -16,12 +16,13 @@ import {
   Checkbox,
   Radio,
   DatePicker,
+  TimePicker,
   InputNumber,
   TreeSelect,
   Switch,
   Cascader,
 } from "antd";
-
+const { MonthPicker, RangePicker } = DatePicker;
 const { Option } = Select;
 // const layout = {
 //   labelCol: {
@@ -63,11 +64,11 @@ const AntFormElement = (props) => {
         wrapperCol: props.formItemLayout.label,
       }),
   };
-  let edit = useSelector((state) => state.global.formEdit);
 
   const dispatch = useDispatch();
 
   let open = useSelector((state) => state.global.openDialog);
+  let edit = useSelector((state) => state.global.formEdit);
 
   const EditDel = (props) => {
     const deleteHandler = (id) => {
@@ -102,15 +103,81 @@ const AntFormElement = (props) => {
     <div className={classes.root}>
       <Form.Item {...formItemProps} {...tailLayout} key={props.seq}>
         {(() => {
-          switch (props.type) {
+          switch (props.type.toLowerCase()) {
             case "input":
               return <Input />;
               break;
             case "input.password":
               return <Input.Password />;
               break;
+            case "inputnumber":
+              return <InputNumber />;
+              break;
+            case "input.textarea":
+              return <Input.TextArea />;
+              break;
+
             case "datepicker":
+              return <DatePicker format="YYYY-MM-DD" />;
+              break;
+            case "datetimepicker":
               return <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />;
+              break;
+            case "monthpicker":
+              return <MonthPicker />;
+              break;
+            case "rangepicker":
+              return <RangePicker />;
+              break;
+            case "rangetimepicker":
+              return <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />;
+              break;
+            case "timepicker":
+              return <TimePicker />;
+              break;
+            case "radio.group":
+              return (
+                <Radio.Group>
+                  {props.radioArray.map((k, i) => {
+                    return <Radio value={k.value}>{k.text}</Radio>;
+                  })}
+                </Radio.Group>
+              );
+              break;
+            case "radio.button":
+              return (
+                <Radio.Group>
+                  {props.radioArray.map((k, i) => {
+                    return (
+                      <Radio.Button value={k.value}>{k.text}</Radio.Button>
+                    );
+                  })}
+                </Radio.Group>
+              );
+              break;
+            case "checkbox.group":
+              const Chk = (props) => {
+                return props.checkArray.map((k, i) => {
+                  return props.direction === "horizontal" ? (
+                    <Checkbox value={k.value}>{k.text}</Checkbox>
+                  ) : (
+                    <Col span={24}>
+                      <Checkbox value={k.value}>{k.text}</Checkbox>
+                    </Col>
+                  );
+                });
+              };
+              return (
+                <Checkbox.Group>
+                  {props.direction === "vertical" ? (
+                    <Row>
+                      <Chk {...props} />
+                    </Row>
+                  ) : (
+                    <Chk {...props} />
+                  )}
+                </Checkbox.Group>
+              );
               break;
             case "button":
               return (

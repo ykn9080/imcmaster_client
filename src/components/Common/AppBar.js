@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   body: {
-    flexGrow: 1,
+    flexGrow: 9,
   },
 }));
 

@@ -122,6 +122,7 @@ const globalVar = {
   login: "",
   token: "",
   selectedKey: "",
+  currentPage: "",
   menu: [],
   adminmenu: [],
   openmenu: [],

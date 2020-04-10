@@ -1,19 +1,15 @@
-import React from "react";
-import BootFormDisplay from "components/Common/BootFormDisplay";
-import ElementList from "Admin/ElementList";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { currentsetting } from "components/functions/config";
+import { Link } from "react-router-dom";
+import { globalVariable } from "actions";
 import AntMenu from "components/Common/Menu";
 import DenseAppBar from "components/Common/AppBar";
 
-const formArray1 = [
-  {
-    controlId: "formEmail",
-    labelText: "Email",
-    name: "email",
-    controlType: "email",
-    placeholder: "test placeholder",
-    formText: "We'll never share your email with anyone else.",
-  },
-];
+import AntList from "components/Common/List";
+import PageHead from "components/Common/PageHeader";
+
 const adminMenu = [
   {
     access: [],
@@ -126,14 +122,27 @@ const adminMenu = [
     type: "admin",
   },
 ];
-const Admin = () => {
-  // const pathname = encodeURIComponent(window.location.pathname);
 
-  // return <ElementList eltype={["password", "email"]} />;
+const Admin = () => {
+  const dispatch = useDispatch();
+  let pagename = useSelector((state) => state.global.currentPage);
   return (
-    <DenseAppBar title={"Admin"}>
-      <AntMenu menuList={adminMenu} />
-    </DenseAppBar>
+    <>
+      <DenseAppBar title={"Admin"}>
+        <AntMenu menuList={adminMenu} />
+      </DenseAppBar>
+      <PageHead />
+      {(() => {
+        switch (pagename.toLowerCase()) {
+          case "form":
+            return <AntList />;
+            break;
+          case "system":
+            return null;
+            break;
+        }
+      })()}
+    </>
   );
 };
 

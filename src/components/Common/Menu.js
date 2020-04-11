@@ -25,7 +25,11 @@ const AntMenu = ({ menuList }) => {
 
   const handleClick = (e) => {
     console.log("click ", e);
-    dispatch(globalVariable({ currentPage: {title:e.item.props.children,key:e.key }));
+    dispatch(
+      globalVariable({
+        currentPage: { title: e.item.props.children, key: e.key },
+      })
+    );
     setCurrent(e.key);
   };
   let treeDt = getTreeFromFlatData({

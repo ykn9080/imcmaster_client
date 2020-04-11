@@ -2,6 +2,8 @@ import React from "react";
 import { PageHeader } from "antd";
 
 const PageHead = (props) => {
+  let subtitle = "";
+  if (typeof props.subtitle != "undefined") subtitle = props.subtitle;
   const routes = [
     {
       path: "index",
@@ -19,9 +21,9 @@ const PageHead = (props) => {
   return (
     <PageHeader
       className="site-page-header"
-      title="Title"
+      title={props.title}
       breadcrumb={{ routes }}
-      subTitle="This is a subtitle"
+      subTitle={subtitle}
     />
   );
 };

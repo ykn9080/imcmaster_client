@@ -125,15 +125,17 @@ const adminMenu = [
 
 const Admin = () => {
   const dispatch = useDispatch();
+  let title = "";
   let pagename = useSelector((state) => state.global.currentPage);
+  if (pagename != "") title = pagename.title.toLowerCase();
   return (
     <>
       <DenseAppBar title={"Admin"}>
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
-      <PageHead />
+      <PageHead title={title} />
       {(() => {
-        switch (pagename.toLowerCase()) {
+        switch (title) {
           case "form":
             return <AntList />;
             break;

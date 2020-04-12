@@ -22,6 +22,19 @@ import {
 import { userContext } from "components/functions/userContext";
 
 let isLoggedIn = false;
+
+const routes = [
+  { path: "/", name: "Home", Component: Home, exact: true },
+  { path: "/login", name: "Login", Component: Login },
+  { path: "/join", name: "Join", Component: Join },
+  { path: "/controledit", name: "Control Edit", Component: CtrEdit },
+  { path: "/controledit1", name: "Control Edit1", Component: CtrEdit1 },
+  { path: "/edit", name: "Edit", Component: Edit },
+  { path: "/controls", name: "Controls", Component: Controls },
+  { path: "/admin", name: "Administration", Component: Admin, exact: true },
+  { path: "/admin/element", name: "Edit", Component: Element },
+];
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -57,7 +70,7 @@ const App = (props) => {
     <Router>
       <userContext.Provider value={[gvalue, setGvalue]}>
         <Switch>
-          <Route path="/" exact component={Home} />
+          {/* <Route path="/" exact component={Home} />
           <Route
             path="/login"
             render={(props) => (
@@ -65,14 +78,15 @@ const App = (props) => {
             )}
           />
           <Route path="/join" component={Join} />
-          <Route path="/login" component={Login} />
-          <Route path="/join" component={Join} />
           <Route exact path="/controledit" component={CtrEdit} />
           <Route exact path="/controledit1" component={CtrEdit1} />
           <Route path="/edit" component={Edit} />
           <Route path="/controls" component={Controls} />
           <Route exact path="/admin" component={Admin} />
-          <Route path="/admin/element" component={Element} />
+          <Route path="/admin/element" component={Element} /> */}
+          {routes.map(({ exact, path, Component }, key) => (
+            <Route exact={exact} path={path} key={key} component={Component} />
+          ))}
         </Switch>
       </userContext.Provider>
     </Router>

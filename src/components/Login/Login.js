@@ -23,7 +23,6 @@ import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import { sweetmsg, sweetmsgautoclose } from "fromImc/Common_make";
 import Snack from "utilities/Snackbar";
-import AntForm from "components/Common/AntForm";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -229,7 +228,6 @@ const SignIn = (props) => {
           <Copyright />
         </Box>
       </Container>
-      <AntForm />
     </>
   );
 };

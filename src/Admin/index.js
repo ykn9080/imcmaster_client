@@ -8,7 +8,7 @@ import { globalVariable } from "actions";
 import AntMenu from "components/Common/Menu";
 import DenseAppBar from "components/Common/AppBar";
 
-import AntList from "components/Common/List";
+import FormList from "Admin/Form/FormList";
 import PageHead from "components/Common/PageHeader";
 
 const adminMenu = [
@@ -158,7 +158,7 @@ const Admin = ({ match }) => {
       {(() => {
         switch (title) {
           case "form":
-            return <AntList />;
+            return <FormList />;
             break;
           case "system":
             return null;

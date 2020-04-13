@@ -1,93 +1,66 @@
 import React, { useState, useEffect } from "react";
 import { List, Avatar, Button, Skeleton } from "antd";
-import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, StarOutlined } from "@ant-design/icons";
 
-const AntList = () => {
-  const listData = [];
-  const [loading, setLoading] = useState(false);
+const AntList = (props) => {
+  let layout = "horizontal",
+    listData = props.listData,
+    loading = props.loading;
 
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
+  if (typeof props.layout != "undefined") layout = props.layout;
 
-  for (let i = 0; i < 23; i++) {
-    listData.push({
-      href: "http://ant.design",
-      title: `ant design part ${i}`,
-      avatar:
-        "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-      description:
-        "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-      content:
-        "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-    });
-  }
-  const IconText = ({ icon, text }) => (
-    <span>
-      {React.createElement(icon, { style: { marginRight: 8 } })}
-      {text}
-    </span>
-  );
+  let listAttr = {
+    className: "demo-loadmore-list",
+    dataSource: listData,
+    itemLayout: layout,
+  };
+  if (typeof props.size != "undefined")
+    listAttr = { ...listAttr, size: props.size };
+  if (typeof props.footer != "undefined")
+    listAttr = { ...listAttr, footer: props.footer };
+  if (typeof props.pagination != "undefined")
+    listAttr = { ...listAttr, pagination: props.pagination };
+
+  const ListItem = ({ item }) => {
+    let editHandler = "",
+      deleteHandler = "",
+      actlist = [];
+    if (typeof props.editHandler != "undefined")
+      editHandler = props.editHandler;
+    if (typeof props.deleteHandler != "undefined")
+      deleteHandler = props.deleteHandler;
+
+    editHandler != "" &&
+      actlist.push(<EditOutlined onClick={() => editHandler(item)} />);
+    deleteHandler != "" &&
+      actlist.push(<DeleteOutlined onClick={() => deleteHandler(item)} />);
+
+    let attr = { actions: actlist };
+    if (typeof item.extra != "undefined") {
+      const extra = (
+        <img
+          width={item.extra.width}
+          alt={item.extra.alt}
+          src={item.extra.src}
+        />
+      );
+      attr = { ...attr, extra: extra };
+    }
+    return (
+      <List.Item {...attr}>
+        <List.Item.Meta
+          avatar={<Avatar src={item.avatar} />}
+          title={<a href={item.href}>{item.title}</a>}
+          description={item.description}
+        />
+        {item.content}
+      </List.Item>
+    );
+  };
+
   return (
     <Skeleton loading={loading} active avatar>
-      <List
-        className="demo-loadmore-list"
-        //   loading={initLoading}
-        itemLayout="vertical"
-        pagination={{
-          onChange: (page) => {
-            console.log(page);
-          },
-          pageSize: 3,
-        }}
-        //   footer={
-        //     <div>
-        //       <b>ant design</b> footer part
-        //     </div>
-        //   }
-        size="small"
-        dataSource={listData}
-        renderItem={(item) => (
-          <List.Item
-            key={item.title}
-            actions={[
-              <IconText
-                icon={StarOutlined}
-                text="156"
-                onClick={() => console.log("hi")}
-                key="list-vertical-star-o"
-              />,
-              <IconText
-                icon={LikeOutlined}
-                text="156"
-                key="list-vertical-like-o"
-              />,
-              <IconText
-                icon={MessageOutlined}
-                text="2"
-                key="list-vertical-message"
-              />,
-            ]}
-            //   extra={
-            //     <img
-            //       width={272}
-            //       alt="logo"
-            //       src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-            //     />
-            //   }
-          >
-            <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
-              title={<a href={item.href}>{item.title}</a>}
-              description={item.description}
-            />
-            {item.content}
-          </List.Item>
-        )}
-      />
+      <List {...listAttr} renderItem={(item) => <ListItem item={item} />} />
     </Skeleton>
   );
 };

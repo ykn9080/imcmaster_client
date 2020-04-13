@@ -18,21 +18,44 @@ const AntMenu = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   let location = useLocation();
-  const [current, setCurrent] = useState("mail");
+  const [current, setCurrent] = useState("");
   const [gData, setgData] = useState([]);
   useEffect(() => {
     setgData(treeDt);
   }, [props.menuList]);
 
+  const routesMap = ({ path, breadcrumbName }) => {
+    let newdt = [],
+      links = "";
+    path.split("/").filter((k, i) => {
+      if (links.endsWith("/")) links += k;
+      else {
+        links += "/" + k;
+      }
+
+      if (i === 0) k = "Home";
+      newdt.push({ path: links, breadcrumbName: k });
+    });
+    if (typeof breadcrumbName != "undefined") {
+      breadcrumbName
+        .split("/")
+        .filter((k, i) => (newdt[i]["breadcrumbName"] = k));
+    }
+    return newdt;
+  };
   const handleClick = (e) => {
     console.log("click ", e);
     console.log(location.pathname, window.location.pathname);
     history.push(e.item.props.path);
-    dispatch(
-      globalVariable({
-        currentPage: { title: e.item.props.children, key: e.key },
-      })
-    );
+    // dispatch(
+    //   globalVariable({
+    //     currentPage: {
+    //       title: e.item.props.children,
+    //       key: e.key,
+    //       routes: routesMap(e.item.props),
+    //     },
+    //   })
+    // );
     setCurrent(e.key);
   };
 

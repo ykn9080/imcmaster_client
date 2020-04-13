@@ -1,6 +1,6 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import "antd/dist/antd.css";
-import "./index.css";
 import {
   HashRouter as Router,
   Route,
@@ -72,5 +72,25 @@ const AntBread = withRouter((props) => {
     </div>
   );
 });
-
-export default AntBread;
+const AntBreadCrumb = (props) => {
+  const location = useLocation();
+  console.log(props.pathname, location.pathname);
+  const pathSnippets = location.pathname.split("/").filter((i) => i);
+  const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+    const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
+    console.log(index, _);
+    return (
+      <Breadcrumb.Item key={url}>
+        <Link to={url}>{_}</Link>
+      </Breadcrumb.Item>
+    );
+  });
+  const breadcrumbItems = [
+    <Breadcrumb.Item key="home">
+      <Link to="/">Home</Link>
+    </Breadcrumb.Item>,
+  ].concat(extraBreadcrumbItems);
+  console.log("item", breadcrumbItems);
+  return <Breadcrumb>{breadcrumbItems}</Breadcrumb>;
+};
+export default AntBreadCrumb;

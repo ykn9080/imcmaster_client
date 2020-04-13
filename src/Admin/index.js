@@ -21,6 +21,7 @@ const adminMenu = [
     title: "Organization",
     type: "admin",
     pid: "",
+    path: "/admin/organization",
   },
   {
     access: [],
@@ -31,7 +32,7 @@ const adminMenu = [
     title: "Menu",
     pid: "",
     type: "admin",
-    path: "/admin",
+    path: "/admin/menu",
   },
   {
     access: [],
@@ -43,6 +44,7 @@ const adminMenu = [
     pid: "",
     type: "admin",
     path: "/admin/form",
+    breadcrumbName: "/admin/Form Build",
   },
   {
     access: [],
@@ -64,6 +66,7 @@ const adminMenu = [
     seq: 0,
     title: "Company",
     type: "admin",
+    path: "/admin/organization/company",
   },
   {
     access: [],
@@ -74,6 +77,7 @@ const adminMenu = [
     seq: 1,
     title: "User",
     type: "admin",
+    path: "/admin/organization/user",
   },
   {
     access: [],
@@ -84,6 +88,7 @@ const adminMenu = [
     seq: 2,
     title: "Group",
     type: "admin",
+    path: "/admin/organization/group",
   },
   {
     access: [],
@@ -94,6 +99,7 @@ const adminMenu = [
     seq: 3,
     title: "Organization",
     type: "admin",
+    path: "/admin/organization/organization",
   },
   {
     access: [],
@@ -104,6 +110,7 @@ const adminMenu = [
     seq: 4,
     title: "Product/Service",
     type: "admin",
+    path: "/admin/organization/product & Service",
   },
   {
     access: [],
@@ -114,6 +121,7 @@ const adminMenu = [
     seq: 0,
     title: "MenuBuild",
     type: "admin",
+    path: "/admin/menu/menubuild",
   },
   {
     access: [],
@@ -124,26 +132,29 @@ const adminMenu = [
     seq: 1,
     title: "PageBuild",
     type: "admin",
-    path: "/admin/pagebuild",
+    path: "/admin/menu/pagebuild",
   },
 ];
 
 const Admin = ({ match }) => {
-  const dispatch = useDispatch();
+  let title = match.params.name,
+    Title = "",
+    routes = [];
   //let pagename = useSelector((state) => state.global.currentPage);
-  //if (pagename != "") title = pagename.title.toLowerCase();
-  let Title = "";
-  const title = match.params.name;
-  if (typeof title != "undefined")
-    Title = title.charAt(0).toUpperCase() + title.slice(1);
-  let location = useLocation();
-  console.log(location.pathname);
+  // if (pagename != "") {
+  //   title = pagename.title.toLowerCase();
+  //   Title = title.charAt(0).toUpperCase() + title.slice(1);
+  //   routes = pagename.routes;
+  // }
+  //const title = match.params.name;
+  // let location = useLocation();
+  // console.log(routes);
   return (
     <>
       <DenseAppBar title={"Admin"}>
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
-      <PageHead title={title} onBack={true} />
+      <PageHead title={title} onBack={false} />
       {(() => {
         switch (title) {
           case "form":

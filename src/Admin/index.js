@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import { Link } from "react-router-dom";
@@ -30,6 +31,7 @@ const adminMenu = [
     title: "Menu",
     pid: "",
     type: "admin",
+    path: "/admin",
   },
   {
     access: [],
@@ -40,6 +42,7 @@ const adminMenu = [
     title: "Form",
     pid: "",
     type: "admin",
+    path: "/admin/form",
   },
   {
     access: [],
@@ -50,6 +53,7 @@ const adminMenu = [
     title: "System",
     pid: "",
     type: "admin",
+    path: "/admin/system",
   },
   {
     access: [],
@@ -120,20 +124,26 @@ const adminMenu = [
     seq: 1,
     title: "PageBuild",
     type: "admin",
+    path: "/admin/pagebuild",
   },
 ];
 
-const Admin = () => {
+const Admin = ({ match }) => {
   const dispatch = useDispatch();
-  let title = "";
-  let pagename = useSelector((state) => state.global.currentPage);
-  if (pagename != "") title = pagename.title.toLowerCase();
+  //let pagename = useSelector((state) => state.global.currentPage);
+  //if (pagename != "") title = pagename.title.toLowerCase();
+  let Title = "";
+  const title = match.params.name;
+  if (typeof title != "undefined")
+    Title = title.charAt(0).toUpperCase() + title.slice(1);
+  let location = useLocation();
+  console.log(location.pathname);
   return (
     <>
       <DenseAppBar title={"Admin"}>
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
-      <PageHead title={title} />
+      <PageHead title={Title} />
       {(() => {
         switch (title) {
           case "form":

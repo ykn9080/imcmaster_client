@@ -31,7 +31,7 @@ const routes = [
   { path: "/controledit1", name: "Control Edit1", Component: CtrEdit1 },
   { path: "/edit", name: "Edit", Component: Edit },
   { path: "/controls", name: "Controls", Component: Controls },
-  { path: "/admin", name: "Administration", Component: Admin, exact: true },
+  { path: "/admin/:name?", name: "Administration", Component: Admin },
   { path: "/admin/element", name: "Edit", Component: Element },
 ];
 

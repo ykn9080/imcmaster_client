@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-
+import { useLocation, useHistory, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
-import { Link } from "react-router-dom";
 import { globalVariable } from "actions";
-import { Menu } from "antd";
+import { Menu, Breadcrumb } from "antd";
 import {
   MailOutlined,
   AppstoreOutlined,
@@ -15,16 +14,20 @@ import { getTreeFromFlatData } from "components/functions/dataUtil";
 
 const { SubMenu } = Menu;
 
-const AntMenu = ({ menuList }) => {
+const AntMenu = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  let location = useLocation();
   const [current, setCurrent] = useState("mail");
   const [gData, setgData] = useState([]);
   useEffect(() => {
     setgData(treeDt);
-  }, [menuList]);
+  }, [props.menuList]);
 
   const handleClick = (e) => {
     console.log("click ", e);
+    console.log(location.pathname, window.location.pathname);
+    history.push(e.item.props.path);
     dispatch(
       globalVariable({
         currentPage: { title: e.item.props.children, key: e.key },
@@ -32,8 +35,9 @@ const AntMenu = ({ menuList }) => {
     );
     setCurrent(e.key);
   };
+
   let treeDt = getTreeFromFlatData({
-    flatData: menuList.map((node) => ({ ...node, title: node.title })),
+    flatData: props.menuList.map((node) => ({ ...node, title: node.title })),
     getKey: (node) => node._id, // resolve a node's key
     getParentKey: (node) => node.pid, // resolve a node's parent's key
     rootKey: "", // The value of the parent key when there is no parent (i.e., at root level)
@@ -48,7 +52,11 @@ const AntMenu = ({ menuList }) => {
           </SubMenu>
         );
       }
-      return <Menu.Item key={item._id}>{item.title}</Menu.Item>;
+      return (
+        <Menu.Item key={item._id} path={item.path}>
+          {item.title}
+        </Menu.Item>
+      );
     });
   };
   return (

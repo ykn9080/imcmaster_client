@@ -21,6 +21,7 @@ const PageHead = (props) => {
       breadcrumbName: "Third-level Menu",
     },
   ];
+
   const breadCrumbFind = () => {
     const pathSnippets = location.pathname.split("/").filter((i) => i);
     const extraBreadcrumbItems = pathSnippets.map((_, index) => {
@@ -40,12 +41,16 @@ const PageHead = (props) => {
     console.log("item", breadcrumbItems);
     return <Breadcrumb>{breadcrumbItems}</Breadcrumb>;
   };
+  const onBack = () => {
+    history.goBack();
+  };
   return (
     <>
       <breadCrumbFind />
       <PageHeader
         className="site-page-header"
         title={props.title}
+        {...(props.onBack ? { onBack: { onBack } } : {})}
         breadcrumb={{ routes }}
         subTitle={subtitle}
       />

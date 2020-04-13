@@ -143,7 +143,7 @@ const Admin = ({ match }) => {
       <DenseAppBar title={"Admin"}>
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
-      <PageHead title={Title} />
+      <PageHead title={title} onBack={true} />
       {(() => {
         switch (title) {
           case "form":

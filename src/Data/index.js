@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { currentsetting } from "./config";
+import { currentsetting } from "components/functions/config";
 import $ from "jquery";
 import { sweetmsg, sweetmsgautoclose } from "fromImc/Common_make";
 import { trackPromise } from "react-promise-tracker";

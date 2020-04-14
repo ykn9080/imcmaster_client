@@ -22,7 +22,8 @@ const AntMenu = (props) => {
   const [gData, setgData] = useState([]);
   useEffect(() => {
     setgData(treeDt);
-  }, [props.menuList]);
+    setCurrent(location.pathname);
+  }, [props.menuList, location.pathname]);
 
   const routesMap = ({ path, breadcrumbName }) => {
     let newdt = [],
@@ -45,17 +46,9 @@ const AntMenu = (props) => {
   };
   const handleClick = (e) => {
     console.log("click ", e);
-    console.log(location.pathname, window.location.pathname);
+    console.log(location.pathname, window.location.pathname, e.item.props.path);
     history.push(e.item.props.path);
-    // dispatch(
-    //   globalVariable({
-    //     currentPage: {
-    //       title: e.item.props.children,
-    //       key: e.key,
-    //       routes: routesMap(e.item.props),
-    //     },
-    //   })
-    // );
+
     setCurrent(e.key);
   };
 
@@ -76,7 +69,7 @@ const AntMenu = (props) => {
         );
       }
       return (
-        <Menu.Item key={item._id} path={item.path}>
+        <Menu.Item key={item.path} path={item.path}>
           {item.title}
         </Menu.Item>
       );

@@ -174,7 +174,7 @@ const AntFormElement = (props) => {
             case "radio.group":
               return (
                 <Radio.Group>
-                  {props.radioArray.map((k, i) => {
+                  {props.optionArray.map((k, i) => {
                     return <Radio value={k.value}>{k.text}</Radio>;
                   })}
                 </Radio.Group>
@@ -183,7 +183,7 @@ const AntFormElement = (props) => {
             case "radio.button":
               return (
                 <Radio.Group>
-                  {props.radioArray.map((k, i) => {
+                  {props.optionArray.map((k, i) => {
                     return (
                       <Radio.Button value={k.value}>{k.text}</Radio.Button>
                     );
@@ -193,7 +193,7 @@ const AntFormElement = (props) => {
               break;
             case "checkbox.group":
               const Chk = (props) => {
-                return props.checkArray.map((k, i) => {
+                return props.optionArray.map((k, i) => {
                   return props.direction === "horizontal" ? (
                     <Checkbox value={k.value}>{k.text}</Checkbox>
                   ) : (

@@ -9,6 +9,7 @@ import AntMenu from "components/Common/Menu";
 import DenseAppBar from "components/Common/AppBar";
 
 import FormList from "Admin/Form/FormList";
+import FormView from "Admin/Form/FormView";
 import PageHead from "components/Common/PageHeader";
 import axiosData from "Data";
 
@@ -138,10 +139,9 @@ const adminMenu = [
 ];
 
 const Admin = ({ match }) => {
-  let title = match.params.name,
-    Title = "",
-    routes = [];
-  console.log(axiosData.default("get", "bootform"));
+  let title = match.params.name;
+  if (typeof match.params.child != "undefined") title = match.params.child;
+
   useEffect(() => {}, []);
   //let pagename = useSelector((state) => state.global.currentPage);
   // if (pagename != "") {
@@ -152,19 +152,20 @@ const Admin = ({ match }) => {
   //const title = match.params.name;
   // let location = useLocation();
   // console.log(routes);
+  console.log(title, match.params);
   return (
     <>
       <DenseAppBar title={"Admin"}>
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
-      <PageHead title={title} onBack={false} />
+      <PageHead title={title} />
       {(() => {
         switch (title) {
           case "form":
             return <FormList />;
             break;
-          case "system":
-            return null;
+          case "formview":
+            return <FormView />;
             break;
         }
       })()}

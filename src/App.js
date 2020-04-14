@@ -70,7 +70,7 @@ const App = (props) => {
     <Router>
       <userContext.Provider value={[gvalue, setGvalue]}>
         <Switch>
-          {/* <Route path="/" exact component={Home} />
+          <Route path="/" exact component={Home} />
           <Route
             path="/login"
             render={(props) => (
@@ -82,11 +82,12 @@ const App = (props) => {
           <Route exact path="/controledit1" component={CtrEdit1} />
           <Route path="/edit" component={Edit} />
           <Route path="/controls" component={Controls} />
-          <Route exact path="/admin" component={Admin} />
-          <Route path="/admin/element" component={Element} /> */}
-          {routes.map(({ exact, path, Component }, key) => (
+          <Route path="/admin" exact component={Admin} />
+          <Route path="/admin/:name?/:child?" component={Admin} />
+          <Route path="/admin/element" component={Element} />
+          {/* {routes.map(({ exact, path, Component }, key) => (
             <Route exact={exact} path={path} key={key} component={Component} />
-          ))}
+          ))} */}
         </Switch>
       </userContext.Provider>
     </Router>

@@ -109,7 +109,6 @@ const AntFormEdit = () => {
       <div className="site-page-header-ghost-wrapper">
         <PageHeader
           className="site-page-header"
-          onBack={() => window.history.back()}
           title="Title"
           subTitle="This is a subtitle"
         >

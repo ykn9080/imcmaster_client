@@ -134,7 +134,7 @@ const AntFormBuild = () => {
     //st>ed -> st prev +1 st->ed
   };
   const pathname = encodeURIComponent(window.location.pathname);
-  useEffect(async () => {
+  useEffect(() => {
     // const result = await axios.get(
     //   `${currentsetting.webserviceprefix}bootform/id?pathname=${pathname}`
     // );

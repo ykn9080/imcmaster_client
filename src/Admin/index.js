@@ -10,6 +10,7 @@ import DenseAppBar from "components/Common/AppBar";
 
 import FormList from "Admin/Form/FormList";
 import PageHead from "components/Common/PageHeader";
+import axiosData from "Data";
 
 const adminMenu = [
   {
@@ -140,6 +141,8 @@ const Admin = ({ match }) => {
   let title = match.params.name,
     Title = "",
     routes = [];
+  console.log(axiosData.default("get", "bootform"));
+  useEffect(() => {}, []);
   //let pagename = useSelector((state) => state.global.currentPage);
   // if (pagename != "") {
   //   title = pagename.title.toLowerCase();

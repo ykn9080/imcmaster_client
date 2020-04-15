@@ -3,7 +3,7 @@ import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import AntList from "components/Common/List";
 import { Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, FormOutlined } from "@ant-design/icons";
 
 const FormList = () => {
   const [loading, setLoading] = useState(false);
@@ -24,21 +24,30 @@ const FormList = () => {
       let imsiData1 = [];
       response.data.map((k, i) => {
         imsiData1.push({
+          _id: k._id,
+          data: k.data,
           title: k.name,
           href: "/admin/form/formview",
+          titleHandler: true,
+          href: {
+            pathname: "/admin/form/formview",
+            search: `?_id=${k._id}`,
+            state: k,
+          },
           avatar: {
             size: 32,
             style: { backgroundColor: "#87d068" },
-            icon: <UserOutlined />,
+            shape: "square",
+            icon: <FormOutlined />,
           },
           description: k.desc,
           //content: k.desc,
-          extra: {
-            width: 200,
-            alt: "k.alt",
-            src:
-              "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png",
-          },
+          // extra: {
+          //   width: 200,
+          //   alt: "k.alt",
+          //   src:
+          //     "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png",
+          // },
         });
       });
       setListData(imsiData1);

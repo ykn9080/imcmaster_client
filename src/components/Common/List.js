@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import $ from "jquery";
 import { Link } from "react-router-dom";
 import { List, Avatar, Button, Skeleton } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -78,3 +79,21 @@ const AntList = (props) => {
 };
 
 export default AntList;
+
+//sample data structure
+// {
+//   title: k.name,
+//   href: "/admin/formview",
+//   avatar: {
+//     size: 32,
+//     style: { backgroundColor: "#87d068" },
+//     icon: <UserOutlined />,
+//   },
+//   description: k.desc,
+//   content:k.desc,
+//   extra :{
+//     width:200,
+//     alt:k.alt,
+//     src:k.imgsrc
+//   }
+// };

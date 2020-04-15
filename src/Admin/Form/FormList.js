@@ -25,40 +25,25 @@ const FormList = () => {
       response.data.map((k, i) => {
         imsiData1.push({
           title: k.name,
-          href: "/admin/formview",
+          href: "/admin/form/formview",
           avatar: {
             size: 32,
             style: { backgroundColor: "#87d068" },
             icon: <UserOutlined />,
           },
           description: k.desc,
+          //content: k.desc,
+          extra: {
+            width: 200,
+            alt: "k.alt",
+            src:
+              "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png",
+          },
         });
       });
       setListData(imsiData1);
       setLoading(false);
     });
-
-    // setTimeout(() => {
-    //   imsiData = [];
-    //   for (let i = 0; i < 23; i++) {
-    //     imsiData.push({
-    //       href: "http://ant.design",
-    //       title: `ant design part ${i}`,
-    //       avatar: {
-    //         size: 32,
-    //         style: { backgroundColor: "#87d068" },
-    //         icon: <UserOutlined />,
-    //       },
-    //       // "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    //       description:
-    //         "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    //       content:
-    //         "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-    //     });
-    //   }
-    //   setListData(imsiData);
-    //  setLoading(false);
-    //}, 2000);
   }, []);
 
   const editHandler = (item) => {
@@ -85,7 +70,7 @@ const FormList = () => {
       loading={loading}
       editHandler={editHandler}
       deleteHandler={deleteHandler}
-      size={"large"}
+      size={"small"}
       layout={"vertical"}
       footer={footer}
       pagination={pagination}

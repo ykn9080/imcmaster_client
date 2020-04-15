@@ -7,9 +7,10 @@ import { Link } from "react-router-dom";
 import { globalVariable } from "actions";
 import AntMenu from "components/Common/Menu";
 import DenseAppBar from "components/Common/AppBar";
-
+import { Button } from "antd";
 import FormList from "Admin/Form/FormList";
 import FormView from "Admin/Form/FormView";
+import FormEdit from "Admin/Form/FormEdit";
 import PageHead from "components/Common/PageHeader";
 import axiosData from "Data";
 
@@ -158,7 +159,9 @@ const Admin = ({ match }) => {
       <DenseAppBar title={"Admin"}>
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
-      <PageHead title={title} />
+      {["formview", "formedit"].indexOf(title) === -1 ? (
+        <PageHead title={title} />
+      ) : null}
       {(() => {
         switch (title) {
           case "form":
@@ -166,6 +169,9 @@ const Admin = ({ match }) => {
             break;
           case "formview":
             return <FormView />;
+            break;
+          case "formedit":
+            return <FormEdit />;
             break;
         }
       })()}

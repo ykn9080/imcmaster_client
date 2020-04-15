@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { List, Avatar, Button, Skeleton } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const AntList = (props) => {
+  const history = useHistory();
+
+  //loading for skeleton
   const loading = props.loading ? props.loading : false;
 
+  //layout,datasource,size,footer,pagination
   let listAttr = {
     className: "demo-loadmore-list",
     dataSource: props.listData,
@@ -18,6 +22,7 @@ const AntList = (props) => {
     listAttr = { ...listAttr, pagination: props.pagination };
 
   const ListItem = ({ item }) => {
+    //action icon: edit/delete icon
     let actlist = [];
     if (props.editHandler)
       actlist.push(<EditOutlined onClick={() => props.editHandler(item)} />);
@@ -25,8 +30,9 @@ const AntList = (props) => {
       actlist.push(
         <DeleteOutlined onClick={() => props.deleteHandler(item)} />
       );
-
     let itemAttr = { actions: actlist };
+
+    //extra for image
     if (item.extra) {
       const extra = (
         <img
@@ -38,6 +44,7 @@ const AntList = (props) => {
       itemAttr = { ...itemAttr, extra: extra };
     }
 
+    //title,desc,size,avatar
     let metaAttr = {};
     if (item.size) metaAttr = { ...metaAttr, size: item.size };
     if (item.description)
@@ -49,12 +56,22 @@ const AntList = (props) => {
           //title: <a href={item.href}>{item.title}</a>,
           title: <Link to={item.href}>{item.title}</Link>,
         };
+      // if (item.titleHandler)
+      //   metaAttr = {
+      //     ...metaAttr,
+      //     title: (
+      //       <a onClick={() => history.push(item.href, item.data)}>
+      //         {item.title}
+      //       </a>
+      //     ),
+      //   };
       else metaAttr = { ...metaAttr, title: item.title };
     }
     if (item.avatar) {
       const av = item.avatar;
       let av1 = {};
       if (av.size) av1 = { ...av1, size: av.size };
+      if (av.shape) av1 = { ...av1, shape: av.shape };
       if (av.style) av1 = { ...av1, style: av.style };
       if (av.icon) av1 = { ...av1, icon: av.icon };
       metaAttr = {

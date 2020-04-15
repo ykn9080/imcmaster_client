@@ -227,6 +227,7 @@ const AntFormElement = (props) => {
                     let btnProps = {
                       type: btnStyle,
                       htmlType: k.htmlType,
+                      key: k.btnLabel,
                     };
                     return <Button {...btnProps}>{btnLabel}</Button>;
                   })}

@@ -75,12 +75,20 @@ const formData = {
   ],
 };
 
-const AntFormBuild = () => {
-  const [formArray, setFormArray] = useState(formData);
+const AntFormBuild = (props) => {
+  console.log(props);
+  const [formArray, setFormArray] = useState(props.formArray);
+  const formid = props.formid ? props.formid : "";
   const [form] = Form.useForm();
   let edit = useSelector((state) => state.global.formEdit);
   //let elData = useSelector(state => state.global.elementData);
   let open = useSelector((state) => state.global.openDialog);
+  //   useEffect(() => {
+  //     axios.get(currentsetting.webserviceprefix + "bootform").then((response) => {
+  //       setFormArray(response.data.data);
+
+  // }, [formid]);
+
   let list = _.orderBy(formArray.list, ["seq"]);
   //let layout = formArray.setting.layout;
   let layout = "",

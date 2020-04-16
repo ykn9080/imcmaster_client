@@ -71,8 +71,9 @@ const formData = {
 };
 
 const AntFormDisplay = (props) => {
+  let editable = true;
+  if (typeof props.editable != "undefined") editable = props.editable;
   const [formArray, setFormArray] = useState(props.formArray);
-  //const [formArray, setFormArray] = useState(formData);
   const [form] = Form.useForm();
 
   let list = _.orderBy(formArray.list, ["seq"]);
@@ -88,7 +89,7 @@ const AntFormDisplay = (props) => {
     let st = formArray.setting;
     layout = st.layout;
     layout = "horizontal";
-    colnum = 2; //st.colnum;
+    colnum = st.colnum;
     formItemLayout = layout === "horizontal" ? st.formItemLayout : null;
 
     onFinish2 = st.onFinish2;
@@ -121,13 +122,23 @@ const AntFormDisplay = (props) => {
         initialValues={initial}
         size={size}
       >
-        <Row gutter={24}>
+        {colnum == 1 ? (
           <Element
             col={colnum}
             layout={layout}
             formItemLayout={formItemLayout}
+            editable={editable}
           />
-        </Row>
+        ) : (
+          <Row gutter={24}>
+            <Element
+              col={colnum}
+              layout={layout}
+              formItemLayout={formItemLayout}
+              editable={editable}
+            />
+          </Row>
+        )}
       </Form>
     </>
   );

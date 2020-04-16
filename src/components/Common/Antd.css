@@ -12,7 +12,8 @@
 }
 .site-page-header-ghost-wrapper {
   background-color: #f5f5f5;
-  padding: 4px;
+  padding: 0 20px 20px 20px;
+  margin-bottom: 20px;
 }
 
 .wrap {

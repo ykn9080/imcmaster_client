@@ -41,13 +41,6 @@ const FormList = () => {
             icon: <FormOutlined />,
           },
           description: k.desc,
-          //content: k.desc,
-          // extra: {
-          //   width: 200,
-          //   alt: "k.alt",
-          //   src:
-          //     "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png",
-          // },
         });
       });
       setListData(imsiData1);

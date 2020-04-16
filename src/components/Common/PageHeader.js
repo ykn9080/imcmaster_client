@@ -36,6 +36,8 @@ const PageHead = (props) => {
     title: props.title,
   };
   if (props.onBack) pageProps = { ...pageProps, onBack: onBack };
+  if (typeof props.ghost != "undefined")
+    pageProps = { ...pageProps, ghost: props.ghost };
   if (props.subTitle) pageProps = { ...pageProps, subTitle: props.subtitle };
   if (props.extra) pageProps = { ...pageProps, extra: props.extra };
 

@@ -147,8 +147,17 @@ const AntFormElement = (props) => {
             case "switch":
               return <Switch />;
               break;
-            case "slicer":
-              return <Slider marks={props.marks} />;
+            case "slider":
+              let marks = "",
+                min = 0,
+                max = 100;
+              if (props.min) {
+                min = props.min;
+                max = props.max;
+              }
+              if (props.marks) marks = props.marks;
+
+              return <Slider marks={""} min={0} max={100} />;
               break;
             case "rate":
               return <Rate />;
@@ -242,7 +251,20 @@ const AntFormElement = (props) => {
   );
 
   let colnum = 24;
-  if (props.col > 1) colnum = colnum / props.col;
+  if (props.col == 1) {
+    return !props.editable ? (
+      { formItem }
+    ) : (
+      <Grid container spacing={2}>
+        <Grid item xs>
+          {formItem}
+        </Grid>
+        <Grid item xs>
+          <EditDel {...props} />
+        </Grid>
+      </Grid>
+    );
+  } else if (props.col > 1) colnum = colnum / props.col;
   return !props.editable ? (
     <Col span={colnum}>{formItem}</Col>
   ) : (

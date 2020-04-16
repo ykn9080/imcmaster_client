@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { globalVariable } from "actions";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import { Button, Tooltip, Row, Col, Statistic } from "antd";
 import { FormOutlined, EditFilled } from "@ant-design/icons";
@@ -9,6 +11,8 @@ import "components/Common/Antd.css";
 const FormView = (props) => {
   const location = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
+  dispatch(globalVariable({ formEdit: false }));
   useEffect(() => {
     console.log(location.pathname); // result: '/secondpage'
     console.log(location.search); // result: '?query=abc'
@@ -37,7 +41,6 @@ const FormView = (props) => {
     <Row>
       <Description term="Title">{location.state.name}</Description>
       <Description term="Column">{summary.colnum}</Description>
-
       <Description term="Size">{summary.size}</Description>
       <Description term="Layout">{summary.layout}</Description>
       <Description term="Label:Input">
@@ -58,9 +61,11 @@ const FormView = (props) => {
 
   return (
     <>
-      <PageHead title="FormView" onBack={true} extra={extra}>
-        {child}
-      </PageHead>
+      <div className="site-page-header-ghost-wrapper">
+        <PageHead title="FormView" onBack={true} extra={extra} ghost={false}>
+          {child}
+        </PageHead>
+      </div>
       <AntFormDisplay formArray={location.state.data} />
     </>
   );

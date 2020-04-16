@@ -70,7 +70,7 @@ const formData = {
   ],
 };
 
-const AntFormBuild = (props) => {
+const AntFormDisplay = (props) => {
   const [formArray, setFormArray] = useState(props.formArray);
   //const [formArray, setFormArray] = useState(formData);
   const [form] = Form.useForm();
@@ -133,4 +133,4 @@ const AntFormBuild = (props) => {
   );
 };
 
-export default AntFormBuild;
+export default AntFormDisplay;

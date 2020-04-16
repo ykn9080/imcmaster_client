@@ -184,7 +184,7 @@ const AntFormBuild = (props) => {
   };
   return (
     <>
-      {edit ? <AntFormEdit /> : null}
+      <AntFormEdit />
       <Form
         name="validate_other"
         className="SortForm"
@@ -206,13 +206,10 @@ const AntFormBuild = (props) => {
           />
         </Row>
       </Form>
-      {edit && (
-        <>
-          <SpeedDialButton />
-          <DialogFull open={open}>
-            <ElementInput />
-          </DialogFull>
-        </>
+      <SpeedDialButton />
+      <DialogFull open={open}>
+        <ElementInput />
+      </DialogFull>
       )}
     </>
   );

@@ -48,22 +48,6 @@ const FormView = (props) => {
       <Description term="Description">{location.state.desc}</Description>
     </Row>
   );
-  // const extraContent = (
-  //   <Row>
-  //     <Col span={12}>
-  //       <Statistic title="Status" value="Pending" />
-  //     </Col>
-  //     <Col span={12}>
-  //       <Statistic title="Price" prefix="$" value={568.08} />
-  //     </Col>
-  //   </Row>
-  // );
-  // const extraContent = (
-  //   <img
-  //     src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
-  //     alt="content"
-  //   />
-  // );
   const extraContent = "";
   const child = (
     <div className="wrap">

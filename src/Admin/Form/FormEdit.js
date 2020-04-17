@@ -9,25 +9,29 @@ import AntFormBuild from "components/Common/AntFormBuild";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import "components/Common/Antd.css";
 
-const InitValueAssign = (props) => {};
 const FormEdit = (props) => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   dispatch(globalVariable({ formEdit: true }));
+
+  let formdt = useSelector((state) => state.global.currentData);
+  console.log(formdt);
   useEffect(() => {
     console.log(location.pathname); // result: '/secondpage'
     console.log(location.search); // result: '?query=abc'
     console.log(location.state); // result: 'some_value'
+    // if (location.state._id != formdt._id)
+    //   dispatch(globalVariable({ currentData: location.state }));
   }, [location]);
-  console.log(location.state.data, location.state);
+  // console.log(location.state.data, location.state);
 
   const extra = [
     <Tooltip title="View">
       <Button
         shape="circle"
         icon={<DesktopOutlined />}
-        onClick={() => history.push("/admin/form/formview", location.state)}
+        onClick={() => history.push("/admin/form/formview")}
       />
     </Tooltip>,
   ];
@@ -39,7 +43,7 @@ const FormEdit = (props) => {
         wrapperCol: { span: 14 },
       },
       layout: "horizontal",
-      col: 2,
+      formColumn: 2,
       size: "small",
       initialValues: {
         title: "hhh",
@@ -47,6 +51,12 @@ const FormEdit = (props) => {
         column: 2,
         layout: "horizontal",
         size: "small",
+      },
+      // onFieldsChange: (changedFields, allFields) => {
+      //   console.log("field", changedFields, allFields);
+      // },
+      onValuesChange: (changedValues, allValues) => {
+        console.log("value", changedValues, allValues);
       },
       onFinish: (values) => {
         console.log("Received values of form: ", values);
@@ -60,19 +70,26 @@ const FormEdit = (props) => {
       {
         label: "Desc",
         name: "desc",
-        type: "input",
+        type: "input.textarea",
         seq: 1,
       },
       {
         label: "Column",
         name: "column",
-        type: "inputNumber",
+        type: "radio.group",
+        defaultValue: 1,
+        optionArray: [
+          { text: "1", value: 1 },
+          { text: "2", value: 2 },
+          { text: "3", value: 3 },
+        ],
         seq: 2,
       },
       {
         label: "Layout",
         name: "layout",
         type: "radio.button",
+        defaultValue: "horizontal",
         optionArray: [
           { text: "horizontal", value: "horizontal" },
           { text: "vertical", value: "vertical" },
@@ -86,6 +103,7 @@ const FormEdit = (props) => {
         type: "slider",
         min: 0,
         max: 24,
+        defaultValue: 6,
         marks: {
           0: 0,
           2: 2,
@@ -107,6 +125,7 @@ const FormEdit = (props) => {
         label: "Size",
         name: "size",
         type: "radio.button",
+        defaultValue: "middle",
         optionArray: [
           { text: "small", value: "small" },
           { text: "middle", value: "middle" },
@@ -136,16 +155,6 @@ const FormEdit = (props) => {
           },
         ],
       },
-
-      // {
-      //   label: "Date",
-      //   name: "date",
-      //   type: "datepicker",
-      //   rules: [
-      //     { type: "object", required: true, message: "Please select time!" },
-      //   ],
-      //   seq: 0,
-      // },
     ],
   };
   return (
@@ -155,7 +164,7 @@ const FormEdit = (props) => {
           <AntFormDisplay formArray={summaryData} editable={false} />
         </PageHead>
       </div>
-      <AntFormBuild formArray={location.state.data} />
+      <AntFormBuild formdt={formdt} />
     </>
   );
 };

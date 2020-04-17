@@ -16,15 +16,17 @@ import DialogFull from "./DialogFull";
 import AntFormDisplay from "./AntFormDisplay";
 
 const AntFormBuild = (props) => {
-  const [formArray, setFormArray] = useState(props.formArray);
+  const [formArray, setFormArray] = useState(props.formdt.data);
+  const [formdt, setFormdt] = useState(props.formdt);
   const dispatch = useDispatch();
   dispatch(globalVariable({ formEdit: true }));
   const [form] = Form.useForm();
   let open = useSelector((state) => state.global.openDialog);
 
   const ReOrder = (start_pos, end_pos) => {
-    let arr = localStorage.getItem("formData");
-    arr = JSON.parse(arr);
+    // let arr = localStorage.getItem("formData");
+    // arr = JSON.parse(arr);
+    let arr = formdt;
     const _id = arr._id;
     let newArr = [];
     let list = _.sortBy(arr.data.list, ["seq"]);
@@ -45,7 +47,8 @@ const AntFormBuild = (props) => {
         newArr.push(value);
       });
     arr.data.list = newArr;
-    localStorage.setItem("formData", JSON.stringify(arr));
+    //localStorage.setItem("formData", JSON.stringify(arr));
+    setFormdt(arr);
     setFormArray(arr.data);
     axios
       .put(`${currentsetting.webserviceprefix}bootform/${_id}`, arr)
@@ -78,7 +81,7 @@ const AntFormBuild = (props) => {
 
   return (
     <>
-      <AntFormDisplay {...props} />
+      <AntFormDisplay {...props} formArray={formArray} />
       <SpeedDialButton />
       <DialogFull open={open}>
         <ElementInput />

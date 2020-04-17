@@ -17,7 +17,7 @@ const formData = {
       wrapperCol: { span: 16 },
     },
     layout: "horizontal",
-    //colnum: 1,
+    //formColumn: 1,
     size: "middle",
     initialValues: { name: "hhh" },
     onFinish2: (values) => {
@@ -79,21 +79,25 @@ const AntFormDisplay = (props) => {
   let list = _.orderBy(formArray.list, ["seq"]);
 
   let layout = "",
-    colnum = 1,
+    formColumn = 1,
     formItemLayout = {},
-    onFinish2,
-    onFinishFailed2,
+    onFinish,
+    onFinishFailed,
+    onValuesChange,
+    onFieldsChange,
     initial = {},
     size = "middle";
   if (typeof formArray.setting != "undefined") {
     let st = formArray.setting;
     layout = st.layout;
-    layout = "horizontal";
-    colnum = st.colnum;
+    //layout = "horizontal";
+    if (st.formColumn) formColumn = st.formColumn;
     formItemLayout = layout === "horizontal" ? st.formItemLayout : null;
 
-    onFinish2 = st.onFinish2;
-    onFinishFailed2 = st.onFinishFailed2;
+    onFinish = st.onFinish;
+    onFinishFailed = st.onFinishFailed;
+    onValuesChange = st.onValuesChange;
+    onFieldsChange = st.onFieldsChange;
     initial = st.initialValues;
     size = st.size;
   }
@@ -109,6 +113,7 @@ const AntFormDisplay = (props) => {
   const onFinishFailed1 = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <>
       <Form
@@ -117,28 +122,28 @@ const AntFormDisplay = (props) => {
         {...formItemLayout}
         layout={layout}
         form={form}
-        onFinish={onFinish2}
-        onChange={() => console.log("onchange")}
-        onFinishFailed={onFinishFailed2}
+        onValuesChange={onValuesChange}
+        onFieldsChange={onFieldsChange}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
         initialValues={initial}
         size={size}
       >
-        {colnum == 1 ? (
-          <Element
-            col={colnum}
-            layout={layout}
-            formItemLayout={formItemLayout}
-            editable={editable}
-          />
-        ) : (
+        {formColumn > 1 ? (
           <Row gutter={24}>
             <Element
-              col={colnum}
+              formColumn={formColumn}
               layout={layout}
               formItemLayout={formItemLayout}
               editable={editable}
             />
           </Row>
+        ) : (
+          <Element
+            layout={layout}
+            formItemLayout={formItemLayout}
+            editable={editable}
+          />
         )}
       </Form>
     </>

@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { globalVariable } from "actions";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import AntList from "components/Common/List";
@@ -8,16 +11,9 @@ import { UserOutlined, FormOutlined } from "@ant-design/icons";
 const FormList = () => {
   const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
-  const axiosData = async (method, url, data) => {
-    let rtn;
-    const response = await axios({
-      method: method,
-      url: currentsetting.webserviceprefix + url,
-      data: data,
-    }).then((result) => (rtn = result.data));
-    console.log(rtn);
-    return rtn;
-  };
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setLoading(true);
     axios.get(currentsetting.webserviceprefix + "bootform").then((response) => {
@@ -27,7 +23,6 @@ const FormList = () => {
           _id: k._id,
           data: k.data,
           title: k.name,
-          href: "/admin/form/formview",
           titleHandler: true,
           href: {
             pathname: "/admin/form/formview",
@@ -50,6 +45,8 @@ const FormList = () => {
 
   const editHandler = (item) => {
     console.log(item);
+    dispatch(globalVariable({ currentData: item }));
+    history.push("/admin/form/formedit");
   };
   const deleteHandler = (item) => {
     console.log(item);

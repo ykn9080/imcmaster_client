@@ -13,19 +13,30 @@ const FormView = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   dispatch(globalVariable({ formEdit: false }));
-  useEffect(() => {
-    console.log(location.pathname); // result: '/secondpage'
-    console.log(location.search); // result: '?query=abc'
-    console.log(location.state); // result: 'some_value'
-  }, [location]);
-  console.log(location.state);
-  const summary = location.state.data.setting;
+  let formdt = useSelector((state) => state.global.currentData);
+  if (formdt == "") {
+    formdt = location.state;
+    dispatch(globalVariable({ currentData: location.state }));
+  }
+
+  console.log(formdt, location.state);
+  // useEffect(() => {
+  //   console.log(location.pathname); // result: '/secondpage'
+  //   console.log(location.search); // result: '?query=abc'
+  //   console.log(location.state); // result: 'some_value'
+  //   if (location.state) {
+  //     formdt = location.state;
+  //     dispatch(globalVariable({ currentData: location.state }));
+  //   }
+  // }, []);
+
+  const summary = formdt.data.setting;
   const extra = [
     <Tooltip title="Edit">
       <Button
         shape="circle"
         icon={<FormOutlined />}
-        onClick={() => history.push("/admin/form/formedit", location.state)}
+        onClick={() => history.push("/admin/form/formedit")}
       />
     </Tooltip>,
   ];
@@ -39,7 +50,7 @@ const FormView = (props) => {
   );
   const content = (
     <Row>
-      <Description term="Title">{location.state.name}</Description>
+      <Description term="Title">{summary.name}</Description>
       <Description term="Column">{summary.colnum}</Description>
       <Description term="Size">{summary.size}</Description>
       <Description term="Layout">{summary.layout}</Description>
@@ -48,7 +59,7 @@ const FormView = (props) => {
           ":" +
           summary.formItemLayout.wrapperCol.span}
       </Description>
-      <Description term="Description">{location.state.desc}</Description>
+      <Description term="Description">{summary.desc}</Description>
     </Row>
   );
   const extraContent = "";
@@ -66,7 +77,7 @@ const FormView = (props) => {
           {child}
         </PageHead>
       </div>
-      <AntFormDisplay formArray={location.state.data} />
+      <AntFormDisplay formArray={formdt.data} />
     </>
   );
 };

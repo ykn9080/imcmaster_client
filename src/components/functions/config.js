@@ -119,6 +119,7 @@ const globalVar = {
   formEdit: false,
   elementData: "",
   formData: [],
+  currentData: "",
   login: "",
   token: "",
   selectedKey: "",

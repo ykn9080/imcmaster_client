@@ -112,6 +112,9 @@ const AntFormElement = (props) => {
             case "input.password":
               return <Input.Password />;
               break;
+            case "input.textarea":
+              return <Input.TextArea />;
+              break;
             case "inputnumber":
               return props.min ? (
                 <InputNumber min={props.min} max={props.max} />
@@ -252,7 +255,7 @@ const AntFormElement = (props) => {
   );
 
   let colnum = 24;
-  if (props.col == 1) {
+  if (props.formColumn == 1) {
     return !props.editable ? (
       { formItem }
     ) : (
@@ -265,7 +268,7 @@ const AntFormElement = (props) => {
         </Grid>
       </Grid>
     );
-  } else if (props.col > 1) colnum = colnum / props.col;
+  } else if (props.formColumn > 1) colnum = colnum / props.formColumn;
   return !props.editable ? (
     <Col span={colnum}>{formItem}</Col>
   ) : (

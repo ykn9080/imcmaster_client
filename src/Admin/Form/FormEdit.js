@@ -49,6 +49,7 @@ const FormEdit = (props) => {
         title: "hhh",
         desc: "good boy",
         column: 2,
+        labelwidth: 4,
         layout: "horizontal",
         size: "small",
       },
@@ -56,8 +57,13 @@ const FormEdit = (props) => {
       //   console.log("field", changedFields, allFields);
       // },
       onValuesChange: (changedValues, allValues) => {
-        console.log("value", changedValues, allValues);
-        formdt = { ...formdt, data: allValues };
+        console.log("value", changedValues, allValues, formdt);
+        let sett = formdt.data.setting;
+        sett.formItemLayout.labelCol.span = allValues.labelwidth;
+        sett.formItemLayout.wrapperCol.span = 24 - allValues.labelwidth;
+        sett.layout = allValues.layout;
+        sett.size = allValues.size;
+
         dispatch(globalVariable({ currentData: formdt }));
       },
       onFinish: (values) => {

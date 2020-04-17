@@ -50,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AntFormElement = (props) => {
-  console.log(props);
   const classes = useStyles();
   const confirm = useConfirm();
   const formItemProps = {

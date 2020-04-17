@@ -150,14 +150,15 @@ const AntFormElement = (props) => {
             case "slider":
               let marks = "",
                 min = 0,
-                max = 100;
-              if (props.min) {
+                max = 100,
+                range = false;
+              if (typeof props.min != "undefined") {
                 min = props.min;
                 max = props.max;
               }
               if (props.marks) marks = props.marks;
-
-              return <Slider marks={""} min={0} max={100} />;
+              if (props.range) range = props.range;
+              return <Slider marks={marks} min={min} max={max} range={range} />;
               break;
             case "rate":
               return <Rate />;

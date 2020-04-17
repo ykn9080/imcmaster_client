@@ -31,6 +31,7 @@ const FormEdit = (props) => {
       />
     </Tooltip>,
   ];
+
   const summaryData = {
     setting: {
       formItemLayout: {
@@ -80,25 +81,25 @@ const FormEdit = (props) => {
         seq: 3,
       },
       {
-        label: "Label:Input",
-        name: "label:input",
+        label: "Label Width",
+        name: "labelwidth",
         type: "slider",
         min: 0,
         max: 24,
         marks: {
-          0: "0",
-          2: "2",
-          4: "4",
-          6: "6",
-          8: "8",
-          10: "10",
-          12: "12",
-          14: "14",
-          16: "16",
-          18: "18",
-          20: "20",
-          22: "22",
-          24: "24",
+          0: 0,
+          2: 2,
+          4: 4,
+          6: 6,
+          8: 8,
+          10: 10,
+          12: 12,
+          14: 14,
+          16: 16,
+          18: 18,
+          20: 20,
+          22: 22,
+          24: 24,
         },
         seq: 4,
       },

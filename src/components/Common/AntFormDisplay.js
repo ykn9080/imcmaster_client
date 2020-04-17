@@ -118,6 +118,7 @@ const AntFormDisplay = (props) => {
         layout={layout}
         form={form}
         onFinish={onFinish2}
+        onChange={() => console.log("onchange")}
         onFinishFailed={onFinishFailed2}
         initialValues={initial}
         size={size}

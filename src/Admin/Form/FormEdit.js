@@ -57,6 +57,8 @@ const FormEdit = (props) => {
       // },
       onValuesChange: (changedValues, allValues) => {
         console.log("value", changedValues, allValues);
+        formdt = { ...formdt, data: allValues };
+        dispatch(globalVariable({ currentData: formdt }));
       },
       onFinish: (values) => {
         console.log("Received values of form: ", values);

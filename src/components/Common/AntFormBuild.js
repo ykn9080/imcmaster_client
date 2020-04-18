@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import _ from "lodash";
 import $ from "jquery";
-import axios from "axios";
-import { currentsetting } from "components/functions/config";
+
 import "antd/dist/antd.css";
 import "./Antd.css";
 import { Form, Row, Col } from "antd";
@@ -50,9 +49,7 @@ const AntFormBuild = (props) => {
     //localStorage.setItem("formData", JSON.stringify(arr));
     setFormdt(arr);
     setFormArray(arr.data);
-    axios
-      .put(`${currentsetting.webserviceprefix}bootform/${_id}`, arr)
-      .then((r) => console.log(r));
+    dispatch(globalVariable({ currentData: arr }));
     //st>ed -> st prev +1 st->ed
   };
   useEffect(() => {

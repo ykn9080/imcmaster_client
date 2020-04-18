@@ -71,7 +71,9 @@ const formData = {
 };
 
 const AntFormDisplay = (props) => {
-  let editable = true;
+  let editable = true,
+    name = "antform";
+  if (props.name) name = props.name;
   if (typeof props.editable != "undefined") editable = props.editable;
   const [formArray, setFormArray] = useState(props.formArray);
   const [form] = Form.useForm();
@@ -117,7 +119,7 @@ const AntFormDisplay = (props) => {
   return (
     <>
       <Form
-        name="validate_other"
+        name={name}
         className="SortForm"
         {...formItemLayout}
         layout={layout}

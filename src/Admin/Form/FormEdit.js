@@ -1,32 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { useLocation, useHistory, Link } from "react-router-dom";
+import axios from "axios";
+import { currentsetting } from "components/functions/config";
 import { Button, Tooltip } from "antd";
-import { DesktopOutlined, EditFilled } from "@ant-design/icons";
+import { DesktopOutlined, SaveOutlined } from "@ant-design/icons";
 import PageHead from "components/Common/PageHeader";
 import AntFormBuild from "components/Common/AntFormBuild";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import "components/Common/Antd.css";
+import useForceUpdate from "use-force-update";
 
 const FormEdit = (props) => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const forceUpdate = useForceUpdate();
   dispatch(globalVariable({ formEdit: true }));
 
   let formdt = useSelector((state) => state.global.currentData);
-  console.log(formdt);
-  useEffect(() => {
-    console.log(location.pathname); // result: '/secondpage'
-    console.log(location.search); // result: '?query=abc'
-    console.log(location.state); // result: 'some_value'
-    // if (location.state._id != formdt._id)
-    //   dispatch(globalVariable({ currentData: location.state }));
-  }, [location]);
+
+  // useEffect(() => {
+  //   console.log(location.pathname); // result: '/secondpage'
+  //   console.log(location.search); // result: '?query=abc'
+  //   console.log(location.state); // result: 'some_value'
+  //   // if (location.state._id != formdt._id)
+  //   //   dispatch(globalVariable({ currentData: location.state }));
+  // }, [location]);
   // console.log(location.state.data, location.state);
 
   const extra = [
+    <Tooltip title="Save">
+      <Button
+        shape="circle"
+        icon={<SaveOutlined />}
+        onClick={() => {
+          axios
+            .put(
+              `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
+              formdt
+            )
+            .then((r) => console.log(r));
+        }}
+      />
+    </Tooltip>,
     <Tooltip title="View">
       <Button
         shape="circle"
@@ -46,25 +64,47 @@ const FormEdit = (props) => {
       formColumn: 2,
       size: "small",
       initialValues: {
-        title: "hhh",
-        desc: "good boy",
-        column: 2,
-        labelwidth: 4,
-        layout: "horizontal",
-        size: "small",
+        title: formdt.title,
+        description: formdt.description,
+        column: formdt.data.setting.formColumn,
+        labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
+        layout: formdt.data.setting.layout,
+        size: formdt.data.setting.size,
       },
+      // initialValues: {
+      //   title: "hhh",
+      //   desc: "good boy",
+      //   column: 2,
+      //   labelwidth: 4,
+      //   layout: "horizontal",
+      //   size: "small",
+      // },
       // onFieldsChange: (changedFields, allFields) => {
-      //   console.log("field", changedFields, allFields);
+      //   const cf1 = changedFields[0];
+      //   if (["title", "desc"].indexOf(cf1.name[0]) === -1) {
+      //     formdt[cf1.name[0]] = cf1.value;
+      //     dispatch(globalVariable({ currentData: formdt }));
+      //     console.log("field", changedFields, allFields);
+      //   }
       // },
       onValuesChange: (changedValues, allValues) => {
         console.log("value", changedValues, allValues, formdt);
+        formdt.title = allValues.title;
+        formdt.description = allValues.desc;
         let sett = formdt.data.setting;
         sett.formItemLayout.labelCol.span = allValues.labelwidth;
         sett.formItemLayout.wrapperCol.span = 24 - allValues.labelwidth;
         sett.layout = allValues.layout;
         sett.size = allValues.size;
-
+        console.log(
+          Object.keys(changedValues),
+          ["title", "description"].indexOf(Object.keys(changedValues))[0]
+        );
         dispatch(globalVariable({ currentData: formdt }));
+        if (
+          ["title", "description"].indexOf(Object.keys(changedValues)[0]) === -1
+        )
+          forceUpdate();
       },
       onFinish: (values) => {
         console.log("Received values of form: ", values);
@@ -77,7 +117,7 @@ const FormEdit = (props) => {
       { label: "Title", name: "title", type: "input", seq: 0 },
       {
         label: "Desc",
-        name: "desc",
+        name: "description",
         type: "input.textarea",
         seq: 1,
       },
@@ -169,7 +209,11 @@ const FormEdit = (props) => {
     <>
       <div className="site-page-header-ghost-wrapper">
         <PageHead title="FormEdit" onBack={true} extra={extra} ghost={false}>
-          <AntFormDisplay formArray={summaryData} editable={false} />
+          <AntFormDisplay
+            formArray={summaryData}
+            editable={false}
+            name={"fsummary"}
+          />
         </PageHead>
       </div>
       <AntFormBuild formdt={formdt} />

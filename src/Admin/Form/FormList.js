@@ -44,7 +44,6 @@ const FormList = () => {
   }, []);
 
   const editHandler = (item) => {
-    console.log(item);
     dispatch(globalVariable({ currentData: item }));
     history.push("/admin/form/formedit");
   };

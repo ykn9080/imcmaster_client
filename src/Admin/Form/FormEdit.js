@@ -64,8 +64,8 @@ const FormEdit = (props) => {
       formColumn: 2,
       size: "small",
       initialValues: {
-        title: formdt.title,
-        description: formdt.description,
+        title: formdt.name,
+        description: formdt.desc,
         column: formdt.data.setting.formColumn,
         labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
         layout: formdt.data.setting.layout,
@@ -88,18 +88,13 @@ const FormEdit = (props) => {
       //   }
       // },
       onValuesChange: (changedValues, allValues) => {
-        console.log("value", changedValues, allValues, formdt);
-        formdt.title = allValues.title;
-        formdt.description = allValues.desc;
+        formdt.name = allValues.title;
+        formdt.desc = allValues.desc;
         let sett = formdt.data.setting;
         sett.formItemLayout.labelCol.span = allValues.labelwidth;
         sett.formItemLayout.wrapperCol.span = 24 - allValues.labelwidth;
         sett.layout = allValues.layout;
         sett.size = allValues.size;
-        console.log(
-          Object.keys(changedValues),
-          ["title", "description"].indexOf(Object.keys(changedValues))[0]
-        );
         dispatch(globalVariable({ currentData: formdt }));
         if (
           ["title", "description"].indexOf(Object.keys(changedValues)[0]) === -1

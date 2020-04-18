@@ -20,15 +20,19 @@ const FormEdit = (props) => {
   dispatch(globalVariable({ formEdit: true }));
 
   let formdt = useSelector((state) => state.global.currentData);
+  //inorderto set initialValues, append onValuesChange eventhandler
+  //must remove onValuesChange when to save to database
 
-  // useEffect(() => {
-  //   console.log(location.pathname); // result: '/secondpage'
-  //   console.log(location.search); // result: '?query=abc'
-  //   console.log(location.state); // result: 'some_value'
-  //   // if (location.state._id != formdt._id)
-  //   //   dispatch(globalVariable({ currentData: location.state }));
-  // }, [location]);
-  // console.log(location.state.data, location.state);
+  formdt.data.setting = {
+    ...formdt.data.setting,
+    onValuesChange: (changedValues, allValues) => {
+      formdt.data.setting.initialValues = {
+        ...formdt.data.setting.initialValues,
+        ...changedValues,
+      };
+      dispatch(globalVariable({ currentData: formdt }));
+    },
+  };
 
   const extra = [
     <Tooltip title="Save">
@@ -36,6 +40,8 @@ const FormEdit = (props) => {
         shape="circle"
         icon={<SaveOutlined />}
         onClick={() => {
+          //remove onValuesChange
+          delete formdt.data.setting.onValuesChange;
           axios
             .put(
               `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
@@ -57,28 +63,20 @@ const FormEdit = (props) => {
   const summaryData = {
     setting: {
       formItemLayout: {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 14 },
+        labelCol: { span: 6 },
+        wrapperCol: { span: 18 },
       },
-      layout: "horizontal",
+      layout: "inline",
       formColumn: 2,
       size: "small",
       initialValues: {
-        title: formdt.name,
-        description: formdt.desc,
+        name: formdt.name,
+        desc: formdt.desc,
         column: formdt.data.setting.formColumn,
         labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
         layout: formdt.data.setting.layout,
         size: formdt.data.setting.size,
       },
-      // initialValues: {
-      //   title: "hhh",
-      //   desc: "good boy",
-      //   column: 2,
-      //   labelwidth: 4,
-      //   layout: "horizontal",
-      //   size: "small",
-      // },
       // onFieldsChange: (changedFields, allFields) => {
       //   const cf1 = changedFields[0];
       //   if (["title", "desc"].indexOf(cf1.name[0]) === -1) {
@@ -88,17 +86,16 @@ const FormEdit = (props) => {
       //   }
       // },
       onValuesChange: (changedValues, allValues) => {
-        formdt.name = allValues.title;
+        formdt.name = allValues.name;
         formdt.desc = allValues.desc;
         let sett = formdt.data.setting;
         sett.formItemLayout.labelCol.span = allValues.labelwidth;
         sett.formItemLayout.wrapperCol.span = 24 - allValues.labelwidth;
+        sett.formColumn = allValues.column;
         sett.layout = allValues.layout;
         sett.size = allValues.size;
         dispatch(globalVariable({ currentData: formdt }));
-        if (
-          ["title", "description"].indexOf(Object.keys(changedValues)[0]) === -1
-        )
+        if (["name", "desc"].indexOf(Object.keys(changedValues)[0]) === -1)
           forceUpdate();
       },
       onFinish: (values) => {
@@ -109,10 +106,10 @@ const FormEdit = (props) => {
       },
     },
     list: [
-      { label: "Title", name: "title", type: "input", seq: 0 },
+      { label: "Title", name: "name", type: "input", seq: 0 },
       {
         label: "Desc",
-        name: "description",
+        name: "desc",
         type: "input.textarea",
         seq: 1,
       },
@@ -175,28 +172,6 @@ const FormEdit = (props) => {
           { text: "large", value: "large" },
         ],
         seq: 5,
-      },
-
-      {
-        type: "button",
-        seq: 1000,
-        tailLayout: {
-          wrapperCol: { offset: 8, span: 16 },
-        },
-        btnArr: [
-          {
-            btnLabel: "Submit",
-            btnStyle: "secondary",
-            htmlType: "submit",
-            seq: 0,
-          },
-          {
-            btnLabel: "Cancel",
-            btnStyle: "primary",
-            htmlType: "button",
-            seq: 1,
-          },
-        ],
       },
     ],
   };

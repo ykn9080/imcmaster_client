@@ -23,8 +23,6 @@ const AntFormBuild = (props) => {
   let open = useSelector((state) => state.global.openDialog);
 
   const ReOrder = (start_pos, end_pos) => {
-    // let arr = localStorage.getItem("formData");
-    // arr = JSON.parse(arr);
     let arr = formdt;
     const _id = arr._id;
     let newArr = [];
@@ -46,7 +44,6 @@ const AntFormBuild = (props) => {
         newArr.push(value);
       });
     arr.data.list = newArr;
-    //localStorage.setItem("formData", JSON.stringify(arr));
     setFormdt(arr);
     setFormArray(arr.data);
     dispatch(globalVariable({ currentData: arr }));

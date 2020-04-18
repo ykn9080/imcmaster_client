@@ -22,7 +22,7 @@ const FormList = () => {
         imsiData1.push({
           _id: k._id,
           data: k.data,
-          title: k.name,
+          name: k.name,
           titleHandler: true,
           href: {
             pathname: "/admin/form/formview",
@@ -35,7 +35,7 @@ const FormList = () => {
             shape: "square",
             icon: <FormOutlined />,
           },
-          description: k.desc,
+          desc: k.desc,
         });
       });
       setListData(imsiData1);

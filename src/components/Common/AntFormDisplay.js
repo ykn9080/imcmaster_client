@@ -77,12 +77,13 @@ const AntFormDisplay = (props) => {
   if (typeof props.editable != "undefined") editable = props.editable;
   const [formArray, setFormArray] = useState(props.formArray);
   const [form] = Form.useForm();
-
+  console.log(formArray.setting.formItemLayout.labelCol.span);
   let list = _.orderBy(formArray.list, ["seq"]);
 
   let layout = "",
     formColumn = 1,
     formItemLayout = {},
+    tailLayout = {},
     onFinish,
     onFinishFailed,
     onValuesChange,
@@ -95,7 +96,12 @@ const AntFormDisplay = (props) => {
     //layout = "horizontal";
     if (st.formColumn) formColumn = st.formColumn;
     formItemLayout = layout === "horizontal" ? st.formItemLayout : null;
-
+    tailLayout =
+      layout === "horizontal"
+        ? {
+            wrapperCol: { span: 14, offset: formItemLayout.labelCol.span },
+          }
+        : null;
     onFinish = st.onFinish;
     onFinishFailed = st.onFinishFailed;
     onValuesChange = st.onValuesChange;
@@ -137,6 +143,7 @@ const AntFormDisplay = (props) => {
               formColumn={formColumn}
               layout={layout}
               formItemLayout={formItemLayout}
+              tailLayout={tailLayout}
               editable={editable}
             />
           </Row>
@@ -144,6 +151,7 @@ const AntFormDisplay = (props) => {
           <Element
             layout={layout}
             formItemLayout={formItemLayout}
+            tailLayout={tailLayout}
             editable={editable}
           />
         )}

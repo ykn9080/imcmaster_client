@@ -60,9 +60,8 @@ const AntFormElement = (props) => {
 
   const tailLayout = {
     ...(props.type === "button" &&
-      props.tailLayout != null &&
       props.layout === "horizontal" && {
-        wrapperCol: props.formItemLayout.label,
+        wrapperCol: { span: 14, offset: props.formItemLayout.labelCol.span },
       }),
   };
 
@@ -99,7 +98,7 @@ const AntFormElement = (props) => {
       )
     );
   };
-
+  console.log(tailLayout);
   const formItem = (
     <div className={classes.root}>
       <Form.Item {...formItemProps} {...tailLayout} key={props.seq}>

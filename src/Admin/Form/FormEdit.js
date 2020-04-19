@@ -35,7 +35,7 @@ const FormEdit = (props) => {
   };
 
   const extra = [
-    <Tooltip title="Save">
+    <Tooltip title="Save" key="1save">
       <Button
         shape="circle"
         icon={<SaveOutlined />}
@@ -51,7 +51,7 @@ const FormEdit = (props) => {
         }}
       />
     </Tooltip>,
-    <Tooltip title="View">
+    <Tooltip title="View" key="2view">
       <Button
         shape="circle"
         icon={<DesktopOutlined />}
@@ -63,10 +63,10 @@ const FormEdit = (props) => {
   const summaryData = {
     setting: {
       formItemLayout: {
-        labelCol: { span: 6 },
-        wrapperCol: { span: 18 },
+        labelCol: { span: 2 },
+        wrapperCol: { span: 22 },
       },
-      layout: "inline",
+      layout: "vertical",
       formColumn: 2,
       size: "small",
       initialValues: {
@@ -179,11 +179,7 @@ const FormEdit = (props) => {
     <>
       <div className="site-page-header-ghost-wrapper">
         <PageHead title="FormEdit" onBack={true} extra={extra} ghost={false}>
-          <AntFormDisplay
-            formArray={summaryData}
-            editable={false}
-            name={"fsummary"}
-          />
+          <AntFormDisplay formArray={summaryData} name={"fsummary"} />
         </PageHead>
       </div>
       <AntFormBuild formdt={formdt} />

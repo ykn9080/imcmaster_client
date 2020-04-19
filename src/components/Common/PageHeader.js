@@ -7,7 +7,6 @@ import AntBreadCrumb from "./BreadCrumb";
 const PageHead = (props) => {
   const history = useHistory();
   let location = useLocation();
-  console.log(location);
 
   const routes = [
     {
@@ -42,7 +41,7 @@ const PageHead = (props) => {
   if (props.extra) pageProps = { ...pageProps, extra: props.extra };
 
   /* #region  children component example*/
-  const Description = ({ term, children, span = 12 }) => (
+  const Description = ({ term, children, span = props.span }) => (
     <Col span={span}>
       <div className="description">
         <div className="term">{term}</div>
@@ -50,9 +49,18 @@ const PageHead = (props) => {
       </div>
     </Col>
   );
-  const content = (
+  const content = props.content ? (
     <Row>
-      <Description term="Created">Lili Qu</Description>
+      {props.content.map((k, i) => {
+        return k.span ? (
+          <Description term={k.term} span={k.span}>
+            {k.detail}
+          </Description>
+        ) : (
+          <Description term={k.term}>{k.detail}</Description>
+        );
+      })}
+      {/* <Description term="Created">Lili Qu</Description>
       <Description term="Association">
         <a>421421</a>
       </Description>
@@ -60,15 +68,19 @@ const PageHead = (props) => {
       <Description term="Effective Time">2017-10-10</Description>
       <Description term="Remarks" span={24}>
         Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
-      </Description>
+      </Description> */}
     </Row>
+  ) : (
+    ""
   );
-  const extraContent = (
-    <img
-      src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
-      alt="content"
-    />
-  );
+
+  // const extraContent = (
+  //   <img
+  //     src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
+  //     alt="content"
+  //   />
+  // );
+  const extraContent = props.extraContent ? props.extraContent : "";
   const child = (
     <div className="wrap">
       <div className="content padding">{content}</div>
@@ -82,7 +94,9 @@ const PageHead = (props) => {
       <div style={{ paddingLeft: 25, paddingTop: 5 }}>
         <AntBreadCrumb />
       </div>
-      <PageHeader {...pageProps}>{props.children}</PageHeader>
+      <PageHeader {...pageProps}>
+        {props.content ? <>{child}</> : props.children}
+      </PageHeader>
     </>
   );
 };

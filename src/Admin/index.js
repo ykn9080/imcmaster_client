@@ -153,7 +153,7 @@ const Admin = ({ match }) => {
   //const title = match.params.name;
   // let location = useLocation();
   // console.log(routes);
-  console.log(title, match.params);
+
   return (
     <>
       <DenseAppBar title={"Admin"}>

@@ -11,7 +11,7 @@ export default class Body1 extends React.Component {
       currentBreakpoint: "lg",
       compactType: "vertical",
       mounted: false,
-      layouts: { lg: props.initialLayout }
+      layouts: { lg: props.initialLayout },
     };
 
     this.onBreakpointChange = this.onBreakpointChange.bind(this);
@@ -25,7 +25,7 @@ export default class Body1 extends React.Component {
   }
 
   generateDOM() {
-    return _.map(this.state.layouts.lg, function(l, i) {
+    return _.map(this.state.layouts.lg, function (l, i) {
       return (
         <div key={i} className={l.static ? "static" : ""}>
           {l.static ? (
@@ -45,7 +45,7 @@ export default class Body1 extends React.Component {
 
   onBreakpointChange(breakpoint) {
     this.setState({
-      currentBreakpoint: breakpoint
+      currentBreakpoint: breakpoint,
     });
   }
 
@@ -66,7 +66,7 @@ export default class Body1 extends React.Component {
 
   onNewLayout() {
     this.setState({
-      layouts: { lg: generateLayout() }
+      layouts: { lg: generateLayout() },
     });
   }
 
@@ -106,19 +106,19 @@ export default class Body1 extends React.Component {
 }
 
 Body1.propTypes = {
-  onLayoutChange: PropTypes.func.isRequired
+  onLayoutChange: PropTypes.func.isRequired,
 };
 
 Body1.defaultProps = {
   className: "layout",
   rowHeight: 30,
-  onLayoutChange: function() {},
+  onLayoutChange: function () {},
   cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-  initialLayout: generateLayout()
+  initialLayout: generateLayout(),
 };
 
 function generateLayout() {
-  return _.map(_.range(0, 25), function(item, i) {
+  return _.map(_.range(0, 25), function (item, i) {
     var y = Math.ceil(Math.random() * 4) + 1;
     return {
       x: (_.random(0, 5) * 2) % 12,
@@ -126,7 +126,7 @@ function generateLayout() {
       w: 2,
       h: y,
       i: i.toString(),
-      static: Math.random() < 0.05
+      static: Math.random() < 0.05,
     };
   });
 }

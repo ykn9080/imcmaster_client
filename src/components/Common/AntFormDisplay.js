@@ -71,13 +71,13 @@ const formData = {
 };
 
 const AntFormDisplay = (props) => {
-  let editable = true,
+  let editable = false,
     name = "antform";
   if (props.name) name = props.name;
   if (typeof props.editable != "undefined") editable = props.editable;
   const [formArray, setFormArray] = useState(props.formArray);
   const [form] = Form.useForm();
-  console.log(formArray.setting.formItemLayout.labelCol.span);
+
   let list = _.orderBy(formArray.list, ["seq"]);
 
   let layout = "",
@@ -121,7 +121,12 @@ const AntFormDisplay = (props) => {
   const onFinishFailed1 = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
+  const propcontent={ 
+    formColumn:formColumn
+  layout=:layout
+  formItemLayout=:formItemLayout
+  tailLayout=:tailLayout
+  editable:editable}
   return (
     <>
       <Form
@@ -138,8 +143,9 @@ const AntFormDisplay = (props) => {
         size={size}
       >
         {formColumn > 1 ? (
-          <Row gutter={24}>
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
             <Element
+              key="1element"
               formColumn={formColumn}
               layout={layout}
               formItemLayout={formItemLayout}
@@ -149,6 +155,8 @@ const AntFormDisplay = (props) => {
           </Row>
         ) : (
           <Element
+            key="2elelment"
+            formColumn={formColumn}
             layout={layout}
             formItemLayout={formItemLayout}
             tailLayout={tailLayout}

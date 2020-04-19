@@ -18,19 +18,16 @@ const FormView = (props) => {
     formdt = location.state;
     dispatch(globalVariable({ currentData: location.state }));
   }
+  const sum = formdt.data.setting;
+  const content = [
+    { term: "Title", detail: sum.name },
+    { term: "Column", detail: sum.column },
+    { term: "Size", detail: sum.size },
+    { term: "Layout", detail: sum.layout },
+    { term: "LabelWidth", detail: sum.formItemLayout.labelCol.span },
+    { term: "Description", detail: sum.desc, span: 24 },
+  ];
 
-  console.log(formdt, location.state);
-  // useEffect(() => {
-  //   console.log(location.pathname); // result: '/secondpage'
-  //   console.log(location.search); // result: '?query=abc'
-  //   console.log(location.state); // result: 'some_value'
-  //   if (location.state) {
-  //     formdt = location.state;
-  //     dispatch(globalVariable({ currentData: location.state }));
-  //   }
-  // }, []);
-
-  const summary = formdt.data.setting;
   const extra = [
     <Tooltip title="Edit">
       <Button
@@ -40,42 +37,47 @@ const FormView = (props) => {
       />
     </Tooltip>,
   ];
-  const Description = ({ term, children, span = 12 }) => (
-    <Col span={span}>
-      <div className="description">
-        <div className="term">{term}</div>
-        <div className="detail">{children}</div>
-      </div>
-    </Col>
-  );
-  const content = (
-    <Row>
-      <Description term="Title">{summary.name}</Description>
-      <Description term="Column">{summary.colnum}</Description>
-      <Description term="Size">{summary.size}</Description>
-      <Description term="Layout">{summary.layout}</Description>
-      <Description term="Label:Input">
-        {summary.formItemLayout.labelCol.span +
-          ":" +
-          summary.formItemLayout.wrapperCol.span}
-      </Description>
-      <Description term="Description">{summary.desc}</Description>
-    </Row>
-  );
-  const extraContent = "";
-  const child = (
-    <div className="wrap">
-      <div className="content padding">{content}</div>
-      <div className="extraContent">{extraContent}</div>
-    </div>
-  );
+  // const Description = ({ term, children, span = 12 }) => (
+  //   <Col span={span}>
+  //     <div className="description">
+  //       <div className="term">{term}</div>
+  //       <div className="detail">{children}</div>
+  //     </div>
+  //   </Col>
+  // );
+  // const content = (
+  //   <Row>
+  //     <Description term="Title">{summary.name}</Description>
+  //     <Description term="Column">{summary.colnum}</Description>
+  //     <Description term="Size">{summary.size}</Description>
+  //     <Description term="Layout">{summary.layout}</Description>
+  //     <Description term="Label:Input">
+  //       {summary.formItemLayout.labelCol.span +
+  //         ":" +
+  //         summary.formItemLayout.wrapperCol.span}
+  //     </Description>
+  //     <Description term="Description">{summary.desc}</Description>
+  //   </Row>
+  // );
+  // const extraContent = "";
+  // const child = (
+  //   <div className="wrap">
+  //     <div className="content padding">{content}</div>
+  //     <div className="extraContent">{extraContent}</div>
+  //   </div>
+  // );
 
   return (
     <>
       <div className="site-page-header-ghost-wrapper">
-        <PageHead title="FormView" onBack={true} extra={extra} ghost={false}>
-          {child}
-        </PageHead>
+        <PageHead
+          title="FormView"
+          onBack={true}
+          extra={extra}
+          content={content}
+          ghost={false}
+          span={12}
+        ></PageHead>
       </div>
       <AntFormDisplay formArray={formdt.data} />
     </>

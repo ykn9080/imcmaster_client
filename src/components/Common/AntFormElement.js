@@ -26,20 +26,6 @@ import {
 } from "antd";
 const { MonthPicker, RangePicker } = DatePicker;
 const { Option } = Select;
-// const layout = {
-//   labelCol: {
-//     span: 8
-//   },
-//   wrapperCol: {
-//     span: 16
-//   }
-// };
-// const tailLayout = {
-//   wrapperCol: {
-//     offset: 8,
-//     span: 16
-//   }
-// };
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -52,23 +38,21 @@ const useStyles = makeStyles((theme) => ({
 const AntFormElement = (props) => {
   const classes = useStyles();
   const confirm = useConfirm();
+  const dispatch = useDispatch();
+  let open = useSelector((state) => state.global.openDialog);
+  let edit = useSelector((state) => state.global.formEdit);
+
   const formItemProps = {
     label: props.label,
     name: props.name,
     ...(props.rules !== "undefined" && { rules: props.rules }),
   };
-
   const tailLayout = {
     ...(props.type === "button" &&
       props.layout === "horizontal" && {
         wrapperCol: { span: 14, offset: props.formItemLayout.labelCol.span },
       }),
   };
-
-  const dispatch = useDispatch();
-
-  let open = useSelector((state) => state.global.openDialog);
-  let edit = useSelector((state) => state.global.formEdit);
 
   const EditDel = (props) => {
     const deleteHandler = (id) => {
@@ -98,7 +82,6 @@ const AntFormElement = (props) => {
       )
     );
   };
-  console.log(tailLayout);
   const formItem = (
     <div className={classes.root}>
       <Form.Item {...formItemProps} {...tailLayout} key={props.seq}>
@@ -251,35 +234,25 @@ const AntFormElement = (props) => {
       </Form.Item>
     </div>
   );
-
-  let colnum = 24;
-  if (props.formColumn == 1) {
-    return !props.editable ? (
-      { formItem }
-    ) : (
-      <Grid container spacing={2}>
-        <Grid item xs>
-          {formItem}
-        </Grid>
-        <Grid item xs>
-          <EditDel {...props} />
-        </Grid>
+  const gridform = (
+    <Grid container spacing={2} justify="space-between">
+      <Grid item xs={10}>
+        {formItem}
       </Grid>
-    );
-  } else if (props.formColumn > 1) colnum = colnum / props.formColumn;
-  return !props.editable ? (
-    <Col span={colnum}>{formItem}</Col>
-  ) : (
-    <Col span={colnum}>
-      <Grid container spacing={2}>
-        <Grid item xs>
-          {formItem}
-        </Grid>
-        <Grid item xs>
-          <EditDel {...props} />
-        </Grid>
+      <Grid item xs={2}>
+        <EditDel {...props} />
       </Grid>
-    </Col>
+    </Grid>
   );
+
+  if (props.formColumn == 1) {
+    if (props.editable) return <>{gridform}</>;
+    else return <>{formItem}</>;
+  } else {
+    let colnum = 24;
+    colnum = colnum / props.formColumn;
+    if (props.editable) return <Col span={colnum}>{gridform}</Col>;
+    else return <Col span={colnum}>{formItem}</Col>;
+  }
 };
 export default AntFormElement;

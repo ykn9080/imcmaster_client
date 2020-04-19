@@ -121,12 +121,12 @@ const AntFormDisplay = (props) => {
   const onFinishFailed1 = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const propcontent={ 
-    formColumn:formColumn
-  layout=:layout
-  formItemLayout=:formItemLayout
-  tailLayout=:tailLayout
-  editable:editable}
+  // const propcontent={
+  //   formColumn:formColumn
+  // layout=:layout
+  // formItemLayout=:formItemLayout
+  // tailLayout=:tailLayout
+  // editable:editable}
   return (
     <>
       <Form

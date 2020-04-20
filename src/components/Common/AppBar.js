@@ -51,9 +51,9 @@ export default function DenseAppBar(props) {
   let showEdit = props.showEdit;
 
   return (
-    <div className={classes.root}>
+    <>
       <AppBar
-        position="static"
+        position="relative"
         style={{ backgroundColor: "#161313", height: 50 }}
       >
         <Toolbar variant="dense">
@@ -73,6 +73,6 @@ export default function DenseAppBar(props) {
           {right}
         </Toolbar>
       </AppBar>
-    </div>
+    </>
   );
 }

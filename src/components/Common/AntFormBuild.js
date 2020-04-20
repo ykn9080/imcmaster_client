@@ -77,7 +77,7 @@ const AntFormBuild = (props) => {
     <>
       <AntFormDisplay {...props} formArray={formArray} editable={true} />
       <SpeedDialButton />
-      <DialogFull open={open}>
+      <DialogFull open={open} title="Element Edit">
         <ElementInput />
       </DialogFull>
       )}

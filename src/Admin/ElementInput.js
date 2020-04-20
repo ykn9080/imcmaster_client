@@ -62,12 +62,12 @@ const ElementInput = (props) => {
   const summaryData = {
     setting: {
       formItemLayout: {
-        labelCol: { span: 2 },
-        wrapperCol: { span: 22 },
+        labelCol: { span: 6 },
+        wrapperCol: { span: 18 },
       },
-      layout: "vertical",
+      layout: "horizontal",
       formColumn: 2,
-      size: "small",
+      size: "middle",
       // initialValues: {
       //   name: formdt.name,
       //   desc: formdt.desc,
@@ -76,19 +76,20 @@ const ElementInput = (props) => {
       //   layout: formdt.data.setting.layout,
       //   size: formdt.data.setting.size,
       // },
-      // onValuesChange: (changedValues, allValues) => {
-      //   formdt.name = allValues.name;
-      //   formdt.desc = allValues.desc;
-      //   let sett = formdt.data.setting;
-      //   sett.formItemLayout.labelCol.span = allValues.labelwidth;
-      //   sett.formItemLayout.wrapperCol.span = 24 - allValues.labelwidth;
-      //   sett.formColumn = allValues.column;
-      //   sett.layout = allValues.layout;
-      //   sett.size = allValues.size;
-      //   dispatch(globalVariable({ currentData: formdt }));
-      //   if (["name", "desc"].indexOf(Object.keys(changedValues)[0]) === -1)
-      //     forceUpdate();
-      // },
+      onValuesChange: (changedValues, allValues) => {
+        console.log(changedValues);
+        // formdt.name = allValues.name;
+        // formdt.desc = allValues.desc;
+        // let sett = formdt.data.setting;
+        // sett.formItemLayout.labelCol.span = allValues.labelwidth;
+        // sett.formItemLayout.wrapperCol.span = 24 - allValues.labelwidth;
+        // sett.formColumn = allValues.column;
+        // sett.layout = allValues.layout;
+        // sett.size = allValues.size;
+        // dispatch(globalVariable({ currentData: formdt }));
+        // if (["name", "desc"].indexOf(Object.keys(changedValues)[0]) === -1)
+        //   forceUpdate();
+      },
       onFinish: (values) => {
         console.log("Received values of form: ", values);
       },
@@ -97,80 +98,60 @@ const ElementInput = (props) => {
       },
     },
     list: [
-      { label: "Title", name: "name", type: "input", seq: 0 },
+      { label: "Name", name: "name", type: "input", seq: 0 },
+      { label: "Label", name: "label", type: "input", seq: 1 },
+      { label: "Placeholder", name: "placeholder", type: "input", seq: 2 },
+      { label: "DefaultValue", name: "defaulvalue", type: "input", seq: 3 },
       {
-        label: "Desc",
-        name: "desc",
-        type: "input.textarea",
-        seq: 1,
-      },
-      {
-        label: "Column",
-        name: "column",
-        type: "radio.group",
-        defaultValue: 1,
-        optionArray: [
-          { text: "1", value: 1 },
-          { text: "2", value: 2 },
-          { text: "3", value: 3 },
+        label: "Required",
+        type: "nostyle",
+        array: [
+          {
+            name: "required",
+            type: "checkbox",
+            width: "10%",
+            seq: 0,
+          },
+          {
+            name: "message",
+            type: "input",
+            seq: 1,
+            width: "90%",
+            defaultValue: "is required",
+            placeholder: "write error message!",
+          },
         ],
-        seq: 2,
-      },
-      {
-        label: "Layout",
-        name: "layout",
-        type: "radio.button",
-        defaultValue: "horizontal",
-        optionArray: [
-          { text: "horizontal", value: "horizontal" },
-          { text: "vertical", value: "vertical" },
-          { text: "inline", value: "inline" },
-        ],
-        seq: 3,
-      },
-      {
-        label: "Label Width",
-        name: "labelwidth",
-        type: "slider",
-        min: 0,
-        max: 24,
-        defaultValue: 6,
-        marks: {
-          0: 0,
-          2: 2,
-          4: 4,
-          6: 6,
-          8: 8,
-          10: 10,
-          12: 12,
-          14: 14,
-          16: 16,
-          18: 18,
-          20: 20,
-          22: 22,
-          24: 24,
-        },
         seq: 4,
       },
       {
-        label: "Size",
-        name: "size",
-        type: "radio.button",
-        defaultValue: "middle",
-        optionArray: [
-          { text: "small", value: "small" },
-          { text: "middle", value: "middle" },
-          { text: "large", value: "large" },
+        label: "Tooltip",
+        type: "nostyle",
+        array: [
+          {
+            name: "icon",
+            type: "select",
+            optionArray: [
+              { text: "horizontal", value: "horizontal" },
+              { text: "vertical", value: "vertical" },
+              { text: "inline", value: "inline" },
+            ],
+            seq: 0,
+          },
+          {
+            name: "message",
+            type: "input",
+            placeholder: "write message",
+            seq: 1,
+          },
         ],
-        seq: 5,
       },
     ],
   };
   return (
     <>
       <div className="site-page-header-ghost-wrapper">
-        <PageHead title="FormEdit" onBack={true} extra={extra} ghost={false}>
-          <AntFormDisplay formArray={summaryData} name={"fsummary"} />
+        <PageHead title="Element Edit" extra={extra} ghost={false}>
+          <AntFormDisplay formArray={summaryData} name={"esummary"} />
         </PageHead>
       </div>
       {/* <AntFormDisplay formdt={formdt} /> */}

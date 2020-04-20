@@ -12,7 +12,6 @@ import FormList from "Admin/Form/FormList";
 import FormView from "Admin/Form/FormView";
 import FormEdit from "Admin/Form/FormEdit";
 import PageHead from "components/Common/PageHeader";
-import axiosData from "Data";
 
 const adminMenu = [
   {

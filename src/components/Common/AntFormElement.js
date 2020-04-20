@@ -52,19 +52,6 @@ const useStyles = makeStyles((theme) => ({
 const AntFormElement = (props) => {
   const classes = useStyles();
   const confirm = useConfirm();
-  const formItemProps = {
-    label: props.label,
-    name: props.name,
-    ...(props.rules !== "undefined" && { rules: props.rules }),
-  };
-
-  const tailLayout = {
-    ...(props.type === "button" &&
-      props.layout === "horizontal" && {
-        wrapperCol: { span: 14, offset: props.formItemLayout.labelCol.span },
-      }),
-  };
-
   const dispatch = useDispatch();
 
   let open = useSelector((state) => state.global.openDialog);
@@ -97,30 +84,62 @@ const AntFormElement = (props) => {
       )
     );
   };
-  console.log(tailLayout);
-  const formItem = (
-    <div className={classes.root}>
-      <Form.Item {...formItemProps} {...tailLayout} key={props.seq}>
+
+  const FormItem = (props) => {
+    const formItemProps = {
+      ...(props.name && { name: props.name }),
+      ...(props.label && { label: props.label }),
+      ...(props.rules && { rules: props.rules }),
+      ...(props.nostyle && { noStyle: true }),
+      ...(props.style && { style: props.style }),
+    };
+
+    const tailLayout = {
+      ...(props.type === "button" &&
+        props.layout === "horizontal" && {
+          wrapperCol: { span: 14, offset: props.formItemLayout.labelCol.span },
+        }),
+    };
+    console.log(formItemProps, tailLayout, props.type.toLowerCase());
+    let placeholder = {};
+    if (props.placeholder) placeholder = { placeholder: props.placeholder };
+    return (
+      <Form.Item
+        {...formItemProps}
+        {...tailLayout}
+        key={props.label + props.seq}
+      >
         {(() => {
           switch (props.type.toLowerCase()) {
+            case "nostyle":
+              return props.array.map((k, i) => {
+                let wth = "50%";
+                if (k.width) wth = k.width;
+                let sty = {
+                  display: "inline-block",
+                  width: `calc(${wth} - 8px)`,
+                };
+                if (i > 0) sty = { ...sty, margin: "0 8px" };
+                return (
+                  <FormItem {...k} noStyle key={k.name + k.seq} style={sty} />
+                );
+              });
+              break;
             case "input":
-              return <Input />;
+              return <Input {...placeholder} />;
               break;
             case "input.password":
-              return <Input.Password />;
+              return <Input.Password {...placeholder} />;
               break;
             case "input.textarea":
-              return <Input.TextArea />;
+              return <Input.TextArea {...placeholder} />;
               break;
             case "inputnumber":
               return props.min ? (
-                <InputNumber min={props.min} max={props.max} />
+                <InputNumber min={props.min} max={props.max} {...placeholder} />
               ) : (
-                <InputNumber />
+                <InputNumber {...placeholder} />
               );
-              break;
-            case "input.textarea":
-              return <Input.TextArea />;
               break;
 
             case "datepicker":
@@ -162,6 +181,10 @@ const AntFormElement = (props) => {
               break;
             case "rate":
               return <Rate />;
+              break;
+            case "checkbox":
+              console.log("hhhhhhh");
+              return <Checkbox>{props.checkboxmsg}</Checkbox>;
               break;
             case "select":
               return (
@@ -248,17 +271,17 @@ const AntFormElement = (props) => {
           }
         })()}
       </Form.Item>
-    </div>
-  );
+    );
+  };
 
   let colnum = 24;
   if (props.formColumn == 1) {
     return !props.editable ? (
-      { formItem }
+      <FormItem {...props} />
     ) : (
-      <Grid container spacing={2}>
-        <Grid item xs>
-          {formItem}
+      <Grid container spacing={1} alignItems="center">
+        <Grid item xs={11}>
+          <FormItem {...props} />
         </Grid>
         <Grid item xs>
           <EditDel {...props} />
@@ -267,12 +290,14 @@ const AntFormElement = (props) => {
     );
   } else if (props.formColumn > 1) colnum = colnum / props.formColumn;
   return !props.editable ? (
-    <Col span={colnum}>{formItem}</Col>
+    <Col span={colnum}>
+      <FormItem {...props} />
+    </Col>
   ) : (
     <Col span={colnum}>
-      <Grid container spacing={2}>
-        <Grid item xs>
-          {formItem}
+      <Grid container spacing={1} alignItems="center">
+        <Grid item xs={11}>
+          <FormItem {...props} />
         </Grid>
         <Grid item xs>
           <EditDel {...props} />

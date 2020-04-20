@@ -100,7 +100,7 @@ const AntFormElement = (props) => {
           wrapperCol: { span: 14, offset: props.formItemLayout.labelCol.span },
         }),
     };
-    console.log(formItemProps, tailLayout, props.type.toLowerCase());
+
     let placeholder = {};
     if (props.placeholder) placeholder = { placeholder: props.placeholder };
     return (
@@ -183,7 +183,6 @@ const AntFormElement = (props) => {
               return <Rate />;
               break;
             case "checkbox":
-              console.log("hhhhhhh");
               return <Checkbox>{props.checkboxmsg}</Checkbox>;
               break;
             case "select":

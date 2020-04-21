@@ -13,6 +13,9 @@ import SpeedDialButton from "./SpeedDial";
 import ElementInput from "Admin/ElementInput";
 import DialogFull from "./DialogFull";
 import AntFormDisplay from "./AntFormDisplay";
+import SaveIcon from "@material-ui/icons/Save";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import DialogSelect from "components/Common/DialogSelect";
 
 const AntFormBuild = (props) => {
   const [formArray, setFormArray] = useState(props.formdt.data);
@@ -21,6 +24,7 @@ const AntFormBuild = (props) => {
   dispatch(globalVariable({ formEdit: true }));
   const [form] = Form.useForm();
   let open = useSelector((state) => state.global.openDialog);
+  let open1 = useSelector((state) => state.global.openDialog1);
 
   const ReOrder = (start_pos, end_pos) => {
     let arr = formdt;
@@ -73,14 +77,49 @@ const AntFormBuild = (props) => {
     };
   }, []);
 
+  const optionArray = [
+    { group: true, label: "input" },
+    { value: "input" },
+    { value: "input.password" },
+    { value: "input.textarea" },
+    { value: "inputnumber" },
+    { value: "datepicker" },
+    { value: "datetimepicker" },
+    { value: "monthpicker" },
+    { value: "rangepicker" },
+    { value: "rangetimepicker" },
+    { value: "timepicker" },
+    { value: " plaintext" },
+    { value: "switch" },
+    { value: "slider" },
+    { value: "rate" },
+    { value: "checkbox" },
+    { value: "select" },
+    { value: "select.multiple" },
+    { value: "radio.group" },
+    { value: " radio.button" },
+    { value: "chexkbox.group" },
+    { value: "button" },
+  ];
+  const actions = [
+    {
+      icon: <AddBoxIcon />,
+      name: "New",
+      handleClick: () => {
+        console.log("sss");
+        dispatch(globalVariable({ openDialog1: true }));
+      },
+    },
+    { icon: <SaveIcon />, name: "Save" },
+  ];
   return (
     <>
       <AntFormDisplay {...props} formArray={formArray} editable={true} />
-      <SpeedDialButton />
-      <DialogFull open={open} title="Element Edit">
+      <SpeedDialButton actions={actions} />
+      <DialogFull open={open} title="Element Edit" fullScreen={true}>
         <ElementInput />
       </DialogFull>
-      )}
+      <DialogSelect open={open1} optionArray={optionArray} />
     </>
   );
 };

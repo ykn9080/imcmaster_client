@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import $ from "jquery";
 import axios from "axios";
 import "jquery-ui-bundle";
@@ -12,7 +13,11 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import "antd/dist/antd.css";
 import { Button, Tooltip } from "antd";
-import { DesktopOutlined, SaveOutlined } from "@ant-design/icons";
+import {
+  DesktopOutlined,
+  SaveOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 import PageHead from "components/Common/PageHeader";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import useForceUpdate from "use-force-update";
@@ -29,29 +34,31 @@ const ElementInput = (props) => {
   const forceUpdate = useForceUpdate();
   let elementData = useSelector((state) => state.global.elementData);
   let currentData = useSelector((state) => state.global.currentData);
-  const [elArray, setElArray] = useState("");
-  const [formArray, setFormArray] = useState([]);
 
-  useEffect(() => {
-    let curr = currentData;
+  const curr = useMemo(() => {
+    let curr = cloneDeep(currentData);
     curr.data.list = [elementData];
     curr.data.setting = {
       formItemLayout: {
         labelCol: { span: 6 },
         wrapperCol: { span: 18 },
       },
-      layout: "vertical",
+      layout: "horizontal",
       formColumn: 1,
-      size: "large",
+      size: "middle",
     };
-    setFormArray(curr.data);
+
+    return curr.data;
+  }, []);
+
+  const summaryData = useMemo(() => {
     let rule = [];
     if (elementData.rules.length > 0) rule = elementData.rules[0];
     const summaryData = {
       setting: {
         formItemLayout: {
-          labelCol: { span: 6 },
-          wrapperCol: { span: 18 },
+          labelCol: { span: 4 },
+          wrapperCol: { span: 20 },
         },
         layout: "horizontal",
         formColumn: 2,
@@ -63,29 +70,42 @@ const ElementInput = (props) => {
           placeholder: elementData.placeholder,
           defaultvalue: elementData.defaultValue,
           required: rule.required,
-          errormsg: rule.message,
+          requiredmsg: rule.message,
           tooltipicon: elementData.tooltipicon,
           tooltipmsg: elementData.tooltipmsg,
         },
         onValuesChange: (changedValues, allValues) => {
-          const newval = { ...elArray.list[0], ...changedValues };
-          elArray.list = [newval];
-          setElArray(elArray);
-          console.log(elArray, newval);
-          currentData.data.list = [newval];
-          setFormArray(currentData.data);
-          console.log(formArray, currentData.data, newval);
-          // formdt.name = allValues.name;
-          // formdt.desc = allValues.desc;
-          // let sett = formdt.data.setting;
-          // sett.formItemLayout.labelCol.span = allValues.labelwidth;
-          // sett.formItemLayout.wrapperCol.span = 24 - allValues.labelwidth;
-          // sett.formColumn = allValues.column;
-          // sett.layout = allValues.layout;
-          // sett.size = allValues.size;
-          // dispatch(globalVariable({ currentData: formdt }));
-          // if (["name", "desc"].indexOf(Object.keys(changedValues)[0]) === -1)
-          //   forceUpdate();
+          let requireobj = {},
+            instantlist,
+            instant = instantView.list[0];
+
+          const obj = Object.keys(changedValues)[0];
+          if (obj === "required") {
+            requireobj = { required: changedValues[obj] };
+            if (
+              allValues["requiredmsg"] != "undefined" &&
+              allValues["requiredmsg"] != ""
+            )
+              requireobj = {
+                ...requireobj,
+                message: allValues["requiredmsg"],
+              };
+
+            instantlist = { ...instant, rules: [requireobj] };
+            instantView.list = [instantlist];
+          } else {
+            instantlist = { ...instant, ...changedValues };
+            instantView.list = [instantlist];
+          }
+          console.log(instantView);
+          setInstantView(instantView);
+          const setupinitialValues = {
+            ...setupData.setting.initialValues,
+            ...changedValues,
+          };
+          setupData.setting.initialValues = setupinitialValues;
+          setSetupData(setupData);
+          console.log(setupData, instantView);
         },
         onFinish: (values) => {
           console.log("Received values of form: ", values);
@@ -95,11 +115,27 @@ const ElementInput = (props) => {
         },
       },
       list: [
-        { label: "Type", name: "type", type: "input", seq: 0 },
+        {
+          label: "Type",
+          name: "type",
+          type: "select",
+          optionArray: [
+            { text: "ss", value: "ss" },
+            { text: "ss2", value: "ss1" },
+          ],
+          seq: 0,
+        },
         { label: "Name", name: "name", type: "input", seq: 1 },
         { label: "Label", name: "label", type: "input", seq: 2 },
         { label: "Placeholder", name: "placeholder", type: "input", seq: 3 },
         { label: "DefaultValue", name: "defaulvalue", type: "input", seq: 4 },
+        {
+          label: "Tooltip",
+          type: "input",
+          name: "tooltipmsg",
+          placeholder: "write tooltip message",
+          seq: 5,
+        },
         {
           label: "Required",
           type: "nostyle",
@@ -107,11 +143,12 @@ const ElementInput = (props) => {
             {
               name: "required",
               type: "checkbox",
+              valuePropName: "checked",
               width: "10%",
               seq: 0,
             },
             {
-              name: "message",
+              name: "requiredmsg",
               type: "input",
               seq: 1,
               width: "90%",
@@ -119,42 +156,30 @@ const ElementInput = (props) => {
               placeholder: "write error message!",
             },
           ],
-          seq: 5,
-        },
-        {
-          label: "Tooltip",
-          type: "nostyle",
-          array: [
-            {
-              name: "icon",
-              type: "select",
-              optionArray: [
-                { text: "horizontal", value: "horizontal" },
-                { text: "vertical", value: "vertical" },
-                { text: "inline", value: "inline" },
-              ],
-              seq: 0,
-            },
-            {
-              name: "message",
-              type: "input",
-              placeholder: "write message",
-              seq: 1,
-            },
-          ],
           seq: 6,
         },
       ],
     };
-    setElArray(summaryData);
+    return summaryData;
   }, []);
+
+  const [setupData, setSetupData] = useState({ ...summaryData });
+  const [instantView, setInstantView] = useState({ ...curr });
+  console.log(setupData, instantView);
+  useEffect(() => {}, []);
   const extra = [
     <Tooltip title="Save" key="1save">
       <Button
         shape="circle"
         icon={<SaveOutlined />}
         onClick={() => {
-          console.log(formArray, elArray);
+          console.log(setupData, instantView);
+          dispatch(globalVariable({ elementData: instantView.list[0] }));
+          currentData.data.list.map((k, i) => {
+            if (k.seq === instantView.list[0].seq)
+              currentData.data.list.splice(i, 1, instantView.list[0]);
+          });
+          dispatch(globalVariable({ currentData: currentData }));
           //remove onValuesChange
           // delete formdt.data.setting.onValuesChange;
           // axios
@@ -174,15 +199,15 @@ const ElementInput = (props) => {
     //   />
     // </Tooltip>,
   ];
-  console.log(formArray, elArray);
+
   return (
     <>
       <div className="site-page-header-ghost-wrapper">
         <PageHead title="Element Edit" extra={extra} ghost={false}>
-          <AntFormDisplay formArray={elArray} name={"esummary"} />
+          <AntFormDisplay formArray={setupData} name={"esetup"} />
         </PageHead>
       </div>
-      <AntFormDisplay formArray={formArray} />
+      <AntFormDisplay formArray={instantView} name={"instantview"} />
     </>
   );
 };

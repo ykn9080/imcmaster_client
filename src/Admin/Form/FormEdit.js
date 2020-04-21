@@ -20,6 +20,12 @@ const FormEdit = (props) => {
   dispatch(globalVariable({ formEdit: true }));
 
   let formdt = useSelector((state) => state.global.currentData);
+
+  //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!
+  if (formdt === "") {
+    formdt = JSON.parse(localStorage.getItem("imsi"));
+    dispatch(globalVariable({ currentData: formdt }));
+  }
   //inorderto set initialValues, append onValuesChange eventhandler
   //must remove onValuesChange when to save to database
 

@@ -39,6 +39,9 @@ const FormList = () => {
         });
       });
       setListData(imsiData1);
+      //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!
+      localStorage.setItem("imsi", JSON.stringify(imsiData1[0]));
+
       setLoading(false);
     });
   }, []);

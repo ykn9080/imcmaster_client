@@ -33,6 +33,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function DialogFull(props) {
+  let setting = {};
+  if (props.fullScreen) setting = { fullScreen: true };
   const classes = useStyles();
   const dispatch = useDispatch();
   //const [open, setOpen] = React.useState(false);
@@ -57,7 +59,7 @@ export default function DialogFull(props) {
   return (
     <>
       <Dialog
-        fullScreen
+        {...setting}
         open={open}
         onClose={handleClose}
         TransitionComponent={Transition}

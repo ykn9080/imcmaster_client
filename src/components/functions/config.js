@@ -116,6 +116,7 @@ const globalVar = {
   eventparam: {},
   helpdiagramobj: "",
   openDialog: false,
+  openDialog1: false,
   formEdit: false,
   elementData: "",
   formData: [],

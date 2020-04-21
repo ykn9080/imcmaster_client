@@ -1,12 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
-import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
-import SaveIcon from "@material-ui/icons/Save";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,11 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const actions = [
-  { icon: <AddBoxIcon />, name: "New" },
-  { icon: <SaveIcon />, name: "Save" },
-];
-const SpeedDialButton = () => {
+const SpeedDialButton = (props) => {
+  const actions = props.actions;
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
@@ -55,7 +48,7 @@ const SpeedDialButton = () => {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            onClick={handleClose}
+            onClick={action.handleClick}
           />
         ))}
       </SpeedDial>

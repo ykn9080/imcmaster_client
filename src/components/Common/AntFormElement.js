@@ -92,6 +92,7 @@ const AntFormElement = (props) => {
       ...(props.rules && { rules: props.rules }),
       ...(props.nostyle && { noStyle: true }),
       ...(props.style && { style: props.style }),
+      ...(props.valuePropName && { valuePropName: "checked" }),
     };
 
     const tailLayout = {
@@ -187,9 +188,11 @@ const AntFormElement = (props) => {
               break;
             case "select":
               return (
-                <Select placeholder={props.placeholder}>
+                <Select>
                   {props.optionArray.map((k, i) => {
-                    return <Option value={k.value}>{k.text}</Option>;
+                    return (
+                      <Select.Option value={k.value}>{k.text}</Select.Option>
+                    );
                   })}
                 </Select>
               );

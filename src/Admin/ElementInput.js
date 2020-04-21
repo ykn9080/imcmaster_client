@@ -31,10 +31,11 @@ const ElementInput = (props) => {
   let currentData = useSelector((state) => state.global.currentData);
   const [elArray, setElArray] = useState("");
   const [formArray, setFormArray] = useState([]);
-  console.log(formArray);
+
   useEffect(() => {
-    currentData.data.list = [elementData];
-    currentData.data.setting = {
+    let curr = currentData;
+    curr.data.list = [elementData];
+    curr.data.setting = {
       formItemLayout: {
         labelCol: { span: 6 },
         wrapperCol: { span: 18 },
@@ -43,7 +44,7 @@ const ElementInput = (props) => {
       formColumn: 1,
       size: "large",
     };
-    setFormArray(currentData.data);
+    setFormArray(curr.data);
     let rule = [];
     if (elementData.rules.length > 0) rule = elementData.rules[0];
     const summaryData = {
@@ -153,6 +154,7 @@ const ElementInput = (props) => {
         shape="circle"
         icon={<SaveOutlined />}
         onClick={() => {
+          console.log(formArray, elArray);
           //remove onValuesChange
           // delete formdt.data.setting.onValuesChange;
           // axios
@@ -172,7 +174,7 @@ const ElementInput = (props) => {
     //   />
     // </Tooltip>,
   ];
-
+  console.log(formArray, elArray);
   return (
     <>
       <div className="site-page-header-ghost-wrapper">

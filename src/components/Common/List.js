@@ -49,12 +49,12 @@ const AntList = (props) => {
     if (item.size) metaAttr = { ...metaAttr, size: item.size };
     if (item.description)
       metaAttr = { ...metaAttr, description: item.description };
-    if (item.title) {
+    if (item.name) {
       if (item.href)
         metaAttr = {
           ...metaAttr,
           //title: <a href={item.href}>{item.title}</a>,
-          title: <Link to={item.href}>{item.title}</Link>,
+          title: <Link to={item.href}>{item.name}</Link>,
         };
       // if (item.titleHandler)
       //   metaAttr = {
@@ -65,7 +65,7 @@ const AntList = (props) => {
       //       </a>
       //     ),
       //   };
-      else metaAttr = { ...metaAttr, title: item.title };
+      else metaAttr = { ...metaAttr, title: item.name };
     }
     if (item.avatar) {
       const av = item.avatar;

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DialogSelect(props) {
+  console.log(props.dialogAction);
   const classes = useStyles();
   const dispatch = useDispatch();
   let open1 = useSelector((state) => state.global.openDialog1);
@@ -69,6 +70,7 @@ export default function DialogSelect(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
+          {props.dialogAction}
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>

@@ -41,6 +41,7 @@ const SpeedDialButton = (props) => {
         icon={<SpeedDialIcon openIcon={<AddIcon />} />}
         onClose={handleClose}
         onOpen={handleOpen}
+        onClick={props.onClick}
         open={open}
       >
         {actions.map((action) => (

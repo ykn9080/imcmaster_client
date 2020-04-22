@@ -5,12 +5,13 @@ import { useLocation, useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import { Button, Tooltip } from "antd";
-import { DesktopOutlined, SaveOutlined } from "@ant-design/icons";
+import { DesktopOutlined, SaveOutlined, CopyOutlined } from "@ant-design/icons";
 import PageHead from "components/Common/PageHeader";
 import AntFormBuild from "components/Common/AntFormBuild";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import "components/Common/Antd.css";
 import useForceUpdate from "use-force-update";
+import DialogSelect from "components/Common/DialogSelect";
 
 const FormEdit = (props) => {
   const location = useLocation();
@@ -46,14 +47,49 @@ const FormEdit = (props) => {
         shape="circle"
         icon={<SaveOutlined />}
         onClick={() => {
+          console.log(formdt, formdt._id);
+          // //remove onValuesChange
+          delete formdt.data.setting.onValuesChange;
+          let config = {
+            method: "put",
+            url: `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
+            data: formdt,
+          };
+          if (typeof formdt._id === "undefined")
+            config = {
+              ...config,
+              ...{
+                method: "post",
+                url: `${currentsetting.webserviceprefix}bootform`,
+              },
+            };
+          axios(config).then((r) => console.log(r));
+
+          // axios
+          //   .put(
+          //     `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
+          //     formdt
+          //   )
+          //   .then((r) => console.log(r));
+        }}
+      />
+    </Tooltip>,
+    <Tooltip title="Save As" key="1saveas">
+      <Button
+        shape="circle"
+        icon={<CopyOutlined />}
+        onClick={() => {
           //remove onValuesChange
           delete formdt.data.setting.onValuesChange;
-          axios
-            .put(
-              `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
-              formdt
-            )
-            .then((r) => console.log(r));
+          delete formdt._id;
+
+          dispatch(globalVariable({ currentData: formdt }));
+          //    axios
+          //      .post(
+          //        `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
+          //        formdt
+          //      )
+          //      .then((r) => console.log(r));
         }}
       />
     </Tooltip>,
@@ -122,7 +158,7 @@ const FormEdit = (props) => {
       {
         label: "Column",
         name: "column",
-        type: "radio.group",
+        type: "select",
         defaultValue: 1,
         optionArray: [
           { text: "1", value: 1 },
@@ -181,6 +217,18 @@ const FormEdit = (props) => {
       },
     ],
   };
+
+  const actbutton = (
+    <Button
+      color="primary"
+      onClick={() => {
+        dispatch(globalVariable({ openDialog: true }));
+      }}
+    >
+      Save As
+    </Button>
+  );
+
   return (
     <>
       <div className="site-page-header-ghost-wrapper">

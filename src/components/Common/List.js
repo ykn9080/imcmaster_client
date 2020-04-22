@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
 import { Link, useHistory } from "react-router-dom";
-import { List, Avatar, Button, Skeleton } from "antd";
+import { List, Avatar, Button, Skeleton, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const AntList = (props) => {
@@ -28,7 +28,15 @@ const AntList = (props) => {
       actlist.push(<EditOutlined onClick={() => props.editHandler(item)} />);
     if (props.deleteHandler)
       actlist.push(
-        <DeleteOutlined onClick={() => props.deleteHandler(item)} />
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure to delete ?"
+          onConfirm={() => props.deleteHandler(item)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <DeleteOutlined />
+        </Popconfirm>
       );
     let itemAttr = { actions: actlist };
 

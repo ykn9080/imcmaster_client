@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { useHistory } from "react-router-dom";
@@ -7,10 +8,12 @@ import { currentsetting } from "components/functions/config";
 import AntList from "components/Common/List";
 import { Avatar } from "antd";
 import { UserOutlined, FormOutlined } from "@ant-design/icons";
+import useForceUpdate from "use-force-update";
 
 const FormList = () => {
   const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
+  const forceUpdate = useForceUpdate();
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -23,6 +26,7 @@ const FormList = () => {
           _id: k._id,
           data: k.data,
           name: k.name,
+          description: k.desc,
           titleHandler: true,
           href: {
             pathname: "/admin/form/formview",
@@ -50,8 +54,24 @@ const FormList = () => {
     dispatch(globalVariable({ currentData: item }));
     history.push("/admin/form/formedit");
   };
+
   const deleteHandler = (item) => {
-    console.log(item);
+    let config = {
+      method: "delete",
+      url: `${currentsetting.webserviceprefix}bootform/${item._id}`,
+    };
+    axios(config).then((r) => {
+      console.log(r);
+      console.log(listData);
+      _.remove(listData, function (currentObject) {
+        return currentObject._id === item._id;
+      });
+      console.log(listData);
+      setListData(listData);
+      localStorage.removeItem("imsi");
+      dispatch(globalVariable({ currentData: "" }));
+      forceUpdate();
+    });
   };
   const footer = (
     <div>
@@ -66,16 +86,18 @@ const FormList = () => {
   };
 
   return (
-    <AntList
-      listData={listData}
-      loading={loading}
-      editHandler={editHandler}
-      deleteHandler={deleteHandler}
-      size={"small"}
-      layout={"vertical"}
-      footer={footer}
-      pagination={pagination}
-    />
+    <>
+      <AntList
+        listData={listData}
+        loading={loading}
+        editHandler={editHandler}
+        deleteHandler={deleteHandler}
+        size={"small"}
+        layout={"vertical"}
+        footer={footer}
+        pagination={pagination}
+      />
+    </>
   );
 };
 

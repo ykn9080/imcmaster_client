@@ -11,11 +11,14 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Panel from "./Panel";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     flexWrap: "wrap",
+    minWidth: 320,
+    maxWidth: 400,
   },
   formControl: {
     margin: theme.spacing(1),
@@ -41,34 +44,37 @@ export default function DialogSelect(props) {
     setOpen(false);
     dispatch(globalVariable({ openDialog1: false }));
   };
+  //   const sample1 = (
+  //     <>
+  //       <InputLabel htmlFor="grouped-native-select">Grouping</InputLabel>
+  //       <Select native defaultValue="" id="grouped-native-select">
+  //         <option aria-label="None" value="" />
+  //         {props.optionArray.map((k, i) => {
+  //           let text = k.text;
+  //           if (!text && k.value)
+  //             text = k.value.charAt(0).toUpperCase() + k.value.slice(1);
+  //           return k.group ? (
+  //             <optgroup label={k.label} />
+  //           ) : (
+  //             <option value={k.value}>{text}</option>
+  //           );
+  //         })}
+  //       </Select>
+  //     </>
+  //   );
 
   return (
     <div>
       <Dialog
         disableBackdropClick
         disableEscapeKeyDown
+        fullWidth={true}
+        maxWidth={"md"}
         open={open}
         onClose={handleClose}
       >
         <DialogTitle>Fill the form</DialogTitle>
-        <DialogContent>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="grouped-native-select">Grouping</InputLabel>
-            <Select native defaultValue="" id="grouped-native-select">
-              <option aria-label="None" value="" />
-              {props.optionArray.map((k, i) => {
-                let text = k.text;
-                if (!text && k.value)
-                  text = k.value.charAt(0).toUpperCase() + k.value.slice(1);
-                return k.group ? (
-                  <optgroup label={k.label} />
-                ) : (
-                  <option value={k.value}>{text}</option>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </DialogContent>
+        <DialogContent>{props.children}</DialogContent>
         <DialogActions>
           {props.dialogAction}
           <Button onClick={handleClose} color="primary">

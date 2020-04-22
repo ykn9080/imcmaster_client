@@ -53,7 +53,8 @@ const ElementInput = (props) => {
 
   const summaryData = useMemo(() => {
     let rule = [];
-    if (elementData.rules.length > 0) rule = elementData.rules[0];
+    if (elementData.rules && elementData.rules.length > 0)
+      rule = elementData.rules[0];
     const summaryData = {
       setting: {
         formItemLayout: {
@@ -175,10 +176,14 @@ const ElementInput = (props) => {
         onClick={() => {
           console.log(setupData, instantView);
           dispatch(globalVariable({ elementData: instantView.list[0] }));
+          let isExist = false;
           currentData.data.list.map((k, i) => {
-            if (k.seq === instantView.list[0].seq)
+            if (k.seq === instantView.list[0].seq) {
               currentData.data.list.splice(i, 1, instantView.list[0]);
+              isExist = true;
+            }
           });
+          if (!isExist) currentData.data.list.push(instantView.list[0]);
           dispatch(globalVariable({ currentData: currentData }));
           //remove onValuesChange
           // delete formdt.data.setting.onValuesChange;

@@ -6,7 +6,7 @@ import $ from "jquery";
 
 import "antd/dist/antd.css";
 import "./Antd.css";
-import { Form, Row, Col } from "antd";
+import { Form, Row, Col, Button } from "antd";
 import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
 import AntFormElement from "./AntFormElement";
 import SpeedDialButton from "./SpeedDial";
@@ -15,12 +15,17 @@ import DialogFull from "./DialogFull";
 import AntFormDisplay from "./AntFormDisplay";
 import SaveIcon from "@material-ui/icons/Save";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import Button from "@material-ui/core/Button";
 import DialogSelect from "components/Common/DialogSelect";
+import MuTab from "components/Common/MuTab";
+import MuGrid from "components/Common/MuGrid";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
 const AntFormBuild = (props) => {
+  let tabPanelArray = [];
   const [formArray, setFormArray] = useState(props.formdt.data);
   const [formdt, setFormdt] = useState(props.formdt);
+  const [tabarray, setTabarray] = useState("");
   const dispatch = useDispatch();
   dispatch(globalVariable({ formEdit: true }));
   const [form] = Form.useForm();
@@ -55,6 +60,8 @@ const AntFormBuild = (props) => {
     //st>ed -> st prev +1 st->ed
   };
   useEffect(() => {
+    MakeTabPanel1();
+    setTabarray(tabPanelArray);
     let $node = $(".SortForm");
     if (formArray.setting.colnum > 1) $node = $(".SortForm>div:first-child");
     $node.sortable({
@@ -77,6 +84,73 @@ const AntFormBuild = (props) => {
       });
     };
   }, []);
+  const MakeTabPanel1 = () => {
+    const optGrp = [
+      ["input", "input.password", "input.textarea", "inputnumber"],
+      ["select", "select.multiple", "radio.group", "checkbox.group"],
+      [
+        "datepicker",
+        "datetimepicker",
+        "monthpicker",
+        "rangepicker",
+        "timepicker",
+      ],
+      ["checkbox", "switch"],
+      ["slider", "rate"],
+      ["plaintext", "button"],
+    ];
+    const handleCreateNew = (type) => {
+      let eldt = {
+        label: "",
+        name: "",
+        type: type,
+        seq: 10,
+      };
+      dispatch(globalVariable({ elementData: eldt }));
+      dispatch(globalVariable({ openDialog1: false }));
+      dispatch(globalVariable({ openDialog: true }));
+    };
+    const MakeTabPanel = (k) => {
+      let opt = {};
+      if (
+        ["select", "select.multiple", "radio.group", "checkbox.group"].indexOf(
+          k.title
+        ) > -1
+      )
+        opt = {
+          optionArray: [
+            { value: "korea", text: "Korea" },
+            { value: "usa", text: "USA" },
+            { value: "japan", text: "Japan" },
+          ],
+        };
+      return (
+        <>
+          <Grid item xs={3}>
+            <Typography noWrap>{k.title}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <AntFormElement type={k.type} {...opt} />
+          </Grid>
+          <Grid item xs={2}>
+            <Button type="primary" onClick={() => handleCreateNew(k.type)}>
+              Select
+            </Button>
+          </Grid>
+        </>
+      );
+    };
+    optGrp.map((k, i) => {
+      tabPanelArray.push(
+        <Grid container spacing={1}>
+          {k.map((j, i) => {
+            return <MakeTabPanel title={j} type={j} />;
+          })}
+        </Grid>
+      );
+    });
+  };
+  const tabArray = ["input", "select", "datetime", "toggle", "level", "others"];
 
   const optionArray = [
     { group: true, label: "input" },
@@ -89,7 +163,7 @@ const AntFormBuild = (props) => {
     { value: "select.multiple" },
     { value: "radio.group" },
     { value: "radio.button" },
-    { value: "chexkbox.group" },
+    { value: "checxkbox.group" },
     { group: true, label: "datetime" },
     { value: "datepicker" },
     { value: "datetimepicker" },
@@ -135,11 +209,9 @@ const AntFormBuild = (props) => {
       <DialogFull open={open} title="Element Edit" fullScreen={true}>
         <ElementInput />
       </DialogFull>
-      <DialogSelect
-        open={open1}
-        optionArray={optionArray}
-        dialogAction={actbutton}
-      />
+      <DialogSelect open={open1} dialogAction={actbutton}>
+        <MuTab tabArray={tabArray} tabPanelArray={tabarray} />
+      </DialogSelect>
     </>
   );
 };

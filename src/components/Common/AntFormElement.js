@@ -56,14 +56,17 @@ const AntFormElement = (props) => {
 
   let open = useSelector((state) => state.global.openDialog);
   let edit = useSelector((state) => state.global.formEdit);
+  let curdt = useSelector((state) => state.global.currentData);
 
   const EditDel = (props) => {
-    const deleteHandler = (id) => {
+    const deleteHandler = (seq) => {
       confirm({ description: "This action is permanent!" }).then(() => {
-        console.log(id);
+        console.log(seq);
+        //dispatch(globalVariable({ currentData: props }));
       });
     };
     const editHandler = (props) => {
+      console.log(props);
       dispatch(globalVariable({ openDialog: true }));
       dispatch(globalVariable({ elementData: props }));
       open = true;
@@ -78,7 +81,7 @@ const AntFormElement = (props) => {
           />
           <DeleteOutlined
             className={classes.icon}
-            onClick={() => deleteHandler(props.controlId)}
+            onClick={() => deleteHandler(props.seq)}
           />
         </div>
       )
@@ -144,7 +147,9 @@ const AntFormElement = (props) => {
               break;
 
             case "datepicker":
-              return <DatePicker format="YYYY-MM-DD" />;
+              return (
+                <DatePicker format="YYYY-MM-DD" style={{ zIndex: 99999 }} />
+              );
               break;
             case "datetimepicker":
               return <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />;

@@ -11,6 +11,7 @@ import { Button } from "antd";
 import FormList from "Admin/Form/FormList";
 import FormView from "Admin/Form/FormView";
 import FormEdit from "Admin/Form/FormEdit";
+import PageBuild from "Admin/Menu/PageBuild";
 import PageHead from "components/Common/PageHeader";
 
 const adminMenu = [
@@ -141,7 +142,7 @@ const adminMenu = [
 const Admin = ({ match }) => {
   let title = match.params.name;
   if (typeof match.params.child != "undefined") title = match.params.child;
-
+  console.log(title);
   useEffect(() => {}, []);
   //let pagename = useSelector((state) => state.global.currentPage);
   // if (pagename != "") {
@@ -158,6 +159,7 @@ const Admin = ({ match }) => {
       <DenseAppBar title={"Admin"}>
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
+      {/* formview, formedit은 독립적인 pagehead를 가짐 */}
       {["formview", "formedit"].indexOf(title) === -1 ? (
         <PageHead title={title} />
       ) : null}
@@ -171,6 +173,9 @@ const Admin = ({ match }) => {
             break;
           case "formedit":
             return <FormEdit />;
+            break;
+          case "pagebuild":
+            return <PageBuild />;
             break;
         }
       })()}

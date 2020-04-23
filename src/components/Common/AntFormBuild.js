@@ -29,8 +29,8 @@ const AntFormBuild = (props) => {
   const dispatch = useDispatch();
   dispatch(globalVariable({ formEdit: true }));
   const [form] = Form.useForm();
-  let open = useSelector((state) => state.global.openDialog);
-  let open1 = useSelector((state) => state.global.openDialog1);
+  let open = useSelector((state) => state.global.openDialog); //edit
+  let open1 = useSelector((state) => state.global.openDialog1); //create new
 
   const ReOrder = (start_pos, end_pos) => {
     let arr = formdt;

@@ -4,7 +4,7 @@ import { globalVariable } from "actions";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
-import { Button, Tooltip } from "antd";
+import { Button, Tooltip, message } from "antd";
 import { DesktopOutlined, SaveOutlined, CopyOutlined } from "@ant-design/icons";
 import PageHead from "components/Common/PageHeader";
 import AntFormBuild from "components/Common/AntFormBuild";
@@ -19,6 +19,8 @@ const FormEdit = (props) => {
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
   dispatch(globalVariable({ formEdit: true }));
+  let iconSpin = {},
+    btnDisabled = {};
 
   let formdt = useSelector((state) => state.global.currentData);
 
@@ -27,9 +29,6 @@ const FormEdit = (props) => {
     formdt = JSON.parse(localStorage.getItem("imsi"));
     dispatch(globalVariable({ currentData: formdt }));
   }
-  //inorderto set initialValues, append onValuesChange eventhandler
-  //must remove onValuesChange when to save to database
-
   formdt.data.setting = {
     ...formdt.data.setting,
     onValuesChange: (changedValues, allValues) => {
@@ -40,68 +39,6 @@ const FormEdit = (props) => {
       dispatch(globalVariable({ currentData: formdt }));
     },
   };
-
-  const extra = [
-    <Tooltip title="Save" key="1save">
-      <Button
-        shape="circle"
-        icon={<SaveOutlined />}
-        onClick={() => {
-          console.log(formdt, formdt._id);
-          // //remove onValuesChange
-          delete formdt.data.setting.onValuesChange;
-          let config = {
-            method: "put",
-            url: `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
-            data: formdt,
-          };
-          if (typeof formdt._id === "undefined")
-            config = {
-              ...config,
-              ...{
-                method: "post",
-                url: `${currentsetting.webserviceprefix}bootform`,
-              },
-            };
-          axios(config).then((r) => console.log(r));
-
-          // axios
-          //   .put(
-          //     `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
-          //     formdt
-          //   )
-          //   .then((r) => console.log(r));
-        }}
-      />
-    </Tooltip>,
-    <Tooltip title="Save As" key="1saveas">
-      <Button
-        shape="circle"
-        icon={<CopyOutlined />}
-        onClick={() => {
-          //remove onValuesChange
-          delete formdt.data.setting.onValuesChange;
-          delete formdt._id;
-
-          dispatch(globalVariable({ currentData: formdt }));
-          //    axios
-          //      .post(
-          //        `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
-          //        formdt
-          //      )
-          //      .then((r) => console.log(r));
-        }}
-      />
-    </Tooltip>,
-    <Tooltip title="View" key="2view">
-      <Button
-        shape="circle"
-        icon={<DesktopOutlined />}
-        onClick={() => history.push("/admin/form/formview")}
-      />
-    </Tooltip>,
-  ];
-
   const summaryData = {
     setting: {
       formItemLayout: {
@@ -217,6 +154,66 @@ const FormEdit = (props) => {
       },
     ],
   };
+  const [sumdt, setSumdt] = useState(summaryData);
+
+  if (typeof formdt._id === "undefined") {
+    iconSpin = { spin: true };
+    btnDisabled = { disabled: true };
+  }
+  //inorderto set initialValues, append onValuesChange eventhandler
+  //must remove onValuesChange when to save to database
+
+  const extra = [
+    <Tooltip title="Save" key="1save">
+      <Button
+        shape="circle"
+        icon={<SaveOutlined {...iconSpin} />}
+        onClick={() => {
+          console.log(formdt, formdt._id);
+          // //remove onValuesChange
+          delete formdt.data.setting.onValuesChange;
+          let config = {
+            method: "put",
+            url: `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
+            data: formdt,
+          };
+          if (typeof formdt._id === "undefined")
+            config = {
+              ...config,
+              ...{
+                method: "post",
+                url: `${currentsetting.webserviceprefix}bootform`,
+              },
+            };
+          axios(config).then((r) => console.log(r));
+        }}
+      />
+    </Tooltip>,
+    <Tooltip title="Save As" key="1saveas">
+      <Button
+        {...btnDisabled}
+        shape="circle"
+        icon={<CopyOutlined />}
+        onClick={() => {
+          //remove onValuesChange
+          delete formdt.data.setting.onValuesChange;
+          delete formdt._id;
+          formdt.name += " Copy";
+          summaryData.setting.initialValues += " Copy";
+          dispatch(globalVariable({ currentData: formdt }));
+          message.success("복사를 완료하려면 저장하셔야 합니다. ", 10);
+          forceUpdate();
+        }}
+      />
+    </Tooltip>,
+    <Tooltip title="View" key="2view">
+      <Button
+        shape="circle"
+        icon={<DesktopOutlined />}
+        onClick={() => history.push("/admin/form/formview")}
+      />
+    </Tooltip>,
+  ];
 
   const actbutton = (
     <Button

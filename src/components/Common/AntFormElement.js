@@ -62,7 +62,16 @@ const AntFormElement = (props) => {
     const deleteHandler = (seq) => {
       confirm({ description: "This action is permanent!" }).then(() => {
         console.log(seq);
-        //dispatch(globalVariable({ currentData: props }));
+        let delIndex;
+        curdt.data.list.map((k, i) => {
+          if (k.seq === seq) {
+            curdt.data.list.splice(i, 1);
+            delIndex = i;
+          }
+          if (i > delIndex) curdt.data.list.seq--;
+        });
+
+        dispatch(globalVariable({ currentData: curdt }));
       });
     };
     const editHandler = (props) => {

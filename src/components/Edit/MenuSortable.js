@@ -15,17 +15,17 @@ import AddBox from "@material-ui/icons/AddCircle";
 import useForceUpdate from "use-force-update";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   menuButton: {
-    marginLeft: theme.spacing(1)
-  }
+    marginLeft: theme.spacing(1),
+  },
 }));
 let firstid;
-export const Sortable = props => {
-  let tempMenu = useSelector(state => state.global.tempMenu);
+export const Sortable = (props) => {
+  let tempMenu = useSelector((state) => state.global.tempMenu);
   let keyval = props.pid;
-  let selectedKey = useSelector(state => state.global.selectedKey);
-  let login = useSelector(state => state.global.login);
+  let selectedKey = useSelector((state) => state.global.selectedKey);
+  let login = useSelector((state) => state.global.login);
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
   useEffect(() => {
@@ -36,10 +36,10 @@ export const Sortable = props => {
       opacity: props.opacity,
       // Get the incoming onChange function
       // and invoke it on the Sortable `change` event
-      drop: function(event, ui) {
+      drop: function (event, ui) {
         props.onChange(event, ui);
       },
-      change: (event, ui) => props.onChange(event, ui)
+      change: (event, ui) => props.onChange(event, ui),
     });
     return () => {
       $node.sortable();
@@ -48,12 +48,18 @@ export const Sortable = props => {
   }, [selectedKey]);
 
   const classes = useStyles();
-  let menuList = directChild(tempMenu, keyval, "seq");
+  let menuList =
+    // directChild(tempMenu, keyval, "seq");
+    tempMenu
+      .filter((subitem, itemIndex) => subitem.pid === keyval)
+      .sort(function (a, b) {
+        return a["seq"] < b["seq"] ? -1 : 1;
+      });
 
   const addTopMenu = () => {
     let obj = _.maxBy(menuList, "seq");
     let type = "user";
-    const findtype = _.filter(menuList, function(o) {
+    const findtype = _.filter(menuList, function (o) {
       return o.hasOwnProperty("type");
     });
     if (findtype.length > 0) type = findtype[0].type;
@@ -66,7 +72,7 @@ export const Sortable = props => {
       type: type,
       seq: obj.seq + 1,
       title: "New Menu",
-      layout: []
+      layout: [],
     };
     tempMenu.push(newobj);
     dispatch(globalVariable({ tempMenu: tempMenu }));
@@ -106,7 +112,7 @@ export const Sortable = props => {
   );
 };
 
-const DropList = props => {
+const DropList = (props) => {
   return props.menuList.map((item, i) => {
     let selectli = "";
     if (i === 0) selectli = "selectli";
@@ -143,11 +149,11 @@ const DropList = props => {
   });
 };
 
-const markTab = id => {
+const markTab = (id) => {
   $(".dropli").removeClass("selectli");
   $("#" + id).addClass("selectli");
 };
-const NestedList = props => {
+const NestedList = (props) => {
   return props.data ? (
     <ul>
       {props.data.map((item, i) => {
@@ -185,7 +191,7 @@ const NestedList = props => {
 const findmaxnum = () => {
   return "test";
 };
-const delbtn = id => {
+const delbtn = (id) => {
   //delete button at topmenu tab
   return (
     <React.Fragment>

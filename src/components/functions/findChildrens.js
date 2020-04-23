@@ -34,7 +34,7 @@ export default function findChildrens(data, id, oputArr, callback) {
 export const directChild = (data, pid, seq) => {
   return data
     .filter((subitem, itemIndex) => subitem.pid === pid)
-    .sort(function(a, b) {
+    .sort(function (a, b) {
       return a[seq] < b[seq] ? -1 : 1;
     });
 };
@@ -42,11 +42,11 @@ export const directChild = (data, pid, seq) => {
 let res = [];
 //not callback childFind(data,"id");
 export const findChild = (data, id, sortFields, sortOrder) => {
-  data.forEach(obj => {
+  data.forEach((obj) => {
     let newres = [];
     if (obj.pid === id) {
       res.push(obj);
-      _.remove(data, dt => dt.id === id);
+      _.remove(data, (dt) => dt.id === id);
       console.log(data);
       findChild(data, obj.id);
     }

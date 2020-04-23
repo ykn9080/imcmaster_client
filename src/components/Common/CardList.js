@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { globalVariable } from "actions";
 import useForceUpdate from "use-force-update";
 import $ from "jquery";
+import "jquery-ui-bundle";
+import "jquery-ui-bundle/jquery-ui.min.css";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -12,23 +14,23 @@ import CardForm from "components/Common/CardForm";
 
 import { ObjectID } from "bson"; //_id maker for MongoDB
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   paper: {
     height: 250,
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
   },
   paper1: {
     padding: theme.spacing(1),
-    minHeight: "100vh"
-  }
+    minHeight: "100vh",
+  },
 }));
 
-const CardList = props => {
+const CardList = (props) => {
   //   const forceUpdate = useForceUpdate();
   const classes = useStyles();
   //   const history = useHistory();
@@ -49,7 +51,60 @@ const CardList = props => {
   //       size: 6
   //     };
   //   };
-  const addItemHandler = dtList => {
+
+  const ReOrder = (start_pos, end_pos) => {
+    console.log(start_pos, end_pos);
+    // let arr = formdt;
+    // const _id = arr._id;
+    // let newArr = [];
+    // let list = _.sortBy(arr.data.list, ["seq"]);
+    // if (start_pos < end_pos)
+    //   _.forEach(list, function (value, key) {
+    //     if (value.type !== "button") {
+    //       if (value.seq <= end_pos && value.seq > start_pos) value.seq--;
+    //       else if (value.seq === start_pos) value.seq = end_pos;
+    //     }
+    //     newArr.push(value);
+    //   });
+    // if (start_pos > end_pos)
+    //   _.forEach(list, function (value, key) {
+    //     if (value.type !== "button") {
+    //       if (value.seq >= end_pos && value.seq < start_pos) value.seq++;
+    //       else if (value.seq === start_pos) value.seq = end_pos;
+    //     }
+    //     newArr.push(value);
+    //   });
+    // arr.data.list = newArr;
+    // setFormdt(arr);
+    // setFormArray(arr.data);
+    // dispatch(globalVariable({ currentData: arr }));
+    //st>ed -> st prev +1 st->ed
+  };
+  useEffect(() => {
+    let $node = $(".makeStyles-root-499");
+    $(".draggable-item").resizable();
+    $node.sortable({
+      opacity: 0.8,
+      placeholder: "ui-state-highlight",
+      start: function (event, ui) {
+        var start_pos = ui.item.index();
+        ui.item.data("start_pos", start_pos);
+      },
+      update: function (event, ui) {
+        var start_pos = ui.item.data("start_pos");
+        var end_pos = ui.item.index();
+        //$('#sortable li').removeClass('highlights');
+        ReOrder(start_pos, end_pos);
+      },
+    });
+    return () => {
+      $node.sortable({
+        placeholder: "ui-state-highlight",
+      });
+    };
+  }, []);
+
+  const addItemHandler = (dtList) => {
     const item = props.createItemHandler(dtList);
     dtList.push(item);
     props.addItemHandler(dtList);
@@ -74,7 +129,12 @@ const CardList = props => {
       <Grid container className={classes.root} spacing={1}>
         {props.dtList.map((dt, index) => {
           return (
-            <Grid item xs={dt.size} key={dt._id} className="draggable-item">
+            <Grid
+              item
+              xs={dt.size}
+              key={dt._id}
+              className="draggable-item ui-widget-content"
+            >
               <CardForm
                 cardStyle={props.cardType}
                 removeItemHandler={removeItemHandler}
@@ -86,9 +146,9 @@ const CardList = props => {
             </Grid>
           );
         })}
-        <Grid item xs={3} key={"add_new"} className="draggable-item">
+        {/* <Grid item xs={3} key={"add_new"} className="draggable-item">
           <CardForm data={props.newData} />
-        </Grid>
+        </Grid> */}
       </Grid>
     </Paper>
   );

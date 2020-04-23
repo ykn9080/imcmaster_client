@@ -146,7 +146,8 @@ const Topmenu = () => {
   if (!menuData) menuData = myData;
   //const topmenu = menulist(menuData, "");
   const topmenu = menuData
-    .filter((item, itemIndex) => item.comp === login.comp && item.pid === null)
+    //.filter((item, itemIndex) => item.comp === login.comp && typeof item.pid === "undefined")
+    .filter((item, itemIndex) => item.pid === "")
     .sort(function (a, b) {
       return a.seq < b.seq ? -1 : 1;
     });
@@ -156,7 +157,7 @@ const Topmenu = () => {
       {topmenu.map((dt, i) => {
         //const ddList = menulist(dt, dt.id);
         const ddList = menuData
-          .filter((item, itemIndex) => item.pid === dt.id)
+          .filter((item, itemIndex) => item.pid === dt._id)
           .sort(function (a, b) {
             return a.seq < b.seq ? -1 : 1;
           });
@@ -167,8 +168,8 @@ const Topmenu = () => {
             myData={menuData}
             dt={ddList}
             title={dt.title}
-            id={dt.id}
-            key={dt.id}
+            id={dt._id}
+            key={dt._id}
           />
         );
       })}
@@ -192,10 +193,10 @@ const NavDropRecur = (props) => {
     <NavDropdown title={props.title} id={props.id}>
       {props.dt.map((dtt, index) => {
         //let subdata = menulist(props.myData, dtt.id);
-        let subdata = subfilter(dtt.id);
+        let subdata = subfilter(dtt._id);
         console.log(subdata);
         return subdata.length === 0 ? (
-          <NavDropdown.Item eventKey={dtt.id} key={dtt.id + index}>
+          <NavDropdown.Item eventKey={dtt._id} key={dtt._id + index}>
             {dtt.title}
           </NavDropdown.Item>
         ) : (
@@ -203,8 +204,8 @@ const NavDropRecur = (props) => {
             dt={subdata}
             myData={props.myData}
             title={dtt.title}
-            id={dtt.id}
-            key={dtt.id}
+            id={dtt._id}
+            key={dtt._id}
           />
         );
       })}

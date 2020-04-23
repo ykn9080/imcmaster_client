@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import _ from "lodash";
 import Head from "./Head";
 import { CenteredGrid } from "./Body";
 import Footer from "./Footer";
@@ -19,7 +20,7 @@ import {
   faArrowCircleRight,
   faAdjust,
   faGlobe,
-  faCog
+  faCog,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -45,9 +46,14 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get(currentsetting.webserviceprefix + "menu/any?type=open")
-      .then(response => {
-        localStorage.setItem("openmenu", JSON.stringify(response.data));
+      .get(currentsetting.webserviceprefix + "menu/any?type=user")
+      .then((response) => {
+        // localStorage.setItem("openmenu", JSON.stringify(response.data));
+        _.forEach(response.data, function (value, key) {
+          if (typeof value.pid === "undefined") value.pid = "";
+        });
+        console.log(response.data);
+        dispatch(globalVariable({ menu: response.data }));
       });
 
     // const menu = localStorage.getItem("menu");

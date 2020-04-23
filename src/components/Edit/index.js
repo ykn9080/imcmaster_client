@@ -12,20 +12,20 @@ import Grid from "@material-ui/core/Grid";
 import { findChild } from "components/functions/findChildrens";
 import { Container, Draggable } from "react-smooth-dnd";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
-  }
+    color: theme.palette.text.secondary,
+  },
 }));
 const findMenu = (tempMenu, pid) => {
   return tempMenu
     .filter((item, itemIndex) => item.pid === pid)
-    .sort(function(a, b) {
+    .sort(function (a, b) {
       return a.seq < b.seq ? -1 : 1;
     });
 };
@@ -33,28 +33,28 @@ const findControl = (tempMenu, id) => {
   const ctr = tempMenu.filter((item, itemIndex) => item.id === id);
 
   if (ctr) {
-    return ctr[0].layout.sort(function(a, b) {
+    return ctr[0].layout.sort(function (a, b) {
       return a.rowseq < b.rowseq ? -1 : 1;
     });
   }
 };
 
-const Edit = props => {
+const Edit = (props) => {
   let tempMenu, topMenu, control;
   const [forchg, setForchg] = useState("");
   const dispatch = useDispatch();
-  tempMenu = useSelector(state => state.global.tempMenu);
-
-  let selectedKey = useSelector(state => state.global.selectedKey);
-  let showSidebar = useSelector(state => state.global.showSidebar);
+  tempMenu = useSelector((state) => state.global.tempMenu);
+  console.log(tempMenu);
+  let selectedKey = useSelector((state) => state.global.selectedKey);
+  let showSidebar = useSelector((state) => state.global.showSidebar);
 
   if (!tempMenu) {
-    tempMenu = JSON.parse(localStorage.getItem("menu"));
+    tempMenu = JSON.parse(localStorage.getItem("openmenu"));
     topMenu = findMenu(tempMenu, "");
     // subMenu = findMenu(tempMenu, "1", topMenu[0].id);
     // dispatch(globalVariable({ subMenu: subMenu }));
     dispatch(globalVariable({ tempMenu: tempMenu }));
-    if (!selectedKey) {
+    if (!selectedKey && topMenu.length > 0) {
       selectedKey = topMenu[0]["_id"];
 
       dispatch(globalVariable({ selectedKey }));
@@ -75,7 +75,7 @@ const Edit = props => {
   // subMenu = findMenu("1", topMenu[0].id);
   // console.log(subMenu);
 
-  const selectedmenu = id => {
+  const selectedmenu = (id) => {
     dispatch(globalVariable({ selectedKey: id }));
     selectedKey = id;
     const sub = findMenu(tempMenu, id);
@@ -87,12 +87,12 @@ const Edit = props => {
     setForchg("");
   };
 
-  const markTab = id => {
+  const markTab = (id) => {
     $(".dropli").removeClass("selectli");
     $("#" + id).addClass("selectli");
   };
 
-  const addControl = newArr => {
+  const addControl = (newArr) => {
     dispatch(globalVariable({ control: newArr }));
     setForchg(newArr);
   };

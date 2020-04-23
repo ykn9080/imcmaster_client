@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import {
   getTreeFromFlatData,
-  getFlatDataFromTree
+  getFlatDataFromTree,
 } from "components/functions/dataUtil";
 import { getChildren } from "components/functions/findChildrens";
 import { makeStyles } from "@material-ui/core/styles";
@@ -25,53 +25,53 @@ import { Tree } from "antd";
 import useForceUpdate from "use-force-update";
 import SubMenuHead from "./SubMenuHead";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   nested: {
-    paddingLeft: theme.spacing(4)
+    paddingLeft: theme.spacing(4),
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: "33.33%",
-    flexShrink: 0
+    flexShrink: 0,
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
   },
   tmpStyle: {
     position: "absolute",
     // left: `${pageX}px`,
     // top: `${pageY}px`,
-    boxShadow: "2px 2px 10px #333333"
-  }
+    boxShadow: "2px 2px 10px #333333",
+  },
 }));
 const initialState = {
   mouseX: null,
-  mouseY: null
+  mouseY: null,
 };
 const makeSubMenu = (tempMenu, selectedKey) => {
   // 1. convert flatarray to children style
   let treeDt = getTreeFromFlatData({
-    flatData: tempMenu.map(node => ({ ...node, title: node.title })),
-    getKey: node => node._id, // resolve a node's key
-    getParentKey: node => node.pid, // resolve a node's parent's key
-    rootKey: "" // The value of the parent key when there is no parent (i.e., at root level)
+    flatData: tempMenu.map((node) => ({ ...node, title: node.title })),
+    getKey: (node) => node._id, // resolve a node's key
+    getParentKey: (node) => node.pid, // resolve a node's parent's key
+    rootKey: "", // The value of the parent key when there is no parent (i.e., at root level)
   });
 
   //2. select part of treeDt auto converted to flat style again
   const subList = getChildren(treeDt, selectedKey);
-  console.log(subList, treeDt);
+  console.log(subList, treeDt, tempMenu, selectedKey);
   //3. revconvert subList to children style
   treeDt = getTreeFromFlatData({
-    flatData: subList.map(node => ({ ...node, title: node.title })),
-    getKey: node => node._id, // resolve a node's key
-    getParentKey: node => node.pid, // resolve a node's parent's key
-    rootKey: selectedKey // The value of the parent key when there is no parent (i.e., at root level)
+    flatData: subList.map((node) => ({ ...node, title: node.title })),
+    getKey: (node) => node._id, // resolve a node's key
+    getParentKey: (node) => node.pid, // resolve a node's parent's key
+    rootKey: selectedKey, // The value of the parent key when there is no parent (i.e., at root level)
   });
 
   //append  0-0-0 type key
@@ -90,18 +90,18 @@ const makeSubMenu = (tempMenu, selectedKey) => {
   return treeDt;
 };
 
-export const SubMenu = props => {
+export const SubMenu = (props) => {
   const forceUpdate = useForceUpdate();
   const dispatch = useDispatch();
   //selectedKey
   const [key, setKey] = useState("");
   const [rightClickNodeTreeItem, setRightClickNodeTreeItem] = useState({});
-  let selectedKey = useSelector(state => state.global.selectedKey);
-  const login = useSelector(state => state.global.login);
-  let showSidebar = useSelector(state => state.global.showSidebar);
+  let selectedKey = useSelector((state) => state.global.selectedKey);
+  const login = useSelector((state) => state.global.login);
+  let showSidebar = useSelector((state) => state.global.showSidebar);
   if (selectedKey !== key) setKey(selectedKey);
   //subMenu data
-  let tempMenu = useSelector(state => state.global.tempMenu);
+  let tempMenu = useSelector((state) => state.global.tempMenu);
   //let tempMenu = props.tempMenu;
   let initData = makeSubMenu(tempMenu, selectedKey);
 
@@ -252,7 +252,7 @@ export const SubMenu = props => {
   // /* #endregion */
 
   /* #region anttree eventhandler collection */
-  const onDragEnter = info => {
+  const onDragEnter = (info) => {
     console.log(info);
     // expandedKeys 需要受控时设置
     // this.setState({
@@ -268,11 +268,11 @@ export const SubMenu = props => {
     const flatData = getFlatDataFromTree({
       treeData: dt,
       getNodeKey: ({ node }) => node._id, // This ensures your "id" properties are exported in the path
-      ignoreCollapsed: false // Makes sure you traverse every node in the tree, not just the visible ones
+      ignoreCollapsed: false, // Makes sure you traverse every node in the tree, not just the visible ones
     });
     console.log(dt, flatData);
     const rtn1 = _.map(flatData, "node"); //select node from each object
-    rtn1.map(v => {
+    rtn1.map((v) => {
       console.log(v, key);
       if (v.key === key) {
         const ctr = findControl(tempMenu, v._id);
@@ -282,7 +282,7 @@ export const SubMenu = props => {
     });
     dispatch(globalVariable({ menuedit: false })); //for hide menu input display in Body.js
   };
-  const onDrop = info => {
+  const onDrop = (info) => {
     const dropKey = info.node.props.eventKey;
     const dragKey = info.dragNode.props.eventKey;
     const dropPos = info.node.props.pos.split("-");
@@ -311,7 +311,7 @@ export const SubMenu = props => {
 
     if (!info.dropToGap) {
       // Drop on the content
-      loop(data, dropKey, item => {
+      loop(data, dropKey, (item) => {
         item.children = item.children || [];
         // where to insert 示例添加到尾部，可以是随意位置
         item.children.push(dragObj);
@@ -321,7 +321,7 @@ export const SubMenu = props => {
       info.node.props.expanded && // Is expanded
       dropPosition === 1 // On the bottom gap
     ) {
-      loop(data, dropKey, item => {
+      loop(data, dropKey, (item) => {
         item.children = item.children || [];
         // where to insert 示例添加到头部，可以是随意位置
         item.children.unshift(dragObj);
@@ -347,15 +347,15 @@ export const SubMenu = props => {
     const ctr = tempMenu.filter((item, itemIndex) => item._id === id);
 
     if (ctr) {
-      return ctr[0].layout.sort(function(a, b) {
+      return ctr[0].layout.sort(function (a, b) {
         return a.rowseq < b.rowseq ? -1 : 1;
       });
     }
   };
   /* #endregion */
 
-  const loop = data => {
-    return data.map(item => {
+  const loop = (data) => {
+    return data.map((item) => {
       if (item.children && item.children.length) {
         return (
           <TreeNode key={item.key} title={item.title}>

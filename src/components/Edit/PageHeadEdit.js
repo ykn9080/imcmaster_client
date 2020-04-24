@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import $ from "jquery";
+import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,6 +11,7 @@ import { Tooltip, Button } from "antd";
 import { FormOutlined } from "@ant-design/icons";
 import "components/Common/Antd.css";
 import { SubMenu } from "./SubMenu";
+import AntFormDisplay from "components/Common/AntFormDisplay";
 
 import useForceUpdate from "use-force-update";
 
@@ -52,14 +54,51 @@ export const PageHeadEdit = (props) => {
 
   const classes = useStyles();
   const history = useHistory();
+  const summaryData = {
+    setting: {
+      formItemLayout: {
+        labelCol: { span: 2 },
+        wrapperCol: { span: 22 },
+      },
+      layout: "horizontal",
+      formColumn: 1,
+      size: "middle",
+      initialValues: {
+        title: currdt.title,
+        desc: currdt.desc,
+      },
 
-  const sum = { name: "sss", column: "2", size: "5", desc: "hhh" };
+      onValuesChange: (changedValues, allValues) => {
+        currdt.title = allValues.title;
+        currdt.desc = allValues.desc;
+
+        var index = _.findIndex(tempMenu, { _id: selectedKey });
+
+        // Replace item at index using native splice
+        tempMenu.splice(index, 1, currdt);
+        dispatch(globalVariable({ tempMenu: tempMenu }));
+        //forceUpdate();
+      },
+      onFinish: (values) => {
+        console.log("Received values of form: ", values);
+      },
+      onFinishFailed: (values, errorFields, outOfDate) => {
+        console.log(values, errorFields, outOfDate);
+      },
+    },
+    list: [
+      { label: "Title", name: "title", type: "input", seq: 0 },
+      {
+        label: "Desc",
+        name: "desc",
+        type: "input.textarea",
+        seq: 1,
+      },
+    ],
+  };
   const content = [
-    { term: "Title", detail: sum.name },
-    { term: "Column", detail: sum.column },
-    { term: "Size", detail: sum.size },
-    { term: "Layout", detail: sum.layout },
-    { term: "Description", detail: sum.desc, span: 24 },
+    { term: "Title", detail: currdt.title },
+    { term: "Desc", detail: currdt.desc },
   ];
 
   const extra = [
@@ -67,7 +106,7 @@ export const PageHeadEdit = (props) => {
       <Button
         shape="circle"
         icon={<FormOutlined />}
-        onClick={() => history.push("/admin/form/formedit")}
+        onClick={() => setIsEdit(true)}
       />
     </Tooltip>,
   ];
@@ -93,7 +132,7 @@ export const PageHeadEdit = (props) => {
         ghost={false}
         span={12}
       >
-        {isEdit && <AntFormDisplay formArray={summaryData} name={"fsummary"} />}
+        {isEdit && <AntFormDisplay formArray={summaryData} name={"menuEdit"} />}
       </PageHead>
     </div>
   );

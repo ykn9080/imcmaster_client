@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import {
   Nav,
   Navbar,
@@ -225,8 +226,12 @@ const Head1 = (props) => {
       case "edit":
         //const menu = JSON.parse(localStorage.getItem("menu"));
         //const submenu = directChild(menu, "", "seq");
-
-        dispatch(globalVariable({ tempMenu: menu }));
+        var clone = cloneDeep(menu);
+        clone.map((k, i) => {
+          k.path = "/edit" + k.path;
+        });
+        console.log(clone);
+        dispatch(globalVariable({ tempMenu: clone }));
         //dispatch(globalVariable({ subMenu: submenu }));
         break;
       case "admin":

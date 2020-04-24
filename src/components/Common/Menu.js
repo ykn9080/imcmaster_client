@@ -46,10 +46,10 @@ const AntMenu = (props) => {
   };
   const handleClick = (e) => {
     console.log("click ", e);
-    console.log(location.pathname, window.location.pathname, e.item.props.path);
-    history.push(e.item.props.path);
 
+    history.push(e.item.props.path);
     setCurrent(e.key);
+    if (props.handleClick) props.handleClick(e.key);
   };
 
   let treeDt = getTreeFromFlatData({

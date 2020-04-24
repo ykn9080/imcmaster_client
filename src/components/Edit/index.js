@@ -40,6 +40,10 @@ const findControl = (tempMenu, id) => {
 };
 
 const Edit = (props) => {
+  let title = props.match.params.name;
+  if (typeof props.match.params.child != "undefined")
+    title = props.match.params.child;
+
   let tempMenu, topMenu, control;
   const [forchg, setForchg] = useState("");
   const dispatch = useDispatch();
@@ -113,7 +117,7 @@ const Edit = (props) => {
       <div className={classes.root}>
         <Grid container>
           <Grid item xs={12}>
-            <HeadEdit selectedmenu={selectedmenu} />
+            <HeadEdit selectedmenu={selectedmenu} title={title} />
           </Grid>
 
           {showSidebar ? (

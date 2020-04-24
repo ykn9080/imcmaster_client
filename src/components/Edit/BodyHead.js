@@ -29,13 +29,13 @@ import Layout8 from "images/Layout/Layout8.png";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 import Reorder from "@material-ui/icons/Reorder";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   margin: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   extendedIcon: {
-    marginRight: theme.spacing(0)
-  }
+    marginRight: theme.spacing(0),
+  },
 }));
 export const BodyHead = () => {
   const layout = [
@@ -46,9 +46,9 @@ export const BodyHead = () => {
     { col: [1, 2], repeat: 1 },
     { col: [2, 1], repeat: 1 },
     { col: [1, 3], repeat: 1 },
-    { col: [3, 1], repeat: 1 }
+    { col: [3, 1], repeat: 1 },
   ];
-  let ctrList = useSelector(state => state.global.control);
+  let ctrList = useSelector((state) => state.global.control);
 
   console.log(ctrList);
   if (typeof ctrList === "undefined") ctrList = [];
@@ -58,7 +58,7 @@ export const BodyHead = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl1, setAnchorEl1] = useState(null);
   const [layoutIndex, setLayoutIndex] = useState(0); //selected layout form index
-  let showSidebar = useSelector(state => state.global.showSidebar);
+  let showSidebar = useSelector((state) => state.global.showSidebar);
   const handleAddControl = () => {
     const ctrLength = ctrList.length;
     console.log(layoutIndex);
@@ -69,7 +69,7 @@ export const BodyHead = () => {
     let seq = ctrLength;
     ctrList.push(addCtr(seq, findNthWidth(seq, layObj.col)));
     console.log(ctrList);
-    //dispatch(globalVariable({ control: ctrList }));
+    dispatch(globalVariable({ control: ctrList }));
     LayoutControl(layObj, ctrList);
   };
   const handleReset = () => {
@@ -77,7 +77,7 @@ export const BodyHead = () => {
     dispatch(globalVariable({ menuedit: false }));
     handleClose();
   };
-  const handleClick = event => {
+  const handleClick = (event) => {
     const id = $(event.currentTarget).attr("aria-controls");
     switch (id) {
       case "editMenu":
@@ -92,7 +92,7 @@ export const BodyHead = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleClose1 = num => {
+  const handleClose1 = (num) => {
     console.log(num);
 
     setLayoutIndex(num - 1);
@@ -116,7 +116,7 @@ export const BodyHead = () => {
       ctrid: "",
       type: "",
       seq: seq,
-      size: size
+      size: size,
     };
   };
   const isBlank = () => {
@@ -161,7 +161,7 @@ export const BodyHead = () => {
     dispatch(globalVariable({ control: [] }));
     handleClose();
   };
-  const handleNavigate = e => {
+  const handleNavigate = (e) => {
     //e.preventDefault();
     history.push("/controls");
     handleClose();

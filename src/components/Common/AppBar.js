@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  body: {
+  children: {
     flexGrow: 9,
   },
 }));
@@ -34,7 +34,7 @@ export default function DenseAppBar(props) {
   const classes = useStyles();
   let left = props.left;
 
-  let body = props.children;
+  let children = props.children;
   let right = props.right;
   if (typeof left === "undefined")
     left = (
@@ -45,7 +45,7 @@ export default function DenseAppBar(props) {
       </>
     );
 
-  if (typeof body === "undefined") body = "";
+  if (typeof children === "undefined") children = "";
   if (typeof right === "undefined") right = "";
 
   let showEdit = props.showEdit;
@@ -68,7 +68,7 @@ export default function DenseAppBar(props) {
           <Typography variant="h6" color="inherit" className={classes.title}>
             {props.title}
           </Typography>
-          <span className={classes.body}>{body}</span>
+          <span className={classes.children}>{children}</span>
 
           {right}
         </Toolbar>

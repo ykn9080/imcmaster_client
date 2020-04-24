@@ -29,8 +29,8 @@ const routes = [
   { path: "/join", name: "Join", Component: Join },
   { path: "/controledit", name: "Control Edit", Component: CtrEdit },
   { path: "/controledit1", name: "Control Edit1", Component: CtrEdit1 },
-  { path: "/edit", name: "Edit", Component: Edit },
-  { path: "/controls", name: "Controls", Component: Controls },
+  { path: "/edit:name?", name: "Edit", Component: Edit },
+  { path: "/controls:name?", name: "Controls", Component: Controls },
   { path: "/admin/:name?", name: "Administration", Component: Admin },
   { path: "/admin/element", name: "Edit", Component: Element },
 ];
@@ -80,8 +80,10 @@ const App = (props) => {
           <Route path="/join" component={Join} />
           <Route exact path="/controledit" component={CtrEdit} />
           <Route exact path="/controledit1" component={CtrEdit1} />
-          <Route path="/edit" component={Edit} />
-          <Route path="/controls" component={Controls} />
+          <Route path="/edit" exact component={Edit} />
+          <Route path="/edit/:name?/:child?" component={Edit} />
+          <Route path="/controls" exact component={Controls} />
+          <Route path="/controls/:name?/:child?" component={Controls} />
           <Route path="/admin" exact component={Admin} />
           <Route path="/admin/:name?/:child?" component={Admin} />
           <Route path="/admin/element" component={Element} />

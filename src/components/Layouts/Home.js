@@ -44,6 +44,16 @@ let menuData = [];
 const Home = () => {
   const dispatch = useDispatch();
 
+  let addedmenu = [];
+  const addPath1 = (menu, pid, pathname) => {
+    _.filter(menu, function (o) {
+      return o.pid === pid;
+    }).map((k, i) => {
+      k.path = pathname + "/" + k.title;
+      addedmenu.push(k);
+      addPath1(menu, k._id, k.path);
+    });
+  };
   useEffect(() => {
     axios
       .get(currentsetting.webserviceprefix + "menu/any?type=user")
@@ -52,8 +62,11 @@ const Home = () => {
         _.forEach(response.data, function (value, key) {
           if (typeof value.pid === "undefined") value.pid = "";
         });
-        console.log(response.data);
-        dispatch(globalVariable({ menu: response.data }));
+        addPath1(response.data, "", "");
+
+        console.log(addedmenu);
+        //dispatch(globalVariable({ menu: response.data }));
+        dispatch(globalVariable({ menu: addedmenu }));
       });
 
     // const menu = localStorage.getItem("menu");

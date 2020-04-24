@@ -82,13 +82,14 @@ const CardList = (props) => {
   };
   useEffect(() => {
     let $node = $(".makeStyles-root-499");
-    $(".draggable-item").resizable();
+    //$(".draggable-item").resizable();
     $node.sortable({
       opacity: 0.8,
       placeholder: "ui-state-highlight",
       start: function (event, ui) {
         var start_pos = ui.item.index();
         ui.item.data("start_pos", start_pos);
+        console.log("start", start_pos);
       },
       update: function (event, ui) {
         var start_pos = ui.item.data("start_pos");

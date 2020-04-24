@@ -28,42 +28,42 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ControlIcon from "components/Controls/ControlIcon";
 import ControlList from "components/Controls";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     //maxWidth: "100%"
     maxHeight: 400,
-    minHeight: 300
+    minHeight: 300,
   },
   cardDot: {
     borderStyle: "dashed",
     paddingTop: 50,
     maxHeight: 400,
     minHeight: 300,
-    color: "grey"
+    color: "grey",
   },
   icon: {
-    margin: "0 auto"
+    margin: "0 auto",
   },
   media: {
-    height: 0
+    height: 0,
     //paddingTop: "56.25%" // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest
-    })
+      duration: theme.transitions.duration.shortest,
+    }),
   },
   expandOpen: {
-    transform: "rotate(180deg)"
+    transform: "rotate(180deg)",
   },
   avatar: {
-    backgroundColor: red[500]
-  }
+    backgroundColor: red[500],
+  },
 }));
 
-export default props => {
+export default (props) => {
   const classes = useStyles();
   const forceUpdate = useForceUpdate();
   const dispatch = useDispatch();
@@ -78,7 +78,7 @@ export default props => {
   const removeHandler = () => {
     setExpanded(!expanded);
   };
-  const BlankCard = data => {
+  const BlankCard = (data) => {
     return (
       <Card className={classes.cardDot}>
         <CardHeader style={{ textAlign: "center" }} title="Add New" />
@@ -108,7 +108,7 @@ export default props => {
   // };
   const resizeControl = (ctrList, _id, direction) => {
     console.log(_id, direction);
-    _.each(ctrList, function(value, key) {
+    _.each(ctrList, function (value, key) {
       if (value._id === _id) {
         console.log(value.size);
         switch (direction) {
@@ -124,7 +124,7 @@ export default props => {
     });
     props.resizeItemHandler(ctrList);
   };
-  if (props.data.ctrid === "") return <BlankCard data={props.data} />;
+  // if (props.data.ctrid === "") return <BlankCard data={props.data} />;
 
   return (
     <>
@@ -181,7 +181,7 @@ export default props => {
           </IconButton>
           <IconButton
             className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded
+              [classes.expandOpen]: expanded,
             })}
             onClick={handleExpandClick}
             aria-expanded={expanded}

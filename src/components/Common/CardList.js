@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import CardForm from "components/Common/CardForm";
+import CardAnt from "components/Common/CardAnt";
 
 import { ObjectID } from "bson"; //_id maker for MongoDB
 
@@ -81,7 +82,8 @@ const CardList = (props) => {
     //st>ed -> st prev +1 st->ed
   };
   useEffect(() => {
-    let $node = $(".makeStyles-root-499");
+    let $node = $("#cardList123");
+    //let $node = $(".makeStyles-root-499");
     //$(".draggable-item").resizable();
     $node.sortable({
       opacity: 0.8,
@@ -98,6 +100,7 @@ const CardList = (props) => {
         ReOrder(start_pos, end_pos);
       },
     });
+    $(".draggable-item").resizable();
     return () => {
       $node.sortable({
         placeholder: "ui-state-highlight",
@@ -127,7 +130,7 @@ const CardList = (props) => {
 
   return (
     <Paper variant="outlined" square className={classes.paper1}>
-      <Grid container className={classes.root} spacing={1}>
+      <Grid container className={classes.root} spacing={1} id="cardList123">
         {props.dtList.map((dt, index) => {
           return (
             <Grid
@@ -136,13 +139,21 @@ const CardList = (props) => {
               key={dt._id}
               className="draggable-item ui-widget-content"
             >
-              <CardForm
+              {/* <CardForm
                 cardStyle={props.cardType}
                 removeItemHandler={removeItemHandler}
                 resizeItemHandler={props.resizeItemHandler}
                 editItemHandler={props.editItemHandler}
                 data={dt}
                 dtList={props.dtList}
+              /> */}
+              <CardAnt
+                removeItemHandler={removeItemHandler}
+                resizeItemHandler={props.resizeItemHandler}
+                editItemHandler={props.editItemHandler}
+                data={dt}
+                dtList={props.dtList}
+                index={index}
               />
             </Grid>
           );

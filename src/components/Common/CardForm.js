@@ -27,6 +27,8 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Tooltip from "@material-ui/core/Tooltip";
 import ControlIcon from "components/Controls/ControlIcon";
 import ControlList from "components/Controls";
+import DataGrid1 from "components/Common/DataGrid1";
+import DataGrid from "components/Common/DataGrid";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -75,6 +77,24 @@ export default (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const resizeControl = (ctrList, _id, direction) => {
+    console.log(_id, direction);
+    _.each(ctrList, function (value, key) {
+      if (value._id === _id) {
+        console.log(value.size);
+        switch (direction) {
+          case "left":
+            if (value.size > 3) value.size = value.size - 1;
+            break;
+          case "right":
+            if (value.size < 12) value.size = value.size + 1;
+            break;
+        }
+        console.log(value, value.size);
+      }
+    });
+    props.resizeItemHandler(ctrList);
+  };
   const removeHandler = () => {
     setExpanded(!expanded);
   };
@@ -106,24 +126,7 @@ export default (props) => {
   //   console.log("im click");
   //   history.push("/controls", { data });
   // };
-  const resizeControl = (ctrList, _id, direction) => {
-    console.log(_id, direction);
-    _.each(ctrList, function (value, key) {
-      if (value._id === _id) {
-        console.log(value.size);
-        switch (direction) {
-          case "left":
-            if (value.size > 3) value.size = value.size - 1;
-            break;
-          case "right":
-            if (value.size < 12) value.size = value.size + 1;
-            break;
-        }
-        console.log(value, value.size);
-      }
-    });
-    props.resizeItemHandler(ctrList);
-  };
+
   // if (props.data.ctrid === "") return <BlankCard data={props.data} />;
 
   return (
@@ -150,8 +153,7 @@ export default (props) => {
         />
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests.
+            <DataGrid />
           </Typography>
         </CardContent>
         <CardActions disableSpacing>

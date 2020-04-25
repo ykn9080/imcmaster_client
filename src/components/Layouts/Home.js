@@ -43,7 +43,8 @@ let menuData = [];
 //3. if not fetch openmenu->dispatch openmenu,
 const Home = () => {
   const dispatch = useDispatch();
-
+  const menu = useSelector((state) => state.global.menu);
+  console.log(menu);
   let addedmenu = [];
   const addPath1 = (menu, pid, pathname) => {
     _.filter(menu, function (o) {
@@ -54,21 +55,26 @@ const Home = () => {
       addPath1(menu, k._id, k.path);
     });
   };
+  const addRootPid = (data) => {
+    _.forEach(data, function (value, key) {
+      if (typeof value.pid === "undefined") value.pid = "";
+    });
+    return data;
+  };
   useEffect(() => {
-    axios
-      .get(currentsetting.webserviceprefix + "menu/any?type=user")
-      .then((response) => {
-        // localStorage.setItem("openmenu", JSON.stringify(response.data));
-        _.forEach(response.data, function (value, key) {
-          if (typeof value.pid === "undefined") value.pid = "";
+    if ((menu.length === 0) | (menu === ""))
+      axios
+        .get(currentsetting.webserviceprefix + "menu/any?type=user")
+        .then((response) => {
+          // localStorage.setItem("openmenu", JSON.stringify(response.data));
+          let dt = addRootPid(response.data);
+          addPath1(dt, "", "");
+
+          //dispatch(globalVariable({ menu: response.data }));
+          dispatch(globalVariable({ menu: addedmenu }));
+          localStorage.setItem("openmenu", JSON.stringify(addedmenu));
         });
-        addPath1(response.data, "", "");
-
-        console.log(addedmenu);
-        //dispatch(globalVariable({ menu: response.data }));
-        dispatch(globalVariable({ menu: addedmenu }));
-      });
-
+    else localStorage.setItem("openmenu", JSON.stringify(menu));
     // const menu = localStorage.getItem("menu");
     // if (typeof menu != "undefined")
     //   menuData = JSON.parse(localStorage.getItem("menu"));

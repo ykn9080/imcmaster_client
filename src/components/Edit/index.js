@@ -48,7 +48,6 @@ const Edit = (props) => {
   const [forchg, setForchg] = useState("");
   const dispatch = useDispatch();
   tempMenu = useSelector((state) => state.global.tempMenu);
-  console.log(tempMenu);
   let selectedKey = useSelector((state) => state.global.selectedKey);
   let showSidebar = useSelector((state) => state.global.showSidebar);
 
@@ -84,7 +83,6 @@ const Edit = (props) => {
     selectedKey = id;
     const sub = findMenu(tempMenu, id);
     const ctr = findControl(tempMenu, id);
-    console.log("it's from index", sub);
     //dispatch(globalVariable({ control: ctr }));
     //dispatch(globalVariable({ subMenu: sub }));
     markTab(id);
@@ -108,7 +106,7 @@ const Edit = (props) => {
   //   });
   //   addControl(ctrList);
   // };
-  console.log("reload");
+
   // const submenu = findMenu("1", topmenu[0].id);
   const classes = useStyles();
 
@@ -120,7 +118,7 @@ const Edit = (props) => {
             <HeadEdit selectedmenu={selectedmenu} title={title} />
           </Grid>
 
-          {showSidebar ? (
+          {/* {showSidebar ? (
             <Grid item xs={3}>
               <SubMenu selectedmenu={selectedmenu} tempMenu={tempMenu} />
             </Grid>
@@ -128,7 +126,7 @@ const Edit = (props) => {
 
           <Grid item xs>
             <Body addControl={addControl} />
-          </Grid>
+          </Grid> */}
         </Grid>
       </div>
       <Footer />

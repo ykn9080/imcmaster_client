@@ -152,7 +152,7 @@ const Topmenu = () => {
     .sort(function (a, b) {
       return a.seq < b.seq ? -1 : 1;
     });
-  console.log(menuData, topmenu);
+
   return (
     <Nav className="mr-auto" onSelect={handleSelect}>
       {topmenu.map((dt, i) => {
@@ -195,7 +195,7 @@ const NavDropRecur = (props) => {
       {props.dt.map((dtt, index) => {
         //let subdata = menulist(props.myData, dtt.id);
         let subdata = subfilter(dtt._id);
-        console.log(subdata);
+
         return subdata.length === 0 ? (
           <NavDropdown.Item eventKey={dtt._id} key={dtt._id + index}>
             {dtt.title}
@@ -220,7 +220,7 @@ const Head1 = (props) => {
   const menu = useSelector((state) => state.global.menu);
   const token = useSelector((state) => state.global.token);
   function handleSelect(selectedKey) {
-    console.log("selected123 " + selectedKey);
+    console.log("selected123 " + selectedKey, menu);
     keyval = selectedKey;
     switch (selectedKey) {
       case "edit":
@@ -230,7 +230,6 @@ const Head1 = (props) => {
         clone.map((k, i) => {
           k.path = "/edit" + k.path;
         });
-        console.log(clone);
         dispatch(globalVariable({ tempMenu: clone }));
         //dispatch(globalVariable({ subMenu: submenu }));
         break;

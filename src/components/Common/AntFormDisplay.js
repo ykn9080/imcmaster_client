@@ -112,7 +112,7 @@ const AntFormDisplay = (props) => {
 
   const Element = (props) => {
     return list.map((k, i) => {
-      return <AntFormElement {...k} {...props} />;
+      return <AntFormElement key={i} {...k} {...props} />;
     });
   };
   const onFinish1 = (values) => {
@@ -145,7 +145,6 @@ const AntFormDisplay = (props) => {
         {formColumn > 1 ? (
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
             <Element
-              key="1element"
               formColumn={formColumn}
               layout={layout}
               formItemLayout={formItemLayout}
@@ -155,7 +154,6 @@ const AntFormDisplay = (props) => {
           </Row>
         ) : (
           <Element
-            key="2elelment"
             formColumn={formColumn}
             layout={layout}
             formItemLayout={formItemLayout}

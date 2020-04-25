@@ -7,21 +7,6 @@ import AntBreadCrumb from "./BreadCrumb";
 const PageHead = (props) => {
   const history = useHistory();
   let location = useLocation();
-
-  const routes = [
-    {
-      path: "index",
-      breadcrumbName: "First-level Menu",
-    },
-    {
-      path: "first",
-      breadcrumbName: "Second-level Menu",
-    },
-    {
-      path: "second",
-      breadcrumbName: "Third-level Menu",
-    },
-  ];
   // useEffect(() => {
   //   $(".ant-page-header>.ant-breadcrumb").remove();
   //   $(".ant-page-header").prepend($(".ant-breadcrumb"));
@@ -39,6 +24,14 @@ const PageHead = (props) => {
     pageProps = { ...pageProps, ghost: props.ghost };
   if (props.subTitle) pageProps = { ...pageProps, subTitle: props.subtitle };
   if (props.extra) pageProps = { ...pageProps, extra: props.extra };
+
+  // const extraContent = (
+  //   <img
+  //     src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
+  //     alt="content"
+  //   />
+  // );
+  const extraContent = props.extraContent ? props.extraContent : "";
 
   /* #region  children component example*/
   const Description = ({ term, children, span = props.span }) => (
@@ -60,27 +53,11 @@ const PageHead = (props) => {
           <Description term={k.term}>{k.detail}</Description>
         );
       })}
-      {/* <Description term="Created">Lili Qu</Description>
-      <Description term="Association">
-        <a>421421</a>
-      </Description>
-      <Description term="Creation Time">2017-01-10</Description>
-      <Description term="Effective Time">2017-10-10</Description>
-      <Description term="Remarks" span={24}>
-        Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
-      </Description> */}
     </Row>
   ) : (
     ""
   );
 
-  // const extraContent = (
-  //   <img
-  //     src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
-  //     alt="content"
-  //   />
-  // );
-  const extraContent = props.extraContent ? props.extraContent : "";
   const child = (
     <div className="wrap">
       <div className="content padding">{content}</div>

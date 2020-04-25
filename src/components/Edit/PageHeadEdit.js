@@ -2,17 +2,23 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import $ from "jquery";
 import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { directChild } from "components/functions/findChildrens";
+import { useConfirm } from "material-ui-confirm";
 import PageHead from "components/Common/PageHeader";
-import { Tooltip, Button } from "antd";
-import { FormOutlined } from "@ant-design/icons";
+import { Tooltip, Button, Descriptions, Row, Popconfirm, message } from "antd";
+import {
+  FormOutlined,
+  DesktopOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import "components/Common/Antd.css";
 import { SubMenu } from "./SubMenu";
 import AntFormDisplay from "components/Common/AntFormDisplay";
-
+import TreeAnt from "components/Common/TreeAnt";
 import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
 export const PageHeadEdit = (props) => {
   let topMenu,
     title = "";
-  if (props.title) title = props.title;
   const forceUpdate = useForceUpdate();
+  const confirm = useConfirm();
   let tempMenu = useSelector((state) => state.global.tempMenu);
   const control = useSelector((state) => state.global.control);
   let selectedKey = useSelector((state) => state.global.selectedKey);
@@ -45,7 +51,10 @@ export const PageHeadEdit = (props) => {
   let currdt = _.filter(tempMenu, function (o) {
     return o._id == selectedKey;
   });
-  if (currdt.length > 0) currdt = currdt[0];
+  if (currdt.length > 0) {
+    currdt = currdt[0];
+    title = currdt.title;
+  }
 
   const onSave = () => {
     //setState의 모든 내용을 redux에 반영한후 display page로 이동
@@ -57,30 +66,28 @@ export const PageHeadEdit = (props) => {
   const summaryData = {
     setting: {
       formItemLayout: {
-        labelCol: { span: 2 },
-        wrapperCol: { span: 22 },
+        labelCol: { span: 6 },
+        wrapperCol: { span: 18 },
       },
-      layout: "horizontal",
+      layout: "vertical",
       formColumn: 1,
-      size: "middle",
+      size: "small",
       initialValues: {
         title: currdt.title,
         desc: currdt.desc,
       },
-
-      onValuesChange: (changedValues, allValues) => {
-        currdt.title = allValues.title;
-        currdt.desc = allValues.desc;
-
-        var index = _.findIndex(tempMenu, { _id: selectedKey });
-
-        // Replace item at index using native splice
-        tempMenu.splice(index, 1, currdt);
-        dispatch(globalVariable({ tempMenu: tempMenu }));
-        //forceUpdate();
-      },
       onFinish: (values) => {
-        console.log("Received values of form: ", values);
+        let patharr = currdt.path.split("/");
+        patharr.splice(patharr.length - 1, 1, values.title);
+        patharr = patharr.join("/");
+        currdt = { ...currdt, ...values, path: patharr };
+        var index = _.findIndex(tempMenu, { _id: selectedKey });
+        //console.log("Received values of form: ", values, currdt);
+        // Replace item at index using native splice
+        let temp = cloneDeep(tempMenu);
+        temp.splice(index, 1, currdt);
+        dispatch(globalVariable({ tempMenu: temp }));
+        forceUpdate();
       },
       onFinishFailed: (values, errorFields, outOfDate) => {
         console.log(values, errorFields, outOfDate);
@@ -94,28 +101,63 @@ export const PageHeadEdit = (props) => {
         type: "input.textarea",
         seq: 1,
       },
+      {
+        type: "button",
+        seq: 1000,
+        btnArr: [
+          {
+            btnLabel: "Submit",
+            btnStyle: "primary",
+            htmlType: "submit",
+            seq: 0,
+          },
+          {
+            btnLabel: "Cancel",
+            btnStyle: "secondary",
+            htmlType: "button",
+            onClick: () => {
+              setIsEdit(!isEdit);
+            },
+            seq: 1,
+          },
+        ],
+      },
     ],
   };
   const content = [
     { term: "Title", detail: currdt.title },
     { term: "Desc", detail: currdt.desc },
   ];
-  const renderContent = (column = 2) => (
+  const renderContent = (column = 1) => (
     <Descriptions size="small" column={column}>
       <Descriptions.Item label="Title">{currdt.title}</Descriptions.Item>
       <Descriptions.Item label="Desc">{currdt.desc}</Descriptions.Item>
     </Descriptions>
   );
   const extra = [
-    <Tooltip title="Edit">
+    <Tooltip title={isEdit ? "View" : "Edit"}>
       <Button
         shape="circle"
-        icon={<FormOutlined />}
+        icon={isEdit ? <DesktopOutlined /> : <FormOutlined />}
         onClick={() => {
-          setIsEdit(true);
-          console.log("clicked...");
+          setIsEdit(!isEdit);
         }}
       />
+    </Tooltip>,
+    <Tooltip title="Delete">
+      <Popconfirm
+        title="Are you sure to delete ?"
+        onConfirm={() => {
+          var index = _.findIndex(tempMenu, { _id: selectedKey });
+          let temp = cloneDeep(tempMenu);
+          temp.splice(index, 1);
+          dispatch(globalVariable({ tempMenu: temp }));
+        }}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Button shape="circle" icon={<DeleteOutlined />} />
+      </Popconfirm>
     </Tooltip>,
   ];
   const extraContent = (
@@ -129,20 +171,31 @@ export const PageHeadEdit = (props) => {
       {/* <SubMenu selectedmenu={selectedmenu} tempMenu={tempMenu} /> */}
     </div>
   );
+  const Content = ({ children, extraContent }) => {
+    return (
+      <Row>
+        <div style={{ flex: 3, paddingRight: 5 }}>{extraContent}</div>
+        <div style={{ flex: 3 }}>{children}</div>
+      </Row>
+    );
+  };
 
   return (
     <div className="site-page-header-ghost-wrapper">
-      <PageHead
-        title={title}
-        extra={extra}
-        // content={content}
-        extraContent={extraContent}
-        ghost={false}
-        span={12}
-      >
-        {isEdit ? (
-          <AntFormDisplay formArray={summaryData} name={"menuEdit"} />
-        ) : null}
+      <PageHead title={title} extra={extra} ghost={false} span={12}>
+        <Content
+          extraContent={
+            <>
+              <TreeAnt />
+            </>
+          }
+        >
+          {isEdit ? (
+            <AntFormDisplay formArray={summaryData} name={"menuEdit"} />
+          ) : (
+            renderContent()
+          )}
+        </Content>
       </PageHead>
     </div>
   );

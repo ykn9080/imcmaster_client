@@ -278,6 +278,8 @@ const AntFormElement = (props) => {
                       htmlType: k.htmlType,
                       key: k.btnLabel,
                     };
+                    if (k.onClick)
+                      btnProps = { ...btnProps, onClick: k.onClick };
                     return <Button {...btnProps}>{btnLabel}</Button>;
                   })}
                 </div>

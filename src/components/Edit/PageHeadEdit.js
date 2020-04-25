@@ -100,13 +100,21 @@ export const PageHeadEdit = (props) => {
     { term: "Title", detail: currdt.title },
     { term: "Desc", detail: currdt.desc },
   ];
-
+  const renderContent = (column = 2) => (
+    <Descriptions size="small" column={column}>
+      <Descriptions.Item label="Title">{currdt.title}</Descriptions.Item>
+      <Descriptions.Item label="Desc">{currdt.desc}</Descriptions.Item>
+    </Descriptions>
+  );
   const extra = [
     <Tooltip title="Edit">
       <Button
         shape="circle"
         icon={<FormOutlined />}
-        onClick={() => setIsEdit(true)}
+        onClick={() => {
+          setIsEdit(true);
+          console.log("clicked...");
+        }}
       />
     </Tooltip>,
   ];
@@ -127,12 +135,14 @@ export const PageHeadEdit = (props) => {
       <PageHead
         title={title}
         extra={extra}
-        content={content}
+        // content={content}
         extraContent={extraContent}
         ghost={false}
         span={12}
       >
-        {isEdit && <AntFormDisplay formArray={summaryData} name={"menuEdit"} />}
+        {isEdit ? (
+          <AntFormDisplay formArray={summaryData} name={"menuEdit"} />
+        ) : null}
       </PageHead>
     </div>
   );

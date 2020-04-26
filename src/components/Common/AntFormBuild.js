@@ -27,11 +27,12 @@ const AntFormBuild = (props) => {
   const [formdt, setFormdt] = useState(props.formdt);
   const [tabarray, setTabarray] = useState("");
   const dispatch = useDispatch();
-  dispatch(globalVariable({ formEdit: true }));
   const [form] = Form.useForm();
   let open = useSelector((state) => state.global.openDialog); //edit
   let open1 = useSelector((state) => state.global.openDialog1); //create new
-
+  useEffect(() => {
+    dispatch(globalVariable({ formEdit: true }));
+  }, []);
   const ReOrder = (start_pos, end_pos) => {
     let arr = formdt;
     const _id = arr._id;

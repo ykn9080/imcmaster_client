@@ -108,7 +108,7 @@ export const HeadEdit = (props) => {
     });
     if (findtype.length > 0) type = findtype[0].type;
     let newobj = {
-      _id: new ObjectID(),
+      //_id: new ObjectID(),
       comp: login.comp,
       creator: login.user,
       desc: "",
@@ -196,7 +196,11 @@ export const HeadEdit = (props) => {
       <DenseAppBar title={"PageBuild"} right={saveBtn}>
         <Row>
           <Col>
-            <AntMenu menuList={menuList} handleClick={selectedmenu} />
+            <AntMenu
+              menuList={menuList}
+              handleClick={selectedmenu}
+              id="editMenu"
+            />
           </Col>
           <Col>
             <IconButton edge="start" color="inherit" aria-label="menu">

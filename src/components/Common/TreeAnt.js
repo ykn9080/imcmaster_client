@@ -142,9 +142,12 @@ const TreeAnt = (props) => {
     rtn1.map((v) => {
       console.log(v, key);
       if (v.key === key) {
-        const ctr = findControl(tempMenu, v._id);
+        const ctr = findControl(tempMenu, v._id, "control");
+        const cData = findControl(tempMenu, v._id, "currentData");
         console.log(ctr);
         dispatch(globalVariable({ control: ctr }));
+        dispatch(globalVariable({ selectedKey: v._id }));
+        if (props.onSelect) props.onSelect(cData);
       }
     });
     dispatch(globalVariable({ menuedit: false })); //for hide menu input display in Body.js
@@ -210,15 +213,23 @@ const TreeAnt = (props) => {
     forceUpdate();
   };
 
-  const findControl = (tempMenu, id) => {
-    const ctr = tempMenu.filter((item, itemIndex) => item._id === id);
+  const findControl = (tempMenu, id, type) => {
+    const dt = tempMenu.filter((item, itemIndex) => item._id === id);
 
-    if (ctr) {
-      return ctr[0].layout.sort(function (a, b) {
-        return a.rowseq < b.rowseq ? -1 : 1;
-      });
+    if (dt) {
+      switch (type) {
+        case "control":
+          return dt[0].layout.sort(function (a, b) {
+            return a.rowseq < b.rowseq ? -1 : 1;
+          });
+          break;
+        case "currentData":
+          return dt;
+          break;
+      }
     }
   };
+
   /* #endregion */
 
   const loop = (data) => {

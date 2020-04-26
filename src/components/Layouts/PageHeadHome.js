@@ -16,7 +16,6 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import "components/Common/Antd.css";
-import { SubMenu } from "./SubMenu";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import TreeAnt from "components/Common/TreeAnt";
 import useForceUpdate from "use-force-update";
@@ -37,12 +36,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const PageHeadEdit = (props) => {
+export const PageHeadHome = (props) => {
   let topMenu,
     title = "";
   const forceUpdate = useForceUpdate();
   const confirm = useConfirm();
   let tempMenu = useSelector((state) => state.global.tempMenu);
+  const control = useSelector((state) => state.global.control);
   let selectedKey = useSelector((state) => state.global.selectedKey);
   let menuList = directChild(tempMenu, "", "seq");
   const dispatch = useDispatch();
@@ -54,11 +54,6 @@ export const PageHeadEdit = (props) => {
     currdt = currdt[0];
     title = currdt.title;
   }
-
-  const onSave = () => {
-    //setState의 모든 내용을 redux에 반영한후 display page로 이동
-    dispatch(globalVariable({ menu: tempMenu }));
-  };
 
   const classes = useStyles();
   const history = useHistory();
@@ -178,16 +173,14 @@ export const PageHeadEdit = (props) => {
       </Row>
     );
   };
-  const onSelect = (key) => {
-    if (key.length > 0) history.push(key[0].path);
-  };
+
   return (
     <div className="site-page-header-ghost-wrapper">
       <PageHead title={title} extra={extra} ghost={false} span={12}>
         <Content
           extraContent={
             <>
-              <TreeAnt onSelect={onSelect} />
+              <TreeAnt />
             </>
           }
         >
@@ -202,4 +195,4 @@ export const PageHeadEdit = (props) => {
   );
 };
 
-export default PageHeadEdit;
+export default PageHeadHome;

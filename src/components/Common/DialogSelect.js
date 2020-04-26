@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DialogSelect(props) {
-  console.log(props.dialogAction);
   const classes = useStyles();
   const dispatch = useDispatch();
   let open1 = useSelector((state) => state.global.openDialog1);

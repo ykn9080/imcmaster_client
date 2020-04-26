@@ -45,7 +45,7 @@ const AntMenu = (props) => {
     return newdt;
   };
   const handleClick = (e) => {
-    console.log("click ", e);
+    console.log("click ", e.item.props.path);
 
     history.push(e.item.props.path);
     setCurrent(e.key);

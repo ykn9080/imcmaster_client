@@ -333,7 +333,6 @@ const Head1 = (props) => {
           </Navbar.Collapse>
         </Navbar>
       )}
-      <ActiveLastBreadcrumb keyval={keyval} />
     </>
   );
 };

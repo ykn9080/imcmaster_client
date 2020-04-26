@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 import Head from "./Head";
+import PageHeadHome from "./PageHeadHome";
 import { CenteredGrid } from "./Body";
 import Footer from "./Footer";
 import { HeadEdit } from "components/Edit/Head3";

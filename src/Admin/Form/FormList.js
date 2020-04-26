@@ -52,6 +52,7 @@ const FormList = () => {
 
   const editHandler = (item) => {
     dispatch(globalVariable({ currentData: item }));
+    dispatch(globalVariable({ selectedKey: item._id }));
     history.push("/admin/form/formedit");
   };
 

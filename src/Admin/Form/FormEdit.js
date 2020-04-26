@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import axios from "axios";
+import cloneDeep from "lodash/cloneDeep";
 import { currentsetting } from "components/functions/config";
 import { Button, Tooltip, message } from "antd";
 import { DesktopOutlined, SaveOutlined, CopyOutlined } from "@ant-design/icons";
@@ -12,33 +13,39 @@ import AntFormDisplay from "components/Common/AntFormDisplay";
 import "components/Common/Antd.css";
 import useForceUpdate from "use-force-update";
 import DialogSelect from "components/Common/DialogSelect";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const FormEdit = (props) => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
-  dispatch(globalVariable({ formEdit: true }));
   let iconSpin = {},
     btnDisabled = {};
 
-  let formdt = useSelector((state) => state.global.currentData);
+  //for snackbar open/close
+  const [open, setOpen] = React.useState(false);
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
+  let formdt = useSelector((state) => state.global.currentData);
+  let selectedKey = useSelector((state) => state.global.selectedKey);
   //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!
   if (formdt === "") {
     formdt = JSON.parse(localStorage.getItem("imsi"));
     dispatch(globalVariable({ currentData: formdt }));
   }
-  formdt.data.setting = {
-    ...formdt.data.setting,
-    onValuesChange: (changedValues, allValues) => {
-      formdt.data.setting.initialValues = {
-        ...formdt.data.setting.initialValues,
-        ...changedValues,
-      };
-      dispatch(globalVariable({ currentData: formdt }));
-    },
-  };
+  console.log(formdt);
   const summaryData = {
     setting: {
       formItemLayout: {
@@ -155,13 +162,30 @@ const FormEdit = (props) => {
     ],
   };
   const [sumdt, setSumdt] = useState(summaryData);
+  useEffect(() => {
+    dispatch(globalVariable({ formEdit: true }));
+    console.log("usefect running");
+  }, []);
+  useEffect(() => {
+    //temporary use for editing phase only for
+    //initialValue setting, pls delete when save
+    console.log("formdt chg useeffect");
+    formdt.data.setting = {
+      ...formdt.data.setting,
+      onValuesChange: (changedValues, allValues) => {
+        formdt.data.setting.initialValues = {
+          ...formdt.data.setting.initialValues,
+          ...changedValues,
+        };
+        dispatch(globalVariable({ currentData: formdt }));
+      },
+    };
+  }, [formdt]);
 
   if (typeof formdt._id === "undefined") {
     iconSpin = { spin: true };
     btnDisabled = { disabled: true };
   }
-  //inorderto set initialValues, append onValuesChange eventhandler
-  //must remove onValuesChange when to save to database
 
   const extra = [
     <Tooltip title="Save" key="1save">
@@ -171,6 +195,8 @@ const FormEdit = (props) => {
         onClick={() => {
           console.log(formdt, formdt._id);
           // //remove onValuesChange
+          //inorderto set initialValues, append onValuesChange eventhandler
+          //must remove onValuesChange when to save to database
           delete formdt.data.setting.onValuesChange;
           let config = {
             method: "put",
@@ -196,13 +222,17 @@ const FormEdit = (props) => {
         icon={<CopyOutlined />}
         onClick={() => {
           //remove onValuesChange
-          delete formdt.data.setting.onValuesChange;
-          delete formdt._id;
-          formdt.name += " Copy";
-          summaryData.setting.initialValues += " Copy";
-          dispatch(globalVariable({ currentData: formdt }));
-          message.success("복사를 완료하려면 저장하셔야 합니다. ", 10);
-          forceUpdate();
+          let curr = cloneDeep(formdt);
+          delete curr.data.setting.onValuesChange;
+          delete curr._id;
+
+          curr.name += " Copy";
+          summaryData.setting.initialValues.name += " Copy";
+          curr.data.setting.initialValues = summaryData.setting.initialValues;
+          //
+          // setSumdt(sumdt);
+          setOpen(true);
+          dispatch(globalVariable({ currentData: curr }));
         }}
       />
     </Tooltip>,
@@ -214,7 +244,12 @@ const FormEdit = (props) => {
       />
     </Tooltip>,
   ];
-
+  const SaveAsCancel = () => {
+    formdt._id = selectedKey;
+    formdt.name = formdt.name.replace(" Copy", "");
+    dispatch(globalVariable({ currentData: formdt }));
+    setOpen(false);
+  };
   const actbutton = (
     <Button
       color="primary"
@@ -225,15 +260,49 @@ const FormEdit = (props) => {
       Save As
     </Button>
   );
-
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  const snack = (
+    <Snackbar
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+      open={open}
+      autoHideDuration={10000}
+      onClose={handleClose}
+      message="Click save button to finish!!!"
+      action={
+        <React.Fragment>
+          <Button color="secondary" size="small" onClick={SaveAsCancel}>
+            Undo
+          </Button>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+      }
+    >
+      {/* <Alert onClose={handleClose} severity="warning">
+        Click save button to finish!!!
+      </Alert> */}
+    </Snackbar>
+  );
   return (
     <>
       <div className="site-page-header-ghost-wrapper">
         <PageHead title="FormEdit" onBack={true} extra={extra} ghost={false}>
-          <AntFormDisplay formArray={summaryData} name={"fsummary"} />
+          <AntFormDisplay formArray={sumdt} name={"fsummary"} />
         </PageHead>
       </div>
       <AntFormBuild formdt={formdt} />
+      {snack}
     </>
   );
 };

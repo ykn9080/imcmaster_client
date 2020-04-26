@@ -160,7 +160,7 @@ const Admin = ({ match }) => {
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
       {/* formview, formedit은 독립적인 pagehead를 가짐 */}
-      {["formview", "formedit"].indexOf(title) === -1 ? (
+      {["formview", "formedit", "form"].indexOf(title) === -1 ? (
         <PageHead title={title} />
       ) : null}
       {(() => {

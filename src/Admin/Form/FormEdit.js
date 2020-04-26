@@ -37,13 +37,25 @@ const FormEdit = (props) => {
     }
     setOpen(false);
   };
+  //{data:{setting:{formItemLayout:{labelCol:{span:2},wrapperCol:{span:22}},layout:"inline",formColumn:2,size:"middle",onFinish:{values => {console.log(values);};}},list:[]}
 
   let formdt = useSelector((state) => state.global.currentData);
   let selectedKey = useSelector((state) => state.global.selectedKey);
   //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!
-  if (formdt === "") {
-    formdt = JSON.parse(localStorage.getItem("imsi"));
-    dispatch(globalVariable({ currentData: formdt }));
+  // if (formdt === "") {
+  //   formdt = JSON.parse(localStorage.getItem("imsi"));
+  //   dispatch(globalVariable({ currentData: formdt }));
+  // }
+  let initialValue = {};
+  if (formdt != "") {
+    initialValue = {
+      name: formdt.name,
+      desc: formdt.desc,
+      column: formdt.data.setting.formColumn,
+      labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
+      layout: formdt.data.setting.layout,
+      size: formdt.data.setting.size,
+    };
   }
   console.log(formdt);
   const summaryData = {
@@ -56,12 +68,7 @@ const FormEdit = (props) => {
       formColumn: 2,
       size: "small",
       initialValues: {
-        name: formdt.name,
-        desc: formdt.desc,
-        column: formdt.data.setting.formColumn,
-        labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
-        layout: formdt.data.setting.layout,
-        size: formdt.data.setting.size,
+        ...{ initialValue },
       },
       // onFieldsChange: (changedFields, allFields) => {
       //   const cf1 = changedFields[0];
@@ -170,6 +177,7 @@ const FormEdit = (props) => {
     //temporary use for editing phase only for
     //initialValue setting, pls delete when save
     console.log("formdt chg useeffect");
+
     formdt.data.setting = {
       ...formdt.data.setting,
       onValuesChange: (changedValues, allValues) => {
@@ -301,7 +309,7 @@ const FormEdit = (props) => {
           <AntFormDisplay formArray={sumdt} name={"fsummary"} />
         </PageHead>
       </div>
-      <AntFormBuild formdt={formdt} />
+      {/* <AntFormBuild formdt={formdt} /> */}
       {snack}
     </>
   );

@@ -6,8 +6,9 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import AntList from "components/Common/List";
-import { Avatar } from "antd";
-import { UserOutlined, FormOutlined } from "@ant-design/icons";
+import { Avatar, Tooltip, Button } from "antd";
+import PageHead from "components/Common/PageHeader";
+import { FileAddOutlined, FormOutlined } from "@ant-design/icons";
 import useForceUpdate from "use-force-update";
 
 const FormList = () => {
@@ -50,6 +51,12 @@ const FormList = () => {
     });
   }, []);
 
+  const createHandler = () => {
+    dispatch(globalVariable({ currentData: "" }));
+    dispatch(globalVariable({ selectedKey: "" }));
+    history.push("/admin/form/formedit");
+  };
+
   const editHandler = (item) => {
     dispatch(globalVariable({ currentData: item }));
     dispatch(globalVariable({ selectedKey: item._id }));
@@ -85,9 +92,18 @@ const FormList = () => {
     },
     pageSize: 5,
   };
-
+  const extra = [
+    <Tooltip title="Create New" key="1create">
+      <Button
+        shape="circle"
+        icon={<FileAddOutlined />}
+        onClick={createHandler}
+      />
+    </Tooltip>,
+  ];
   return (
     <>
+      <PageHead title="Form" extra={extra}></PageHead>
       <AntList
         listData={listData}
         loading={loading}

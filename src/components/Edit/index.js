@@ -51,18 +51,18 @@ const Edit = (props) => {
   let selectedKey = useSelector((state) => state.global.selectedKey);
   let showSidebar = useSelector((state) => state.global.showSidebar);
 
-  if (!tempMenu) {
-    tempMenu = JSON.parse(localStorage.getItem("openmenu"));
-    topMenu = findMenu(tempMenu, "");
-    // subMenu = findMenu(tempMenu, "1", topMenu[0].id);
-    // dispatch(globalVariable({ subMenu: subMenu }));
-    dispatch(globalVariable({ tempMenu: tempMenu }));
-    if (!selectedKey && topMenu.length > 0) {
-      selectedKey = topMenu[0]["_id"];
+  // if (!tempMenu) {
+  //   tempMenu = JSON.parse(localStorage.getItem("openmenu"));
+  //   topMenu = findMenu(tempMenu, "");
+  //   // subMenu = findMenu(tempMenu, "1", topMenu[0].id);
+  //   // dispatch(globalVariable({ subMenu: subMenu }));
+  //   dispatch(globalVariable({ tempMenu: tempMenu }));
+  //   if (!selectedKey && topMenu.length > 0) {
+  //     selectedKey = topMenu[0]["_id"];
 
-      dispatch(globalVariable({ selectedKey }));
-    }
-  }
+  //     dispatch(globalVariable({ selectedKey }));
+  //   }
+  // }
 
   useEffect(() => {
     //console.log(tempMenu);

@@ -39,22 +39,37 @@ const useStyles = makeStyles((theme) => ({
 
 export const PageHeadEdit = (props) => {
   let topMenu,
-    title = "";
+    title = "",
+    pid = "",
+    keyfortree = "";
   const forceUpdate = useForceUpdate();
   const confirm = useConfirm();
   let tempMenu = useSelector((state) => state.global.tempMenu);
   let selectedKey = useSelector((state) => state.global.selectedKey);
-  let menuList = directChild(tempMenu, "", "seq");
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
   let currdt = _.filter(tempMenu, function (o) {
     return o._id == selectedKey;
   });
+
   if (currdt.length > 0) {
     currdt = currdt[0];
     title = currdt.title;
+    pid = currdt.pid;
   }
-
+  if (pid != "") {
+    let pdt = _.filter(tempMenu, function (o) {
+      return o._id == pid;
+    });
+    if (pdt.pid === "") keyfortree = pdt._id;
+  } else keyfortree = selectedKey;
+  // const findTopLevelKey = (selecteKey) => {
+  //   let currdt = _.filter(tempMenu, function (o) {
+  //     return o._id == selectedKey;
+  //   });
+  //   if (currdt.pid != "") findTopLevelKey(currdt.pid);
+  //   else return currdt.pid;
+  // };
   const onSave = () => {
     //setState의 모든 내용을 redux에 반영한후 display page로 이동
     dispatch(globalVariable({ menu: tempMenu }));
@@ -187,7 +202,7 @@ export const PageHeadEdit = (props) => {
         <Content
           extraContent={
             <>
-              <TreeAnt onSelect={onSelect} />
+              <TreeAnt onSelect={onSelect} selectedKey={keyfortree} />
             </>
           }
         >

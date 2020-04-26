@@ -93,6 +93,8 @@ const TreeAnt = (props) => {
   const [key, setKey] = useState("");
   const [rightClickNodeTreeItem, setRightClickNodeTreeItem] = useState({});
   let selectedKey = useSelector((state) => state.global.selectedKey);
+  if (props.selectedKey) selectedKey = props.selectedKey;
+
   const login = useSelector((state) => state.global.login);
   let showSidebar = useSelector((state) => state.global.showSidebar);
   if (selectedKey !== key) setKey(selectedKey);

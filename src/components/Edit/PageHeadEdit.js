@@ -1,24 +1,20 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import $ from "jquery";
 import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { makeStyles } from "@material-ui/core/styles";
-import { directChild } from "components/functions/findChildrens";
 import { useConfirm } from "material-ui-confirm";
 import PageHead from "components/Common/PageHeader";
-import { Tooltip, Button, Descriptions, Row, Popconfirm, message } from "antd";
+import { Tooltip, Button, Descriptions, Row, Popconfirm } from "antd";
 import {
   FormOutlined,
   DesktopOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 import "components/Common/Antd.css";
-import { SubMenu } from "./SubMenu";
 import AntFormDisplay from "components/Common/AntFormDisplay";
-import TreeAnt from "components/Common/TreeAnt";
 import useForceUpdate from "use-force-update";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,13 +37,36 @@ export const PageHeadEdit = (props) => {
   let topMenu,
     title = "",
     pid = "",
-    keyfortree = "";
+    keyfortree = "",
+    treeData = [];
+
+  const classes = useStyles();
+  const history = useHistory();
   const forceUpdate = useForceUpdate();
   const confirm = useConfirm();
-  let tempMenu = useSelector((state) => state.global.tempMenu);
-  let selectedKey = useSelector((state) => state.global.selectedKey);
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
+
+  let tempMenu = useSelector((state) => state.global.tempMenu);
+  let selectedKey = useSelector((state) => state.global.selectedKey);
+
+  // let rtn = "";
+  // const findTopNode = (id) => {
+  //   if (id) {
+  //     let pdt = _.filter(tempMenu, function (o) {
+  //       return o._id == id;
+  //     });
+  //     if (pdt.length == 0) return;
+  //     if (pdt[0].pid === "") {
+  //       rtn = pdt[0]._id;
+  //       return pdt[0]._id;
+  //     }
+  //     findTopNode(pdt[0].pid);
+  //   }
+  // };
+  // findTopNode(selectedKey);
+
+  // treeData = getNodeData(tempMenu, rtn, "_id", "pid", "", "title");
   let currdt = _.filter(tempMenu, function (o) {
     return o._id == selectedKey;
   });
@@ -57,26 +76,7 @@ export const PageHeadEdit = (props) => {
     title = currdt.title;
     pid = currdt.pid;
   }
-  if (pid != "") {
-    let pdt = _.filter(tempMenu, function (o) {
-      return o._id == pid;
-    });
-    if (pdt.pid === "") keyfortree = pdt._id;
-  } else keyfortree = selectedKey;
-  // const findTopLevelKey = (selecteKey) => {
-  //   let currdt = _.filter(tempMenu, function (o) {
-  //     return o._id == selectedKey;
-  //   });
-  //   if (currdt.pid != "") findTopLevelKey(currdt.pid);
-  //   else return currdt.pid;
-  // };
-  const onSave = () => {
-    //setState의 모든 내용을 redux에 반영한후 display page로 이동
-    dispatch(globalVariable({ menu: tempMenu }));
-  };
 
-  const classes = useStyles();
-  const history = useHistory();
   const summaryData = {
     setting: {
       formItemLayout: {
@@ -193,19 +193,11 @@ export const PageHeadEdit = (props) => {
       </Row>
     );
   };
-  const onSelect = (key) => {
-    if (key.length > 0) history.push(key[0].path);
-  };
+
   return (
     <div className="site-page-header-ghost-wrapper">
       <PageHead title={title} extra={extra} ghost={false} span={12}>
-        <Content
-          extraContent={
-            <>
-              <TreeAnt onSelect={onSelect} selectedKey={keyfortree} />
-            </>
-          }
-        >
+        <Content extraContent={<></>}>
           {isEdit ? (
             <AntFormDisplay formArray={summaryData} name={"menuEdit"} />
           ) : (

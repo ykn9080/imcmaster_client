@@ -19,6 +19,7 @@ import "components/Common/Antd.css";
 import { SubMenu } from "./SubMenu";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 import useForceUpdate from "use-force-update";
+import { getNodeData } from "components/functions/dataUtil";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,13 +79,22 @@ export const HeadEdit = (props) => {
       });
     }
   };
+
   const selectedmenu = (path) => {
     const curr = _.filter(tempMenu, function (o) {
       return o.path == path;
     });
     if (curr.length > 0) selectedKey = curr[0]._id;
     dispatch(globalVariable({ selectedKey: selectedKey }));
-
+    const treeData = getNodeData(
+      tempMenu,
+      selectedKey,
+      "_id",
+      "pid",
+      "",
+      "title"
+    );
+    dispatch(globalVariable({ treeData: treeData }));
     // const sub = findMenu(tempMenu, id);
     // const ctr = findControl(tempMenu, id);
     // console.log("it's from index", sub);

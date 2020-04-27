@@ -50,69 +50,92 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const getNodeData = (allData, topNode, key, parentkey, rootkey, title) => {
-  // 1. convert flatarray to children style
-  let treeDt = getTreeFromFlatData({
-    flatData: allData.map((node) => ({ ...node, title: node[title] })),
-    getKey: (node) => node[key], // resolve a node's key
-    getParentKey: (node) => node[parentkey], // resolve a node's parent's key
-    rootKey: rootkey, // The value of the parent key when there is no parent (i.e., at root level)
-  });
+//moved to components/functions/dataUtil
+// convert flatdata to tree(with children) -> recreate flatdata &  select a node
+//-> convert again to tree -> add 0-0-0 like key for antTree
 
-  //2. select part of treeDt auto converted to flat style again
-  const subList = getChildren(treeDt, topNode);
-  //3. revconvert subList to children style
-  treeDt = getTreeFromFlatData({
-    flatData: subList.map((node) => ({ ...node, title: node[title] })),
-    getKey: (node) => node[key],
-    getParentKey: (node) => node[parentkey],
-    rootKey: topNode,
-  });
+// const getNodeData = (allData, topNode, key, parentkey, rootkey, title) => {
+//   // 1. convert flatarray to children style
+//   let treeDt = getTreeFromFlatData({
+//     flatData: allData.map((node) => ({ ...node, title: node[title] })),
+//     getKey: (node) => node[key], // resolve a node's key
+//     getParentKey: (node) => node[parentkey], // resolve a node's parent's key
+//     rootKey: rootkey, // The value of the parent key when there is no parent (i.e., at root level)
+//   });
 
-  //append  0-0-0 type key
-  const addKey = (_tns, _preKey) => {
-    const preKey = _preKey || "0";
-    const tns = _tns || treeDt;
-    tns.map((v, i) => {
-      const key = `${preKey}-${i}`;
-      v.key = key;
-      if (v.hasOwnProperty("children")) {
-        addKey(v.children, key);
-      }
-    });
-  };
-  addKey();
-  return treeDt;
-};
+//   //2. select part of treeDt auto converted to flat style again
+//   const subList = getChildren(treeDt, topNode);
+//   //3. revconvert subList to children style
+//   treeDt = getTreeFromFlatData({
+//     flatData: subList.map((node) => ({ ...node, title: node[title] })),
+//     getKey: (node) => node[key],
+//     getParentKey: (node) => node[parentkey],
+//     rootKey: topNode,
+//   });
+
+//   //append  0-0-0 type key
+//   const addKey = (_tns, _preKey) => {
+//     const preKey = _preKey || "0";
+//     const tns = _tns || treeDt;
+//     tns.map((v, i) => {
+//       const key = `${preKey}-${i}`;
+//       v.key = key;
+//       if (v.hasOwnProperty("children")) {
+//         addKey(v.children, key);
+//       }
+//     });
+//   };
+//   addKey();
+//   return treeDt;
+// };
 
 const TreeAnt = (props) => {
   const forceUpdate = useForceUpdate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   //selectedKey
-  const [key, setKey] = useState("");
-  const [rightClickNodeTreeItem, setRightClickNodeTreeItem] = useState({});
-  let selectedKey = useSelector((state) => state.global.selectedKey);
-  if (props.selectedKey) selectedKey = props.selectedKey;
+  //const [key, setKey] = useState("");
+  // const [rightClickNodeTreeItem, setRightClickNodeTreeItem] = useState({});
 
-  const login = useSelector((state) => state.global.login);
-  let showSidebar = useSelector((state) => state.global.showSidebar);
-  if (selectedKey !== key) setKey(selectedKey);
-  //subMenu data
-  let tempMenu = useSelector((state) => state.global.tempMenu);
-  //let tempMenu = props.tempMenu;
-  let initData = getNodeData(tempMenu, selectedKey, "_id", "pid", "", "title");
+  // let selectedKey = useSelector((state) => state.global.selectedKey);
+  // if (props.selectedKey) selectedKey = props.selectedKey;
 
+  // const login = useSelector((state) => state.global.login);
+  //let showSidebar = useSelector((state) => state.global.showSidebar);
+  // if (selectedKey !== key) setKey(selectedKey);
+  // //subMenu data
+  // let tempMenu = useSelector((state) => state.global.tempMenu);
+  // //let tempMenu = props.tempMenu;
+  // let initData = getNodeData(tempMenu, selectedKey, "_id", "pid", "", "title");
+
+  // const findControl = (tempMenu, id, type) => {
+  //   const dt = tempMenu.filter((item, itemIndex) => item._id === id);
+
+  //   if (dt) {
+  //     switch (type) {
+  //       case "control":
+  //         return dt[0].layout.sort(function (a, b) {
+  //           return a.rowseq < b.rowseq ? -1 : 1;
+  //         });
+  //         break;
+  //       case "currentData":
+  //         return dt;
+  //         break;
+  //     }
+  //   }
+  // };
+  let treeData = useSelector((state) => state.global.treeData);
   const [reload, setReload] = useState(false); //for reload from child
   const [anchorEl, setAnchorEl] = useState(false); //for open menu when rightclick tree
-  const [gData, setgData] = useState([]);
+  const [gData, setgData] = useState(treeData);
   const { TreeNode } = Tree;
   const [expandedKeys, setExpendedKeys] = useState([]);
 
   //localStorage.setItem("subList", JSON.stringify(treeDt));
 
   useEffect(() => {
-    console.log("run", initData);
-    setgData(initData);
+    //console.log("run", props.initData);
+    //setgData(props.initData);
+    setgData(treeData);
   }, [props, reload]);
 
   const handleClose = () => {
@@ -135,23 +158,24 @@ const TreeAnt = (props) => {
     const dt = gData;
     const flatData = getFlatDataFromTree({
       treeData: dt,
+      //getNodeKey: ({ node }) => node._id, // This ensures your "id" properties are exported in the path
       getNodeKey: ({ node }) => node._id, // This ensures your "id" properties are exported in the path
       ignoreCollapsed: false, // Makes sure you traverse every node in the tree, not just the visible ones
     });
-    console.log(dt, flatData);
     const rtn1 = _.map(flatData, "node"); //select node from each object
     rtn1.map((v) => {
-      console.log(v, key);
+      //console.log(v, key);
       if (v.key === key) {
-        const ctr = findControl(tempMenu, v._id, "control");
-        const cData = findControl(tempMenu, v._id, "currentData");
-        console.log(ctr);
-        dispatch(globalVariable({ control: ctr }));
-        dispatch(globalVariable({ selectedKey: v._id }));
-        if (props.onSelect) props.onSelect(cData);
+        // const ctr = findControl(tempMenu, v._id, "control");
+        // const cData = findControl(tempMenu, v._id, "currentData");
+        // console.log(ctr);
+        // dispatch(globalVariable({ control: ctr }));
+        // dispatch(globalVariable({ selectedKey: v._id }));
+
+        if (props.onSelect) props.onSelect(v);
       }
     });
-    dispatch(globalVariable({ menuedit: false })); //for hide menu input display in Body.js
+    //dispatch(globalVariable({ menuedit: false })); //for hide menu input display in Body.js
   };
   const onDrop = (info) => {
     const dropKey = info.node.props.eventKey;
@@ -171,8 +195,9 @@ const TreeAnt = (props) => {
       });
     };
 
-    const data = gData; //[...this.state.gData];
-    console.log(data);
+    let data = gData; //[...this.state.gData];
+    if (data === "") data = [];
+    // console.log(data);
     // Find dragObject
     let dragObj;
     loop(data, dragKey, (item, index, arr) => {
@@ -214,23 +239,6 @@ const TreeAnt = (props) => {
     forceUpdate();
   };
 
-  const findControl = (tempMenu, id, type) => {
-    const dt = tempMenu.filter((item, itemIndex) => item._id === id);
-
-    if (dt) {
-      switch (type) {
-        case "control":
-          return dt[0].layout.sort(function (a, b) {
-            return a.rowseq < b.rowseq ? -1 : 1;
-          });
-          break;
-        case "currentData":
-          return dt;
-          break;
-      }
-    }
-  };
-
   /* #endregion */
 
   const loop = (data) => {
@@ -260,7 +268,7 @@ const TreeAnt = (props) => {
         onSelect={onSelect}
         onRightClick={onRightClick}
       >
-        {loop(gData)}
+        {gData != "" && loop(gData)}
       </Tree>
     </div>
   );

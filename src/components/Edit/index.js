@@ -117,16 +117,15 @@ const Edit = (props) => {
           <Grid item xs={12}>
             <HeadEdit selectedmenu={selectedmenu} title={title} />
           </Grid>
-
-          {/* {showSidebar ? (
+          {showSidebar ? (
             <Grid item xs={3}>
               <SubMenu selectedmenu={selectedmenu} tempMenu={tempMenu} />
             </Grid>
           ) : null}
-
           <Grid item xs>
             <Body addControl={addControl} />
-          </Grid> */}
+          </Grid>{" "}
+          */}
         </Grid>
       </div>
       <Footer />

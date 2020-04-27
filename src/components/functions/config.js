@@ -121,6 +121,7 @@ const globalVar = {
   elementData: "",
   formData: [],
   currentData: "",
+  treeData: "",
   login: "",
   token: "",
   selectedKey: "",

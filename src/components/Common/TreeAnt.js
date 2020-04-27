@@ -50,24 +50,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeSubMenu = (tempMenu, selectedKey) => {
+const getNodeData = (allData, topNode, key, parentkey, rootkey, title) => {
   // 1. convert flatarray to children style
   let treeDt = getTreeFromFlatData({
-    flatData: tempMenu.map((node) => ({ ...node, title: node.title })),
-    getKey: (node) => node._id, // resolve a node's key
-    getParentKey: (node) => node.pid, // resolve a node's parent's key
-    rootKey: "", // The value of the parent key when there is no parent (i.e., at root level)
+    flatData: allData.map((node) => ({ ...node, title: node[title] })),
+    getKey: (node) => node[key], // resolve a node's key
+    getParentKey: (node) => node[parentkey], // resolve a node's parent's key
+    rootKey: rootkey, // The value of the parent key when there is no parent (i.e., at root level)
   });
 
   //2. select part of treeDt auto converted to flat style again
-  const subList = getChildren(treeDt, selectedKey);
-  console.log(subList, treeDt, tempMenu, selectedKey);
+  const subList = getChildren(treeDt, topNode);
   //3. revconvert subList to children style
   treeDt = getTreeFromFlatData({
-    flatData: subList.map((node) => ({ ...node, title: node.title })),
-    getKey: (node) => node._id, // resolve a node's key
-    getParentKey: (node) => node.pid, // resolve a node's parent's key
-    rootKey: selectedKey, // The value of the parent key when there is no parent (i.e., at root level)
+    flatData: subList.map((node) => ({ ...node, title: node[title] })),
+    getKey: (node) => node[key],
+    getParentKey: (node) => node[parentkey],
+    rootKey: topNode,
   });
 
   //append  0-0-0 type key
@@ -101,7 +100,7 @@ const TreeAnt = (props) => {
   //subMenu data
   let tempMenu = useSelector((state) => state.global.tempMenu);
   //let tempMenu = props.tempMenu;
-  let initData = makeSubMenu(tempMenu, selectedKey);
+  let initData = getNodeData(tempMenu, selectedKey, "_id", "pid", "", "title");
 
   const [reload, setReload] = useState(false); //for reload from child
   const [anchorEl, setAnchorEl] = useState(false); //for open menu when rightclick tree

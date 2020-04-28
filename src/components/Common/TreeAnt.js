@@ -42,12 +42,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
-  tmpStyle: {
-    position: "absolute",
-    // left: `${pageX}px`,
-    // top: `${pageY}px`,
-    boxShadow: "2px 2px 10px #333333",
-  },
 }));
 
 //moved to components/functions/dataUtil
@@ -91,6 +85,14 @@ const useStyles = makeStyles((theme) => ({
 
 const TreeAnt = (props) => {
   const forceUpdate = useForceUpdate();
+  const [context, setContext] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const tmpStyle = {
+    position: "absolute",
+    left: `${position.x}px`,
+    top: `${position.y}px`,
+    boxShadow: "2px 2px 10px #333333",
+  };
   // const dispatch = useDispatch();
   //selectedKey
   //const [key, setKey] = useState("");
@@ -253,8 +255,13 @@ const TreeAnt = (props) => {
       return <TreeNode key={item.key} title={item.title} />;
     });
   };
-  const onRightClick = () => {
-    return null;
+  const onRightClick = ({ event, node }) => {
+    console.log(event, node);
+    event.preventDefault();
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+    setContext({ context: true });
+    setPosition({ x: clickX + 10, y: clickY });
   };
   return (
     <div>
@@ -270,6 +277,7 @@ const TreeAnt = (props) => {
       >
         {gData != "" && loop(gData)}
       </Tree>
+      {context && <div style={tmpStyle}>contextmenu</div>}
     </div>
   );
 };

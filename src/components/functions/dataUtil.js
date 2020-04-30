@@ -2,6 +2,9 @@ import { getChildren } from "components/functions/findChildrens";
 import _ from "lodash";
 
 export let addedmenu = [];
+export const emptyAddedmenu=()=>{
+  addedmenu=[];
+}
 export const addPath1 = (menu, pid, pathname) => {
   _.filter(menu, function (o) {
     return o.pid === pid;

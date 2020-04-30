@@ -81,11 +81,11 @@ const App = (props) => {
           <Route exact path="/controledit" component={CtrEdit} />
           <Route exact path="/controledit1" component={CtrEdit1} />
           <Route path="/edit" exact component={Edit} />
-          <Route path="/edit/:name?/:child?" component={Edit} />
+          <Route path="/edit/:name?/:child?/:grandchild?" component={Edit} />
           <Route path="/controls" exact component={Controls} />
           <Route path="/controls/:name?/:child?" component={Controls} />
-          <Route path="/admin" exact component={Admin} />
-          <Route path="/admin/:name?/:child?" component={Admin} />
+          {/* <Route path="/admin" exact component={Admin} /> */}
+          <Route path="/admin/:name?/:child?/:grandchild?" component={Admin} />
           <Route path="/admin/element" component={Element} />
           {/* {routes.map(({ exact, path, Component }, key) => (
             <Route exact={exact} path={path} key={key} component={Component} />

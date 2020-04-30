@@ -69,14 +69,14 @@ const Home = () => {
       axios
         .get(currentsetting.webserviceprefix + "menu/any?type=user")
         .then((response) => {
+          console.log(response.data);
           // localStorage.setItem("openmenu", JSON.stringify(response.data));
           let dt = addRootPid(response.data);
           addPath1(dt, "", "");
-
+          console.log(addedmenu);
           //dispatch(globalVariable({ menu: response.data }));
           dispatch(globalVariable({ menu: addedmenu }));
           localStorage.setItem("openmenu", JSON.stringify(addedmenu));
-          addedmenu = [];
         });
     else localStorage.setItem("openmenu", JSON.stringify(menu));
     // const menu = localStorage.getItem("menu");

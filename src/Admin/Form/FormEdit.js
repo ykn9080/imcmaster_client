@@ -42,10 +42,10 @@ const FormEdit = (props) => {
   let formdt = useSelector((state) => state.global.currentData);
   let selectedKey = useSelector((state) => state.global.selectedKey);
   //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!
-  if (formdt === "") {
-    formdt = JSON.parse(localStorage.getItem("imsi"));
-    dispatch(globalVariable({ currentData: formdt }));
-  }
+  // if (formdt === "") {
+  //   formdt = JSON.parse(localStorage.getItem("imsi"));
+  //   dispatch(globalVariable({ currentData: formdt }));
+  // }
   let initialValue = {};
   if (formdt != "") {
     initialValue = {
@@ -171,23 +171,27 @@ const FormEdit = (props) => {
   const [sumdt, setSumdt] = useState(summaryData);
   useEffect(() => {
     dispatch(globalVariable({ formEdit: true }));
+
     console.log("usefect running");
   }, []);
   useEffect(() => {
     //temporary use for editing phase only for
     //initialValue setting, pls delete when save
     console.log("formdt chg useeffect");
-
-    formdt.data.setting = {
-      ...formdt.data.setting,
+    console.log(initialValue);
+    sumdt.setting.initialValues = initialValue;
+    console.log(sumdt);
+    sumdt.setting = {
+      ...sumdt.setting,
       onValuesChange: (changedValues, allValues) => {
-        formdt.data.setting.initialValues = {
+        sumdt.setting.initialValues = {
           ...formdt.data.setting.initialValues,
           ...changedValues,
         };
-        dispatch(globalVariable({ currentData: formdt }));
+        //dispatch(globalVariable({ currentData: formdt }));
       },
     };
+    setSumdt(sumdt);
   }, [formdt]);
 
   if (typeof formdt._id === "undefined") {
@@ -201,17 +205,17 @@ const FormEdit = (props) => {
         shape="circle"
         icon={<SaveOutlined {...iconSpin} />}
         onClick={() => {
-          console.log(formdt, formdt._id);
+          console.log(sumdt, sumdt._id);
           // //remove onValuesChange
           //inorderto set initialValues, append onValuesChange eventhandler
           //must remove onValuesChange when to save to database
-          delete formdt.data.setting.onValuesChange;
+          delete sumdt.data.setting.onValuesChange;
           let config = {
             method: "put",
-            url: `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
-            data: formdt,
+            url: `${currentsetting.webserviceprefix}bootform/${sumdt._id}`,
+            data: sumdt,
           };
-          if (typeof formdt._id === "undefined")
+          if (typeof sumdt._id === "undefined")
             config = {
               ...config,
               ...{
@@ -230,13 +234,13 @@ const FormEdit = (props) => {
         icon={<CopyOutlined />}
         onClick={() => {
           //remove onValuesChange
-          let curr = cloneDeep(formdt);
+          let curr = cloneDeep(sumdt);
           delete curr.data.setting.onValuesChange;
           delete curr._id;
 
           curr.name += " Copy";
-          summaryData.setting.initialValues.name += " Copy";
-          curr.data.setting.initialValues = summaryData.setting.initialValues;
+          sumdt.setting.initialValues.name += " Copy";
+          curr.data.setting.initialValues = sumdt.setting.initialValues;
           //
           // setSumdt(sumdt);
           setOpen(true);
@@ -248,14 +252,14 @@ const FormEdit = (props) => {
       <Button
         shape="circle"
         icon={<DesktopOutlined />}
-        onClick={() => history.push("/admin/form/formview")}
+        onClick={() => history.push("/admin/control/form/formview")}
       />
     </Tooltip>,
   ];
   const SaveAsCancel = () => {
-    formdt._id = selectedKey;
-    formdt.name = formdt.name.replace(" Copy", "");
-    dispatch(globalVariable({ currentData: formdt }));
+    sumdt._id = selectedKey;
+    sumdt.name = sumdt.name.replace(" Copy", "");
+    dispatch(globalVariable({ currentData: sumdt }));
     setOpen(false);
   };
   const actbutton = (
@@ -309,7 +313,7 @@ const FormEdit = (props) => {
           <AntFormDisplay formArray={sumdt} name={"fsummary"} />
         </PageHead>
       </div>
-      {/* <AntFormBuild formdt={formdt} /> */}
+      <AntFormBuild formdt={formdt} />
       {snack}
     </>
   );

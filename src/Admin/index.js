@@ -11,12 +11,16 @@ import { Button } from "antd";
 import FormList from "Admin/Form/FormList";
 import FormView from "Admin/Form/FormView";
 import FormEdit from "Admin/Form/FormEdit";
-import TableList from "Admin/Table/TableList";
 import PageBuild from "Admin/Menu/PageBuild";
 import PageHead from "components/Common/PageHeader";
-import { addedmenu, addRootPid, addPath1 } from "components/functions/dataUtil";
+import {
+  addedmenu,
+  emptyAddedmenu,
+  addRootPid,
+  addPath1,
+} from "components/functions/dataUtil";
 
-const adminMenu1 = [
+const adminMenu = [
   {
     access: [],
     _id: "5e8ed662bdb50363914263af",
@@ -45,11 +49,46 @@ const adminMenu1 = [
     desc: "",
     layout: [],
     seq: 2,
-    title: "Form",
+    title: "Control",
     pid: "",
     type: "admin",
-    path: "/admin/form",
+    path: "/admin/control",
+    breadcrumbName: "/admin/control",
+  },
+  {
+    access: [],
+    _id: "5e8ed662bdb50363914263x1",
+    desc: "",
+    layout: [],
+    seq: 0,
+    title: "Form",
+    pid: "5e8ed662bdb50363914263b1",
+    type: "admin",
+    path: "/admin/control/form",
     breadcrumbName: "/admin/Form Build",
+  },
+  {
+    access: [],
+    _id: "5e8ed662bdb50363914263x2",
+    desc: "",
+    layout: [],
+    seq: 1,
+    title: "Table",
+    pid: "5e8ed662bdb50363914263b1",
+    type: "admin",
+    path: "/admin/control/table",
+    breadcrumbName: "/admin/Table Build",
+  },
+  {
+    access: [],
+    _id: "5e8ed662bdb50363914263x3",
+    desc: "",
+    layout: [],
+    seq: 2,
+    title: "Chart",
+    pid: "5e8ed662bdb50363914263b1",
+    type: "admin",
+    path: "/admin/control/chart",
   },
   {
     access: [],
@@ -144,19 +183,20 @@ const adminMenu1 = [
 const Admin = ({ match }) => {
   let title = match.params.name;
   if (typeof match.params.child != "undefined") title = match.params.child;
-  console.log(title);
-  const [adminMenu, setAdminMenu] = useState([]);
+  if (typeof match.params.grandchild != "undefined")
+    title = match.params.grandchild;
+  console.log(match.params, title);
+  //const [adminMenu, setAdminMenu] = useState([]);
   useEffect(() => {
-    axios
-      .get(`${currentsetting.webserviceprefix}menu/any?type=admin`)
-      .then((response) => {
-        console.log(response.data);
-
-        let dt = addRootPid(response.data);
-        addPath1(dt, "", "");
-        setAdminMenu(addedmenu);
-        addedmenu = [];
-      });
+    // axios
+    //   .get(`${currentsetting.webserviceprefix}menu/any?type=admin`)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     emptyAddedmenu();
+    //     let dt = addRootPid(response.data);
+    //     addPath1(dt, "", "");
+    //     setAdminMenu(addedmenu);
+    //   });
   }, []);
   //let pagename = useSelector((state) => state.global.currentPage);
   // if (pagename != "") {
@@ -174,13 +214,16 @@ const Admin = ({ match }) => {
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
       {/* formview, formedit은 독립적인 pagehead를 가짐 */}
-      {["formview", "formedit", "form"].indexOf(title) === -1 ? (
+      {["formview", "formedit", "form", "table", "chart"].indexOf(title) ===
+      -1 ? (
         <PageHead title={title} />
       ) : null}
       {(() => {
         switch (title) {
           case "form":
-            return <FormList />;
+          case "table":
+          case "chart":
+            return <FormList type={title} />;
             break;
           case "formview":
             return <FormView />;
@@ -188,6 +231,12 @@ const Admin = ({ match }) => {
           case "formedit":
             return <FormEdit />;
             break;
+          // case "tableview":
+          //   return <TableView />;
+          //   break;
+          // case "tableedit":
+          //   return <TableEdit />;
+          //   break;
           case "pagebuild":
             return <PageBuild />;
             break;

@@ -33,7 +33,7 @@ const FormView = (props) => {
       <Button
         shape="circle"
         icon={<FormOutlined />}
-        onClick={() => history.push("/admin/form/formedit")}
+        onClick={() => history.push("/admin/control/form/formedit")}
       />
     </Tooltip>,
   ];

@@ -20,47 +20,50 @@ const FormList = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(currentsetting.webserviceprefix + "bootform").then((response) => {
-      let imsiData1 = [];
-      response.data.map((k, i) => {
-        imsiData1.push({
-          _id: k._id,
-          data: k.data,
-          name: k.name,
-          description: k.desc,
-          titleHandler: true,
-          href: {
-            pathname: "/admin/form/formview",
-            search: `?_id=${k._id}`,
-            state: k,
-          },
-          avatar: {
-            size: 32,
-            style: { backgroundColor: "#87d068" },
-            shape: "square",
-            icon: <FormOutlined />,
-          },
-          desc: k.desc,
+    axios
+      .get(currentsetting.webserviceprefix + "bootform/any?type=table")
+      .then((response) => {
+        let imsiData1 = [];
+        response.data.map((k, i) => {
+          imsiData1.push({
+            _id: k._id,
+            id: k.id,
+            data: k.data,
+            name: k.name,
+            description: k.desc,
+            titleHandler: true,
+            href: {
+              pathname: "/admin/control/table/tableview",
+              search: `?_id=${k._id}`,
+              state: k,
+            },
+            avatar: {
+              size: 32,
+              style: { backgroundColor: "#87d068" },
+              shape: "square",
+              icon: <FormOutlined />,
+            },
+            desc: k.desc,
+          });
         });
+        setListData(imsiData1);
+        //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!
+        //localStorage.setItem("imsi", JSON.stringify(imsiData1[0]));
+        console.log(listData);
+        setLoading(false);
       });
-      setListData(imsiData1);
-      //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!
-      localStorage.setItem("imsi", JSON.stringify(imsiData1[0]));
-
-      setLoading(false);
-    });
   }, []);
 
   const createHandler = () => {
     dispatch(globalVariable({ currentData: "" }));
     dispatch(globalVariable({ selectedKey: "" }));
-    history.push("/admin/form/formedit");
+    history.push("/admin/control/table/tableedit");
   };
 
   const editHandler = (item) => {
     dispatch(globalVariable({ currentData: item }));
     dispatch(globalVariable({ selectedKey: item._id }));
-    history.push("/admin/form/formedit");
+    history.push("/admin/control/table/tabledit");
   };
 
   const deleteHandler = (item) => {
@@ -103,7 +106,7 @@ const FormList = () => {
   ];
   return (
     <>
-      <PageHead title="Form" extra={extra}></PageHead>
+      <PageHead title="Table" extra={extra}></PageHead>
       <AntList
         listData={listData}
         loading={loading}

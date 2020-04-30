@@ -116,16 +116,18 @@ const CardList = (props) => {
     // dispatch(globalVariable({ control: dtList }));
     // forceUpdate();
   };
-  const removeItemHandler = (dtList, _id) => {
-    console.log(dtList, _id);
-    dtList.map((e, i) => {
+  const removeItemHandler = (_id) => {
+    props.dtList.map((e, i) => {
       console.log(e, _id);
-      if (e._id === _id) dtList.splice(i, 1);
+      if (e._id === _id) props.dtList.splice(i, 1);
     });
-    props.removeItemHandler(dtList);
+    props.removeItemHandler(props.dtList);
 
     // dispatch(globalVariable({ control: dtList }));
     // forceUpdate();
+  };
+  const editItemHandler = (dt) => {
+    props.editItemHandler(dt);
   };
 
   return (

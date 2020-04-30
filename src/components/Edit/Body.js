@@ -14,37 +14,37 @@ import { ObjectID } from "bson"; //_id maker for MongoDB
 import { BodyHead } from "./BodyHead";
 import { EditForm } from "./EditForm";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   paper: {
     height: 250,
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
   },
   paper1: {
     padding: theme.spacing(1),
-    minHeight: "100vh"
+    minHeight: "100vh",
   },
   icon: {
     "& > *": {
-      margin: theme.spacing(1)
-    }
+      margin: theme.spacing(1),
+    },
   },
   iconright: {
-    alignItems: "bottom"
+    alignItems: "bottom",
   },
   primary: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   appBar: {
     top: "auto",
-    bottom: 0
+    bottom: 0,
   },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   fabButton: {
     position: "absolute",
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     top: -80,
     float: "right",
     right: 0,
-    marginRight: 20
+    marginRight: 20,
   },
   fabRight: {
     position: "absolute",
@@ -60,11 +60,11 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     float: "right",
     right: 0,
-    marginRight: 20
-  }
+    marginRight: 20,
+  },
 }));
 
-export const Body = props => {
+export const Body = (props) => {
   const forceUpdate = useForceUpdate();
   const classes = useStyles();
   const history = useHistory();
@@ -73,8 +73,8 @@ export const Body = props => {
 
   // const [editMode, setEditMode] = useState(false);
   // const [expanded, setExpanded] = useState(false);
-  ctrList = useSelector(state => state.global.control);
-  let selectedKey = useSelector(state => state.global.selectedKey);
+  ctrList = useSelector((state) => state.global.control);
+  let selectedKey = useSelector((state) => state.global.selectedKey);
   if (typeof ctrList == "undefined") ctrList = [];
   useEffect(() => {
     $(".MuiGrid-container").css({ overflow: "hidden" });
@@ -83,7 +83,7 @@ export const Body = props => {
   // const handleExpandClick = () => {
   //   setExpanded(!expanded);
   // };
-  const createControl = ctrList => {
+  const createControl = (ctrList) => {
     let maxseq = _.maxBy(ctrList, "seq");
 
     if (typeof maxseq === "undefined") maxseq = -1;
@@ -94,14 +94,14 @@ export const Body = props => {
       ctrid: "",
       type: "",
       seq: maxseq + 1,
-      size: 6
+      size: 6,
     };
   };
   const newData = createControl(ctrList);
-  const addNewControl = ctrList => {
+  const addNewControl = (ctrList) => {
     //ctrList.push(makeNewControl(ctrList));
   };
-  const removeControl = ctrList => {
+  const removeControl = (ctrList) => {
     // console.log(ctrList, _id);
     // ctrList.map((e, i) => {
     //   console.log(e, _id);
@@ -111,10 +111,10 @@ export const Body = props => {
     forceUpdate();
   };
 
-  const editControl = data => {
-    history.push("/controls", { data });
+  const editControl = (data) => {
+    history.push("/admin/form/formedit", { data });
   };
-  const resizeControl = ctrList => {
+  const resizeControl = (ctrList) => {
     dispatch(globalVariable({ control: ctrList }));
     forceUpdate();
   };

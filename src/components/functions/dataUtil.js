@@ -1,4 +1,22 @@
 import { getChildren } from "components/functions/findChildrens";
+import _ from "lodash";
+
+export let addedmenu = [];
+export const addPath1 = (menu, pid, pathname) => {
+  _.filter(menu, function (o) {
+    return o.pid === pid;
+  }).map((k, i) => {
+    k.path = pathname + "/" + k.title;
+    addedmenu.push(k);
+    addPath1(menu, k._id, k.path);
+  });
+};
+export const addRootPid = (data) => {
+  _.forEach(data, function (value, key) {
+    if (typeof value.pid === "undefined") value.pid = "";
+  });
+  return data;
+};
 
 // convert flatdata to tree(with children) -> recreate flatdata &  select a node
 //-> convert again to tree -> add 0-0-0 like key for antTree

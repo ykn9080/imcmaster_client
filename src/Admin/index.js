@@ -11,10 +11,12 @@ import { Button } from "antd";
 import FormList from "Admin/Form/FormList";
 import FormView from "Admin/Form/FormView";
 import FormEdit from "Admin/Form/FormEdit";
+import TableList from "Admin/Table/TableList";
 import PageBuild from "Admin/Menu/PageBuild";
 import PageHead from "components/Common/PageHeader";
+import { addedmenu, addRootPid, addPath1 } from "components/functions/dataUtil";
 
-const adminMenu = [
+const adminMenu1 = [
   {
     access: [],
     _id: "5e8ed662bdb50363914263af",
@@ -143,7 +145,19 @@ const Admin = ({ match }) => {
   let title = match.params.name;
   if (typeof match.params.child != "undefined") title = match.params.child;
   console.log(title);
-  useEffect(() => {}, []);
+  const [adminMenu, setAdminMenu] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${currentsetting.webserviceprefix}menu/any?type=admin`)
+      .then((response) => {
+        console.log(response.data);
+
+        let dt = addRootPid(response.data);
+        addPath1(dt, "", "");
+        setAdminMenu(addedmenu);
+        addedmenu = [];
+      });
+  }, []);
   //let pagename = useSelector((state) => state.global.currentPage);
   // if (pagename != "") {
   //   title = pagename.title.toLowerCase();
@@ -153,7 +167,7 @@ const Admin = ({ match }) => {
   //const title = match.params.name;
   // let location = useLocation();
   // console.log(routes);
-
+  console.log(adminMenu);
   return (
     <>
       <DenseAppBar title={"Admin"}>

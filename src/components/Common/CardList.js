@@ -150,10 +150,12 @@ const CardList = (props) => {
               <CardAnt
                 removeItemHandler={removeItemHandler}
                 resizeItemHandler={props.resizeItemHandler}
-                editItemHandler={props.editItemHandler}
+                editItemHandler={editItemHandler}
+                removeItemHandler={removeItemHandler}
                 data={dt}
                 dtList={props.dtList}
                 index={index}
+                key={dt._id}
               />
             </Grid>
           );

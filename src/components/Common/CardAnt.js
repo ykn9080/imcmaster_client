@@ -44,14 +44,20 @@ const CardAnt = (props) => {
     <Card
       style={{ minWidth: "50%", marginRight: 5 }}
       actions={[
-        <EditOutlined key="setting" onClick={() => console.log("sss")} />,
-        <DeleteOutlined key="setting" onClick={() => console.log("sss")} />,
+        <EditOutlined
+          key="edit"
+          onClick={() => props.editItemHandler(props.data)}
+        />,
+        <DeleteOutlined
+          key="delete"
+          onClick={() => props.removeItemHandler(props.key)}
+        />,
         <LeftOutlined
-          key="ellipsis"
+          key="left"
           onClick={() => resizeControl(props.dtList, props.data._id, "left")}
         />,
         <RightOutlined
-          key="edit"
+          key="right"
           onClick={() => resizeControl(props.dtList, props.data._id, "right")}
         />,
       ]}

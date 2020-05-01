@@ -12,6 +12,8 @@ import { FileAddOutlined, FormOutlined } from "@ant-design/icons";
 import useForceUpdate from "use-force-update";
 
 const FormList = (props) => {
+  let title = props.type,
+    titleUpper = "";
   const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const forceUpdate = useForceUpdate();
@@ -103,9 +105,10 @@ const FormList = (props) => {
       />
     </Tooltip>,
   ];
+  if (title) titleUpper = title.charAt(0).toUpperCase() + title.slice(1);
   return (
     <>
-      <PageHead title={props.type} extra={extra}></PageHead>
+      <PageHead title={titleUpper} extra={extra}></PageHead>
       <AntList
         listData={listData}
         loading={loading}

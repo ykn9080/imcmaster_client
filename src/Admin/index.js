@@ -11,6 +11,7 @@ import { Button } from "antd";
 import FormList from "Admin/Form/FormList";
 import FormView from "Admin/Form/FormView";
 import FormEdit from "Admin/Form/FormEdit";
+import TableView from "Admin/Table/TableView";
 import PageBuild from "Admin/Menu/PageBuild";
 import PageHead from "components/Common/PageHeader";
 import {
@@ -92,6 +93,50 @@ const adminMenu = [
   },
   {
     access: [],
+    _id: "5e8ed662bdb50363914263x3",
+    desc: "",
+    layout: [],
+    seq: 3,
+    title: "List",
+    pid: "5e8ed662bdb50363914263b1",
+    type: "admin",
+    path: "/admin/control/list",
+  },
+  {
+    access: [],
+    _id: "5e8ed662bdb50363914263x3",
+    desc: "",
+    layout: [],
+    seq: 4,
+    title: "Card",
+    pid: "5e8ed662bdb50363914263b1",
+    type: "admin",
+    path: "/admin/control/card",
+  },
+  {
+    access: [],
+    _id: "5e8ed662bdb50363914263x3",
+    desc: "",
+    layout: [],
+    seq: 5,
+    title: "PageHead",
+    pid: "5e8ed662bdb50363914263b1",
+    type: "admin",
+    path: "/admin/control/pagehead",
+  },
+  {
+    access: [],
+    _id: "5e8ed662bdb50363914263x3",
+    desc: "",
+    layout: [],
+    seq: 6,
+    title: "Tree",
+    pid: "5e8ed662bdb50363914263b1",
+    type: "admin",
+    path: "/admin/control/tree",
+  },
+  {
+    access: [],
     _id: "5e8ed662bdb50363914263b2",
     desc: "",
     layout: [],
@@ -100,6 +145,17 @@ const adminMenu = [
     pid: "",
     type: "admin",
     path: "/admin/system",
+  },
+  {
+    access: [],
+    _id: "5e8ed662bdb50363914263x1",
+    desc: "",
+    layout: [],
+    seq: 0,
+    title: "Data",
+    pid: "5e8ed662bdb50363914263b2",
+    type: "admin",
+    path: "/admin/system/data",
   },
   {
     access: [],
@@ -181,48 +237,32 @@ const adminMenu = [
 ];
 
 const Admin = ({ match }) => {
-  let title = match.params.name;
+  let title = match.params.name,
+    titleUpper = "";
   if (typeof match.params.child != "undefined") title = match.params.child;
   if (typeof match.params.grandchild != "undefined")
     title = match.params.grandchild;
   console.log(match.params, title);
+  if (title) titleUpper = title.charAt(0).toUpperCase() + title.slice(1);
   //const [adminMenu, setAdminMenu] = useState([]);
-  useEffect(() => {
-    // axios
-    //   .get(`${currentsetting.webserviceprefix}menu/any?type=admin`)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     emptyAddedmenu();
-    //     let dt = addRootPid(response.data);
-    //     addPath1(dt, "", "");
-    //     setAdminMenu(addedmenu);
-    //   });
-  }, []);
-  //let pagename = useSelector((state) => state.global.currentPage);
-  // if (pagename != "") {
-  //   title = pagename.title.toLowerCase();
-  //   Title = title.charAt(0).toUpperCase() + title.slice(1);
-  //   routes = pagename.routes;
-  // }
-  //const title = match.params.name;
-  // let location = useLocation();
-  // console.log(routes);
-  console.log(adminMenu);
+  useEffect(() => {}, []);
   return (
     <>
       <DenseAppBar title={"Admin"}>
         <AntMenu menuList={adminMenu} />
       </DenseAppBar>
       {/* formview, formedit은 독립적인 pagehead를 가짐 */}
-      {["formview", "formedit", "form", "table", "chart"].indexOf(title) ===
-      -1 ? (
-        <PageHead title={title} />
+      {["formview", "formedit", "form", "table", "chart", "data"].indexOf(
+        title
+      ) === -1 ? (
+        <PageHead title={titleUpper} />
       ) : null}
       {(() => {
         switch (title) {
           case "form":
           case "table":
           case "chart":
+          case "data":
             return <FormList type={title} />;
             break;
           case "formview":
@@ -231,9 +271,9 @@ const Admin = ({ match }) => {
           case "formedit":
             return <FormEdit />;
             break;
-          // case "tableview":
-          //   return <TableView />;
-          //   break;
+          case "tableview":
+            return <TableView />;
+            break;
           // case "tableedit":
           //   return <TableEdit />;
           //   break;

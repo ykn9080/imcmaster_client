@@ -159,8 +159,9 @@ const FormEdit = (props) => {
       },
     ],
   };
-  if (formdt != "") {
-    initialValue = {
+
+  const updateInitialValues = (summaryData, formdt) => {
+    const initialValue = {
       name: formdt.name,
       desc: formdt.desc,
       column: formdt.data.setting.formColumn,
@@ -169,6 +170,19 @@ const FormEdit = (props) => {
       size: formdt.data.setting.size,
     };
     summaryData.setting.initialValues = initialValue;
+    return summaryData;
+  };
+  if (formdt != "") {
+    // initialValue = {
+    //   name: formdt.name,
+    //   desc: formdt.desc,
+    //   column: formdt.data.setting.formColumn,
+    //   labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
+    //   layout: formdt.data.setting.layout,
+    //   size: formdt.data.setting.size,
+    // };
+    // summaryData.setting.initialValues = initialValue;
+    summaryData = updateInitialValues(summaryData, formdt);
   }
   const [sumdt, setSumdt] = useState(summaryData);
   useEffect(() => {
@@ -179,17 +193,18 @@ const FormEdit = (props) => {
   useEffect(() => {
     //temporary use for editing phase only for
     //initialValue setting, pls delete when save
-    sumdt.setting = {
-      ...sumdt.setting,
+    formdt.data.setting = {
+      ...formdt.data.setting,
       onValuesChange: (changedValues, allValues) => {
-        sumdt.setting.initialValues = {
+        formdt.data.setting.initialValues = {
           ...formdt.data.setting.initialValues,
           ...changedValues,
         };
-        //dispatch(globalVariable({ currentData: formdt }));
+        dispatch(globalVariable({ currentData: formdt }));
       },
     };
-    setSumdt(sumdt);
+
+    setSumdt(updateInitialValues(sumdt, formdt));
   }, [formdt]);
 
   if (typeof formdt._id === "undefined") {
@@ -203,17 +218,17 @@ const FormEdit = (props) => {
         shape="circle"
         icon={<SaveOutlined {...iconSpin} />}
         onClick={() => {
-          console.log(sumdt, sumdt._id);
+          console.log(sumdt, formdt._id);
           // //remove onValuesChange
           //inorderto set initialValues, append onValuesChange eventhandler
           //must remove onValuesChange when to save to database
-          delete sumdt.data.setting.onValuesChange;
+          delete formdt.data.setting.onValuesChange;
           let config = {
             method: "put",
-            url: `${currentsetting.webserviceprefix}bootform/${sumdt._id}`,
-            data: sumdt,
+            url: `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
+            data: formdt,
           };
-          if (typeof sumdt._id === "undefined")
+          if (typeof formdt._id === "undefined")
             config = {
               ...config,
               ...{
@@ -232,7 +247,7 @@ const FormEdit = (props) => {
         icon={<CopyOutlined />}
         onClick={() => {
           //remove onValuesChange
-          let curr = cloneDeep(sumdt);
+          let curr = cloneDeep(formdt);
           delete curr.data.setting.onValuesChange;
           delete curr._id;
 
@@ -255,9 +270,9 @@ const FormEdit = (props) => {
     </Tooltip>,
   ];
   const SaveAsCancel = () => {
-    sumdt._id = selectedKey;
-    sumdt.name = sumdt.name.replace(" Copy", "");
-    dispatch(globalVariable({ currentData: sumdt }));
+    formdt._id = selectedKey;
+    formdt.name = formdt.name.replace(" Copy", "");
+    dispatch(globalVariable({ currentData: formdt }));
     setOpen(false);
   };
   const actbutton = (

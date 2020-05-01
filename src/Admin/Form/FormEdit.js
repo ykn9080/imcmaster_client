@@ -46,19 +46,10 @@ const FormEdit = (props) => {
   //   formdt = JSON.parse(localStorage.getItem("imsi"));
   //   dispatch(globalVariable({ currentData: formdt }));
   // }
+  console.log("formdt", formdt);
   let initialValue = {};
-  if (formdt != "") {
-    initialValue = {
-      name: formdt.name,
-      desc: formdt.desc,
-      column: formdt.data.setting.formColumn,
-      labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
-      layout: formdt.data.setting.layout,
-      size: formdt.data.setting.size,
-    };
-  }
-  console.log(formdt);
-  const summaryData = {
+
+  let summaryData = {
     setting: {
       formItemLayout: {
         labelCol: { span: 2 },
@@ -168,6 +159,17 @@ const FormEdit = (props) => {
       },
     ],
   };
+  if (formdt != "") {
+    initialValue = {
+      name: formdt.name,
+      desc: formdt.desc,
+      column: formdt.data.setting.formColumn,
+      labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
+      layout: formdt.data.setting.layout,
+      size: formdt.data.setting.size,
+    };
+    summaryData.setting.initialValues = initialValue;
+  }
   const [sumdt, setSumdt] = useState(summaryData);
   useEffect(() => {
     dispatch(globalVariable({ formEdit: true }));
@@ -177,10 +179,6 @@ const FormEdit = (props) => {
   useEffect(() => {
     //temporary use for editing phase only for
     //initialValue setting, pls delete when save
-    console.log("formdt chg useeffect");
-    console.log(initialValue);
-    sumdt.setting.initialValues = initialValue;
-    console.log(sumdt);
     sumdt.setting = {
       ...sumdt.setting,
       onValuesChange: (changedValues, allValues) => {
@@ -306,6 +304,7 @@ const FormEdit = (props) => {
       </Alert> */}
     </Snackbar>
   );
+  console.log("runningggggggggggggggggggggggggggggggggggggggggggggggggggggg");
   return (
     <>
       <div className="site-page-header-ghost-wrapper">

@@ -20,13 +20,14 @@ const FormView = (props) => {
   }
   const sum = formdt.data.setting;
   const content = [
-    { term: "Title", detail: sum.name },
-    { term: "Column", detail: sum.column },
+    { term: "Title", detail: formdt.name },
+    { term: "Column", detail: sum.formColumn },
     { term: "Size", detail: sum.size },
     { term: "Layout", detail: sum.layout },
     { term: "LabelWidth", detail: sum.formItemLayout.labelCol.span },
     { term: "Description", detail: sum.desc, span: 24 },
   ];
+  console.log(formdt, sum, content);
 
   const extra = [
     <Tooltip title="Edit">
@@ -37,35 +38,6 @@ const FormView = (props) => {
       />
     </Tooltip>,
   ];
-  // const Description = ({ term, children, span = 12 }) => (
-  //   <Col span={span}>
-  //     <div className="description">
-  //       <div className="term">{term}</div>
-  //       <div className="detail">{children}</div>
-  //     </div>
-  //   </Col>
-  // );
-  // const content = (
-  //   <Row>
-  //     <Description term="Title">{summary.name}</Description>
-  //     <Description term="Column">{summary.colnum}</Description>
-  //     <Description term="Size">{summary.size}</Description>
-  //     <Description term="Layout">{summary.layout}</Description>
-  //     <Description term="Label:Input">
-  //       {summary.formItemLayout.labelCol.span +
-  //         ":" +
-  //         summary.formItemLayout.wrapperCol.span}
-  //     </Description>
-  //     <Description term="Description">{summary.desc}</Description>
-  //   </Row>
-  // );
-  // const extraContent = "";
-  // const child = (
-  //   <div className="wrap">
-  //     <div className="content padding">{content}</div>
-  //     <div className="extraContent">{extraContent}</div>
-  //   </div>
-  // );
 
   return (
     <>

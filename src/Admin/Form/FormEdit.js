@@ -5,7 +5,7 @@ import { useLocation, useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { currentsetting } from "components/functions/config";
-import { Button, Tooltip, message } from "antd";
+import { Button, Tooltip, message, Tabs } from "antd";
 import { DesktopOutlined, SaveOutlined, CopyOutlined } from "@ant-design/icons";
 import PageHead from "components/Common/PageHeader";
 import AntFormBuild from "components/Common/AntFormBuild";
@@ -13,10 +13,12 @@ import AntFormDisplay from "components/Common/AntFormDisplay";
 import "components/Common/Antd.css";
 import useForceUpdate from "use-force-update";
 import DialogSelect from "components/Common/DialogSelect";
+import DataEdit from "Admin/Data/DataEdit";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import MuiAlert from "@material-ui/lab/Alert";
+const { TabPane } = Tabs;
 
 const FormEdit = (props) => {
   const location = useLocation();
@@ -37,9 +39,27 @@ const FormEdit = (props) => {
     }
     setOpen(false);
   };
-  //{data:{setting:{formItemLayout:{labelCol:{span:2},wrapperCol:{span:22}},layout:"inline",formColumn:2,size:"middle",onFinish:{values => {console.log(values);};}},list:[]}
+  let formdt1 = {
+    data: {
+      setting: {
+        formItemLayout: {
+          labelCol: { span: 2 },
+          wrapperCol: { span: 22 },
+        },
+        layout: "inline",
+        formColumn: 2,
+        size: "middle",
+        //,onFinish:{values => {console.log(values);};}}
+      },
+      list: [],
+    },
+  };
 
   let formdt = useSelector((state) => state.global.currentData);
+  if (formdt === "") {
+    formdt = formdt1;
+    dispatch(globalVariable({ currentData: formdt }));
+  }
   let selectedKey = useSelector((state) => state.global.selectedKey);
   //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!
   // if (formdt === "") {
@@ -172,25 +192,11 @@ const FormEdit = (props) => {
     summaryData.setting.initialValues = initialValue;
     return summaryData;
   };
-  if (formdt != "") {
-    // initialValue = {
-    //   name: formdt.name,
-    //   desc: formdt.desc,
-    //   column: formdt.data.setting.formColumn,
-    //   labelwidth: formdt.data.setting.formItemLayout.labelCol.span,
-    //   layout: formdt.data.setting.layout,
-    //   size: formdt.data.setting.size,
-    // };
-    // summaryData.setting.initialValues = initialValue;
-    summaryData = updateInitialValues(summaryData, formdt);
-  }
+  if (formdt != "") summaryData = updateInitialValues(summaryData, formdt);
   const [sumdt, setSumdt] = useState(summaryData);
+
   useEffect(() => {
     dispatch(globalVariable({ formEdit: true }));
-
-    console.log("usefect running");
-  }, []);
-  useEffect(() => {
     //temporary use for editing phase only for
     //initialValue setting, pls delete when save
     formdt.data.setting = {
@@ -208,7 +214,7 @@ const FormEdit = (props) => {
   }, [formdt]);
 
   if (typeof formdt._id === "undefined") {
-    iconSpin = { spin: true };
+    // iconSpin = { spin: true };
     btnDisabled = { disabled: true };
   }
 
@@ -219,10 +225,17 @@ const FormEdit = (props) => {
         icon={<SaveOutlined {...iconSpin} />}
         onClick={() => {
           console.log(sumdt, formdt._id);
+          message.config({
+            top: 100,
+            duration: 3,
+            maxCount: 3,
+            rtl: true,
+          });
           // //remove onValuesChange
           //inorderto set initialValues, append onValuesChange eventhandler
           //must remove onValuesChange when to save to database
           delete formdt.data.setting.onValuesChange;
+          formdt.type = "form";
           let config = {
             method: "put",
             url: `${currentsetting.webserviceprefix}bootform/${formdt._id}`,
@@ -236,7 +249,7 @@ const FormEdit = (props) => {
                 url: `${currentsetting.webserviceprefix}bootform`,
               },
             };
-          axios(config).then((r) => console.log(r));
+          axios(config).then((r) => message.info("File Saved"));
         }}
       />
     </Tooltip>,
@@ -254,8 +267,7 @@ const FormEdit = (props) => {
           curr.name += " Copy";
           sumdt.setting.initialValues.name += " Copy";
           curr.data.setting.initialValues = sumdt.setting.initialValues;
-          //
-          // setSumdt(sumdt);
+
           setOpen(true);
           dispatch(globalVariable({ currentData: curr }));
         }}
@@ -263,6 +275,7 @@ const FormEdit = (props) => {
     </Tooltip>,
     <Tooltip title="View" key="2view">
       <Button
+        {...btnDisabled}
         shape="circle"
         icon={<DesktopOutlined />}
         onClick={() => history.push("/admin/control/form/formview")}
@@ -319,12 +332,18 @@ const FormEdit = (props) => {
       </Alert> */}
     </Snackbar>
   );
-  console.log("runningggggggggggggggggggggggggggggggggggggggggggggggggggggg");
   return (
     <>
       <div className="site-page-header-ghost-wrapper">
         <PageHead title="FormEdit" onBack={true} extra={extra} ghost={false}>
-          <AntFormDisplay formArray={sumdt} name={"fsummary"} />
+          <Tabs defaultActiveKey="1" tabPosition="bottom">
+            <TabPane tab="Display" key="1">
+              <AntFormDisplay formArray={sumdt} name={"fsummary"} />
+            </TabPane>
+            <TabPane tab="Data" key="2">
+              <DataEdit />
+            </TabPane>
+          </Tabs>
         </PageHead>
       </div>
       <AntFormBuild formdt={formdt} />

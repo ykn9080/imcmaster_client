@@ -174,7 +174,14 @@ const ElementInput = (props) => {
         shape="circle"
         icon={<SaveOutlined />}
         onClick={() => {
-          console.log(setupData, instantView);
+          console.log(
+            "cd:",
+            currentData,
+            "setup:",
+            setupData,
+            "instant:",
+            instantView
+          );
           dispatch(globalVariable({ elementData: instantView.list[0] }));
           let isExist = false;
           currentData.data.list.map((k, i) => {

@@ -85,6 +85,8 @@ const AntFormBuild = (props) => {
       });
     };
   }, []);
+
+  //이부분은 elementlist로 분가시킬것
   const MakeTabPanel1 = () => {
     const optGrp = [
       ["input", "input.password", "input.textarea", "inputnumber"],
@@ -100,12 +102,19 @@ const AntFormBuild = (props) => {
       ["slider", "rate"],
       ["plaintext", "button"],
     ];
+    const findSeq = () => {
+      let maxseq = 0;
+      formArray.list.map((k, i) => {
+        if (k.seq >= maxseq) maxseq++;
+      });
+      return maxseq;
+    };
     const handleCreateNew = (type) => {
       let eldt = {
         label: "",
         name: "",
         type: type,
-        seq: 10,
+        seq: findSeq(),
       };
       dispatch(globalVariable({ elementData: eldt }));
       dispatch(globalVariable({ openDialog1: false }));

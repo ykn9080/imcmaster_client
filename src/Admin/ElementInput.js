@@ -163,7 +163,26 @@ const ElementInput = (props) => {
     };
     return summaryData;
   }, []);
-
+  switch (elementData.type) {
+    case "select":
+      summaryData.list.splice(3, 1, {
+        label: "optionArray",
+        name: "optionArray",
+        type: "input",
+        seq: 3,
+      });
+      let optsplit = "";
+      elementData.optionArray.map((k, i) => {
+        if (k.value === k.text) optsplit += k.value + ";";
+        else optsplit += k.value + "," + k.text + ";";
+      });
+      if (optsplit != "") optsplit = optsplit.slice(0, -1);
+      summaryData.setting.initialValues = {
+        ...summaryData.setting.initialValues,
+        optionArray: optsplit,
+      };
+      break;
+  }
   const [setupData, setSetupData] = useState({ ...summaryData });
   const [instantView, setInstantView] = useState({ ...curr });
   console.log(setupData, instantView);
@@ -182,6 +201,15 @@ const ElementInput = (props) => {
             "instant:",
             instantView
           );
+          let opt = instantView.list[0].optionArray;
+          console.log(typeof opt);
+          if (typeof opt === "string") {
+            let array = [];
+            opt.split(";").map((k, i) => {
+              array.push({ value: k, text: k });
+            });
+            instantView.list[0].optionArray = array;
+          }
           dispatch(globalVariable({ elementData: instantView.list[0] }));
           let isExist = false;
           currentData.data.list.map((k, i) => {

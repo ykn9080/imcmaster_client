@@ -201,44 +201,48 @@ const AntFormElement = (props) => {
               return <Checkbox>{props.checkboxmsg}</Checkbox>;
               break;
             case "select":
-              return (
-                <Select>
-                  {props.optionArray.map((k, i) => {
-                    return (
-                      <Select.Option value={k.value}>{k.text}</Select.Option>
-                    );
-                  })}
-                </Select>
-              );
+              if (props.optionArray)
+                return (
+                  <Select>
+                    {props.optionArray.map((k, i) => {
+                      return (
+                        <Select.Option value={k.value}>{k.text}</Select.Option>
+                      );
+                    })}
+                  </Select>
+                );
               break;
             case "select.multiple":
-              return (
-                <Select mode="multiple" placeholder={props.placeholder}>
-                  {props.optionArray.map((k, i) => {
-                    return <Option value={k.value}>{k.text}</Option>;
-                  })}
-                </Select>
-              );
+              if (props.optionArray)
+                return (
+                  <Select mode="multiple" placeholder={props.placeholder}>
+                    {props.optionArray.map((k, i) => {
+                      return <Option value={k.value}>{k.text}</Option>;
+                    })}
+                  </Select>
+                );
               break;
             case "radio.group":
-              return (
-                <Radio.Group>
-                  {props.optionArray.map((k, i) => {
-                    return <Radio value={k.value}>{k.text}</Radio>;
-                  })}
-                </Radio.Group>
-              );
+              if (props.optionArray)
+                return (
+                  <Radio.Group>
+                    {props.optionArray.map((k, i) => {
+                      return <Radio value={k.value}>{k.text}</Radio>;
+                    })}
+                  </Radio.Group>
+                );
               break;
             case "radio.button":
-              return (
-                <Radio.Group>
-                  {props.optionArray.map((k, i) => {
-                    return (
-                      <Radio.Button value={k.value}>{k.text}</Radio.Button>
-                    );
-                  })}
-                </Radio.Group>
-              );
+              if (props.optionArray)
+                return (
+                  <Radio.Group>
+                    {props.optionArray.map((k, i) => {
+                      return (
+                        <Radio.Button value={k.value}>{k.text}</Radio.Button>
+                      );
+                    })}
+                  </Radio.Group>
+                );
               break;
             case "checkbox.group":
               const Chk = (props) => {
@@ -252,17 +256,19 @@ const AntFormElement = (props) => {
                   );
                 });
               };
-              return (
-                <Checkbox.Group>
-                  {props.direction === "vertical" ? (
-                    <Row>
+
+              if (props.optionArray)
+                return (
+                  <Checkbox.Group>
+                    {props.direction === "vertical" ? (
+                      <Row>
+                        <Chk {...props} />
+                      </Row>
+                    ) : (
                       <Chk {...props} />
-                    </Row>
-                  ) : (
-                    <Chk {...props} />
-                  )}
-                </Checkbox.Group>
-              );
+                    )}
+                  </Checkbox.Group>
+                );
               break;
             case "button":
               return (

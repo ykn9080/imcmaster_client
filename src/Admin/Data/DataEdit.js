@@ -22,8 +22,13 @@ const DataEdit = () => {
         console.log("Received values of form: ", values);
         axios.get(values.url).then((response) => {
           console.log(response.data);
-          setFetched(response.data);
-          forceUpdate();
+          let dtarr = [];
+          response.data.map((k, i) => {
+            delete k.layout;
+            delete k.access;
+            dtarr.push(k);
+          });
+          setFetched(dtarr);
         });
       },
       onFinishFailed2: (values, errorFields, outOfDate) => {

@@ -9,6 +9,7 @@ import AntFormDisplay from "components/Common/AntFormDisplay";
 import "components/Common/Antd.css";
 import JExcel from "components/Common/jExcel";
 import ReactDataGrid from "react-data-grid";
+import ReactTable from "components/Common/ReactTable";
 
 const columns = [
   { key: "id", name: "ID" },
@@ -76,6 +77,7 @@ const TableView = (props) => {
         ></PageHead>
       </div>
       <JExcel /> <DataGrid />
+      <ReactTable />
       {/* {() => {
         switch (props.type.toLowerCase()) {
           case "jexcel":

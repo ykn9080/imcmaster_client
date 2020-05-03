@@ -26,20 +26,96 @@ import {
 } from "antd";
 const { MonthPicker, RangePicker } = DatePicker;
 const { Option } = Select;
-// const layout = {
-//   labelCol: {
-//     span: 8
-//   },
-//   wrapperCol: {
-//     span: 16
-//   }
-// };
-// const tailLayout = {
-//   wrapperCol: {
-//     offset: 8,
-//     span: 16
-//   }
-// };
+
+//sample data
+const formData = {
+  setting: {
+    formItemLayout: {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 },
+    },
+    layout: "horizontal",
+    //formColumn: 1,
+    size: "middle",
+    initialValues: { name: "hhh" },
+    onFinish2: (values) => {
+      console.log("Received values of form: ", values);
+    },
+    onFinishFailed2: (values, errorFields, outOfDate) => {
+      console.log(values, errorFields, outOfDate);
+    },
+  },
+  list: [
+    { label: "Name", name: "name", type: "input", seq: 1 },
+    {
+      label: "Pass",
+      name: "password",
+      type: "input.password",
+      rules: [{ required: true, message: "enter!!!" }],
+      seq: 2,
+    },
+
+    //inline form
+    {
+      label: "BirthDate",
+      name: "birthdate",
+      type: "nostyle",
+      seq: 3,
+      array: [
+        {
+          name: "year",
+          placeholder: "Input birth year",
+          type: "input",
+          seq: 0,
+        },
+        {
+          name: "month",
+          placeholder: "Input birth month",
+          type: "input",
+          seq: 1,
+        },
+      ],
+    },
+    {
+      type: "button",
+      seq: 1000,
+      tailLayout: {
+        wrapperCol: { offset: 8, span: 16 },
+      },
+      // //signle button
+      // btnLabel: "Submit",
+      // btnStyle: "secondary",
+      // htmlType: "submit",
+
+      //in case multiple button
+      btnArr: [
+        {
+          btnLabel: "Submit",
+          btnStyle: "secondary",
+          htmlType: "submit",
+          seq: 0,
+        },
+        {
+          btnLabel: "Cancel",
+          btnStyle: "primary",
+          htmlType: "button",
+          seq: 1,
+        },
+      ],
+    },
+
+    {
+      label: "Date",
+      name: "date",
+      type: "datepicker",
+      rules: [
+        { type: "object", required: true, message: "Please select time!" },
+      ],
+      seq: 0,
+    },
+  ],
+};
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -125,8 +201,8 @@ const AntFormElement = (props) => {
         {(() => {
           switch (props.type.toLowerCase()) {
             case "nostyle":
+              let wth = Math.floor(100 / props.array.length - 0.5) + "%";
               return props.array.map((k, i) => {
-                let wth = "50%";
                 if (k.width) wth = k.width;
                 let sty = {
                   display: "inline-block",
@@ -157,7 +233,8 @@ const AntFormElement = (props) => {
 
             case "datepicker":
               return (
-                <DatePicker format="YYYY-MM-DD" style={{ zIndex: 99999 }} />
+                //<DatePicker format="YYYY-MM-DD" />
+                <DatePicker />
               );
               break;
             case "datetimepicker":
@@ -271,26 +348,30 @@ const AntFormElement = (props) => {
                 );
               break;
             case "button":
-              return (
-                <div>
-                  {_.orderBy(props.btnArr, ["seq"]).map((k, i) => {
-                    let btnStyle = "primary",
-                      btnLabel = "Submit";
-                    if (k.btnStyle !== "undefined") btnStyle = k.btnStyle;
-                    if (k.btnLabel !== "undefined") btnLabel = k.btnLabel;
-
-                    let btnProps = {
-                      type: btnStyle,
-                      htmlType: k.htmlType,
-                      key: k.btnLabel,
-                    };
-                    if (k.onClick)
-                      btnProps = { ...btnProps, onClick: k.onClick };
-                    return <Button {...btnProps}>{btnLabel}</Button>;
-                  })}
-                </div>
-              );
-
+              if (props.btnArr)
+                return (
+                  <>
+                    {_.orderBy(props.btnArr, ["seq"]).map((k, i) => {
+                      let btnProps = { key: i };
+                      if (k.btnStyle)
+                        btnProps = { ...btnProps, btnStyle: k.btnStyle };
+                      if (k.htmlType)
+                        btnProps = { ...btnProps, htmlType: k.htmlType };
+                      if (k.onClick)
+                        btnProps = { ...btnProps, onClick: k.onClick };
+                      return <Button {...btnProps}>{k.btnLabel}</Button>;
+                    })}
+                  </>
+                );
+              else {
+                let btnProps = {
+                  type: props.btnStyle,
+                  htmlType: props.htmlType,
+                  key: props.btnLabel,
+                  onClick: props.onClick,
+                };
+                return <Button {...btnProps}>{props.btnLabel}</Button>;
+              }
               break;
           }
         })()}

@@ -22,7 +22,7 @@ const rows = [
   { id: 2, title: "row1", count: 60 },
 ];
 
-function HelloWorld() {
+function DataGrid() {
   return (
     <ReactDataGrid
       columns={columns}
@@ -33,15 +33,15 @@ function HelloWorld() {
   );
 }
 const TableView = (props) => {
-  // const location = useLocation();
-  // const history = useHistory();
-  // const dispatch = useDispatch();
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
   // dispatch(globalVariable({ formEdit: false }));
-  // let formdt = useSelector((state) => state.global.currentData);
-  // if (formdt == "") {
-  //   formdt = location.state;
-  //   dispatch(globalVariable({ currentData: location.state }));
-  // }
+  let formdt = useSelector((state) => state.global.currentData);
+  if (formdt == "") {
+    formdt = location.state;
+    dispatch(globalVariable({ currentData: location.state }));
+  }
   // const sum = formdt.data.setting;
   // const content = [
   //   { term: "Title", detail: formdt.name },
@@ -53,29 +53,47 @@ const TableView = (props) => {
   // ];
   // console.log(formdt, sum, content);
 
-  // const extra = [
-  //   <Tooltip title="Edit">
-  //     <Button
-  //       shape="circle"
-  //       icon={<FormOutlined />}
-  //       onClick={() => history.push("/admin/control/form/formedit")}
-  //     />
-  //   </Tooltip>,
-  // ];
+  const extra = [
+    <Tooltip title="Edit">
+      <Button
+        shape="circle"
+        icon={<FormOutlined />}
+        onClick={() => history.push("/admin/control/table/tableedit")}
+      />
+    </Tooltip>,
+  ];
 
   return (
     <>
-      {/* <div className="site-page-header-ghost-wrapper">
+      <div className="site-page-header-ghost-wrapper">
         <PageHead
-          title="FormView"
+          title="TableView"
           onBack={true}
           extra={extra}
-          content={content}
+          //content={content}
           ghost={false}
           span={12}
         ></PageHead>
-      </div> */}
-      <JExcel />
+      </div>
+      <JExcel /> <DataGrid />
+      {/* {() => {
+        switch (props.type.toLowerCase()) {
+          case "jexcel":
+            return <JExcel />;
+            break;
+          case "reactdatagrid":
+            return <DataGrid />;
+            break;
+          default:
+            return (
+              <>
+                <JExcel />
+                <DataGrid />
+              </>
+            );
+            break;
+        }
+      }} */}
     </>
   );
 };

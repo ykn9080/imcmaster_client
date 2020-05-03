@@ -15,10 +15,10 @@ const DataGrid = (props) => {
     { id: 1, title: "row1", count: 40 },
     { id: 2, title: "row1", count: 60 },
   ];
-  //   if (props.rowCount) rowCount = props.rowCount;
-  //   if (props.minHeight) minHeight = props.minHeight;
-  //   if (props.columns) columns = props.columns;
-  //   if (props.rows) rows = props.rows;
+  if (props.rowCount) rowCount = props.rowCount;
+  if (props.minHeight) minHeight = props.minHeight;
+  if (props.columns) columns = props.columns;
+  if (props.rows) rows = props.rows;
 
   return (
     <ReactDataGrid

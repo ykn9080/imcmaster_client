@@ -1,73 +1,109 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import AntFormDisplay from "components/Common/AntFormDisplay";
+import DataGrid from "components/Common/DataGrid";
+import ReactDataGrid from "react-data-grid";
+import useForceUpdate from "use-force-update";
 
 const DataEdit = () => {
+  const forceUpdate = useForceUpdate();
+  const [fetched, setFetched] = useState([]);
   const formdt = {
     setting: {
       formItemLayout: {
         labelCol: { span: 2 },
         wrapperCol: { span: 22 },
       },
-      layout: "inline",
+      layout: "horizontal",
       formColumn: 1,
-      size: "middle",
-      //   initialValues: {
-      //     ...{ initialValue },
-      //   },
-      // onFieldsChange: (changedFields, allFields) => {
-      //   const cf1 = changedFields[0];
-      //   if (["title", "desc"].indexOf(cf1.name[0]) === -1) {
-      //     formdt[cf1.name[0]] = cf1.value;
-      //     dispatch(globalVariable({ currentData: formdt }));
-      //     console.log("field", changedFields, allFields);
-      //   }
-      // },
-      //   onValuesChange: (changedValues, allValues) => {
-      //     formdt.name = allValues.name;
-      //     formdt.desc = allValues.desc;
-      //     let sett = formdt.data.setting;
-      //     sett.formItemLayout.labelCol.span = allValues.labelwidth;
-      //     sett.formItemLayout.wrapperCol.span = 24 - allValues.labelwidth;
-      //     sett.formColumn = allValues.column;
-      //     sett.layout = allValues.layout;
-      //     sett.size = allValues.size;
-      //     dispatch(globalVariable({ currentData: formdt }));
-      //     if (["name", "desc"].indexOf(Object.keys(changedValues)[0]) === -1)
-      //       forceUpdate();
-      //   },
+      size: "large",
+      // initialValues: { name: "hhh" },
       onFinish: (values) => {
         console.log("Received values of form: ", values);
+        axios.get(values.url).then((response) => {
+          console.log(response.data);
+          setFetched(response.data);
+          forceUpdate();
+        });
       },
-      onFinishFailed: (values, errorFields, outOfDate) => {
+      onFinishFailed2: (values, errorFields, outOfDate) => {
         console.log(values, errorFields, outOfDate);
       },
     },
     list: [
-      { label: "URL", name: "url", type: "input", seq: 0 },
+      //inline form
       {
-        type: "button",
-        seq: 1000,
-        btnArr: [
+        label: "Url",
+        name: "url",
+        type: "nostyle",
+        seq: 0,
+        array: [
           {
-            btnLabel: "Submit",
-            btnStyle: "primary",
-            htmlType: "submit",
+            name: "url",
+            placeholder: "Input url",
+            type: "input",
             seq: 0,
           },
           {
-            btnLabel: "Cancel",
-            btnStyle: "secondary",
-            htmlType: "button",
-            onClick: () => {
-              console.log("cancel");
-            },
+            type: "button",
             seq: 1,
+            btnLabel: "Fetch",
+            btnStyle: "primary",
+            htmlType: "submit",
           },
         ],
       },
+      // {
+      //   type: "button",
+      //   seq: 1000,
+      //   tailLayout: {
+      //     wrapperCol: { offset: 8, span: 16 },
+      //   },
+      //   // //signle button
+      //   // btnLabel: "Submit",
+      //   // btnStyle: "secondary",
+      //   // htmlType: "submit",
+
+      //   //in case multiple button
+      //   btnArr: [
+      //     {
+      //       btnLabel: "Submit",
+      //       btnStyle: "secondary",
+      //       htmlType: "submit",
+      //       seq: 0,
+      //     },
+      //     {
+      //       btnLabel: "Cancel",
+      //       btnStyle: "primary",
+      //       htmlType: "button",
+      //       seq: 1,
+      //     },
+      //   ],
+      // },
     ],
   };
-  return <AntFormDisplay formArray={formdt} />;
+  const DataGrid1 = ({ data }) => {
+    let columns = [];
+    if (data.length > 0)
+      Object.keys(data[0]).map((k, i) => {
+        columns.push({ key: k, name: k.charAt(0).toUpperCase() + k.slice(1) });
+      });
+    console.log(data, columns);
+    return (
+      <ReactDataGrid
+        columns={columns}
+        rowGetter={(i) => data[i]}
+        rowsCount={4}
+        minHeight={200}
+      />
+    );
+  };
+  return (
+    <>
+      <AntFormDisplay formArray={formdt} />
+      <DataGrid1 data={fetched} />
+    </>
+  );
 };
 
 export default DataEdit;

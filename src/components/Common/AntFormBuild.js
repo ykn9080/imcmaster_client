@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import _ from "lodash";
 import $ from "jquery";
-
+import { makeStyles } from "@material-ui/core/styles";
 import "antd/dist/antd.css";
 import "./Antd.css";
 import { Form, Row, Col, Button } from "antd";
@@ -15,13 +15,42 @@ import DialogFull from "./DialogFull";
 import AntFormDisplay from "./AntFormDisplay";
 import SaveIcon from "@material-ui/icons/Save";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import DialogSelect from "components/Common/DialogSelect";
 import MuTab from "components/Common/MuTab";
 import MuGrid from "components/Common/MuGrid";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import { useConfirm } from "material-ui-confirm";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    transform: "translateZ(0px)",
+    flexGrow: 1,
+  },
+  exampleWrapper: {
+    position: "relative",
+    marginTop: theme.spacing(3),
+    height: 380,
+  },
+  radioGroup: {
+    margin: theme.spacing(1, 0),
+  },
+  speedDial: {
+    position: "absolute",
+    "&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft": {
+      bottom: theme.spacing(-292),
+      right: theme.spacing(50),
+    },
+    "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
+      top: theme.spacing(2),
+      left: theme.spacing(2),
+    },
+  },
+}));
 const AntFormBuild = (props) => {
+  const classes = useStyles();
+  const confirm = useConfirm();
   let tabPanelArray = [];
   const [formArray, setFormArray] = useState(props.formdt.data);
   const [formdt, setFormdt] = useState(props.formdt);
@@ -200,7 +229,15 @@ const AntFormBuild = (props) => {
         dispatch(globalVariable({ openDialog1: true }));
       },
     },
-    { icon: <SaveIcon />, name: "Save" },
+    {
+      icon: <ThumbDownIcon />,
+      name: "Clear",
+      handleClick: () =>
+        confirm({ description: "It deletes all!" }).then(() => {
+          console.log("sss");
+          //dispatch(globalVariable({ openDialog1: true }));
+        }),
+    },
   ];
   const actbutton = (
     <Button
@@ -213,16 +250,22 @@ const AntFormBuild = (props) => {
     </Button>
   );
   return (
-    <>
+    <div className={classes.root}>
       <AntFormDisplay {...props} formArray={formArray} editable={true} />
-      <SpeedDialButton actions={actions} onClick={actions[0].handleClick} />
+      <div className={classes.exampleWrapper}>
+        <SpeedDialButton
+          className={classes.speedDial}
+          actions={actions}
+          //onClick={actions[0].handleClick}
+        />
+      </div>
       <DialogFull open={open} title="Element Edit" fullScreen={true}>
         <ElementInput />
       </DialogFull>
       <DialogSelect open={open1} dialogAction={actbutton}>
         <MuTab tabArray={tabArray} tabPanelArray={tabarray} />
       </DialogSelect>
-    </>
+    </div>
   );
 };
 

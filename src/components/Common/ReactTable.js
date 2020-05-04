@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useTable } from "react-table";
 import "./ReactTable.css";
+// import "react-table/react-table.css";
 import MaUTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -87,8 +88,11 @@ const Table = ({ columns, data }) => {
   return (
     <MaUTable
       {...getTableProps()}
-      className={"ReactTable"}
+      // className="-striped -highlight"
       size="small"
+      noDataText="No Data Available"
+      filterable
+      defaultPageSize={2}
       // style={{ border: "solid 1px blue" }}
     >
       <TableHead>

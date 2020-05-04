@@ -3,9 +3,28 @@ import axios from "axios";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import DataGrid from "components/Common/DataGrid";
 import ReactDataGrid from "react-data-grid";
+import ReactDataTable from "components/Common/ReactDataTable";
 import useForceUpdate from "use-force-update";
 
+const DataGrid1 = ({ data }) => {
+  let columns = [];
+  if (data.length > 0)
+    Object.keys(data[0]).map((k, i) => {
+      columns.push({ key: k, name: k.charAt(0).toUpperCase() + k.slice(1) });
+    });
+  console.log(data, columns);
+  return (
+    <ReactDataGrid
+      columns={columns}
+      rowGetter={(i) => data[i]}
+      rowsCount={4}
+      minHeight={200}
+    />
+  );
+};
+
 const DataEdit = () => {
+  console.log("imin");
   const forceUpdate = useForceUpdate();
   const [fetched, setFetched] = useState([]);
   const formdt = {
@@ -87,26 +106,12 @@ const DataEdit = () => {
       // },
     ],
   };
-  const DataGrid1 = ({ data }) => {
-    let columns = [];
-    if (data.length > 0)
-      Object.keys(data[0]).map((k, i) => {
-        columns.push({ key: k, name: k.charAt(0).toUpperCase() + k.slice(1) });
-      });
-    console.log(data, columns);
-    return (
-      <ReactDataGrid
-        columns={columns}
-        rowGetter={(i) => data[i]}
-        rowsCount={4}
-        minHeight={200}
-      />
-    );
-  };
+
   return (
     <>
       <AntFormDisplay formArray={formdt} />
       <DataGrid1 data={fetched} />
+      <ReactDataTable />
     </>
   );
 };

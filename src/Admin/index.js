@@ -11,6 +11,7 @@ import { Button } from "antd";
 import FormList from "Admin/Form/FormList";
 import FormView from "Admin/Form/FormView";
 import FormEdit from "Admin/Form/FormEdit";
+import DataEdit from "Admin/Data/DataEdit";
 import TableView from "Admin/Table/TableView";
 import PageBuild from "Admin/Menu/PageBuild";
 import PageHead from "components/Common/PageHeader";
@@ -274,9 +275,9 @@ const Admin = ({ match }) => {
           case "tableview":
             return <TableView />;
             break;
-          // case "tableedit":
-          //   return <TableEdit />;
-          //   break;
+          case "dataedit":
+            return <DataEdit />;
+            break;
           case "pagebuild":
             return <PageBuild />;
             break;

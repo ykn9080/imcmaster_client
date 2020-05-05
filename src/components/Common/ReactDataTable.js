@@ -91,12 +91,13 @@ const ReactDataTable = () => {
     ],
     []
   );
-  const ExpanableComponent = ({ data }) =>(
-    Object.keys(data).map((k, i) => {
-      <p>{k}</p>;
-    })
-  //<p>{JSON.stringify(data)}</p>;
+  const ExpanableComponent = ({ data }) => {
+    return Object.keys(data).map((k, i) => {
+      return <p>{k}</p>;
+    });
+  };
 
+  //<p>{JSON.stringify(data)}</p>;
   return (
     <DataTable
       title="Desserts"

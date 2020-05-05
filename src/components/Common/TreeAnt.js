@@ -17,12 +17,11 @@ import {
 } from "components/functions/dataUtil";
 import { getChildren } from "components/functions/findChildrens";
 import { makeStyles } from "@material-ui/core/styles";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
 import "antd/dist/antd.css";
 import { Tree } from "antd";
 import useForceUpdate from "use-force-update";
+import ContextMenu from "./ContextMenu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,96 +43,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//moved to components/functions/dataUtil
-// convert flatdata to tree(with children) -> recreate flatdata &  select a node
-//-> convert again to tree -> add 0-0-0 like key for antTree
-
-// const getNodeData = (allData, topNode, key, parentkey, rootkey, title) => {
-//   // 1. convert flatarray to children style
-//   let treeDt = getTreeFromFlatData({
-//     flatData: allData.map((node) => ({ ...node, title: node[title] })),
-//     getKey: (node) => node[key], // resolve a node's key
-//     getParentKey: (node) => node[parentkey], // resolve a node's parent's key
-//     rootKey: rootkey, // The value of the parent key when there is no parent (i.e., at root level)
-//   });
-
-//   //2. select part of treeDt auto converted to flat style again
-//   const subList = getChildren(treeDt, topNode);
-//   //3. revconvert subList to children style
-//   treeDt = getTreeFromFlatData({
-//     flatData: subList.map((node) => ({ ...node, title: node[title] })),
-//     getKey: (node) => node[key],
-//     getParentKey: (node) => node[parentkey],
-//     rootKey: topNode,
-//   });
-
-//   //append  0-0-0 type key
-//   const addKey = (_tns, _preKey) => {
-//     const preKey = _preKey || "0";
-//     const tns = _tns || treeDt;
-//     tns.map((v, i) => {
-//       const key = `${preKey}-${i}`;
-//       v.key = key;
-//       if (v.hasOwnProperty("children")) {
-//         addKey(v.children, key);
-//       }
-//     });
-//   };
-//   addKey();
-//   return treeDt;
-// };
-
 const TreeAnt = (props) => {
   const forceUpdate = useForceUpdate();
   const [context, setContext] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const tmpStyle = {
-    position: "absolute",
-    left: `${position.x}px`,
-    top: `${position.y}px`,
-    boxShadow: "2px 2px 10px #333333",
-  };
-  // const dispatch = useDispatch();
-  //selectedKey
-  //const [key, setKey] = useState("");
-  // const [rightClickNodeTreeItem, setRightClickNodeTreeItem] = useState({});
-
-  // let selectedKey = useSelector((state) => state.global.selectedKey);
-  // if (props.selectedKey) selectedKey = props.selectedKey;
-
-  // const login = useSelector((state) => state.global.login);
-  //let showSidebar = useSelector((state) => state.global.showSidebar);
-  // if (selectedKey !== key) setKey(selectedKey);
-  // //subMenu data
-  // let tempMenu = useSelector((state) => state.global.tempMenu);
-  // //let tempMenu = props.tempMenu;
-  // let initData = getNodeData(tempMenu, selectedKey, "_id", "pid", "", "title");
-
-  // const findControl = (tempMenu, id, type) => {
-  //   const dt = tempMenu.filter((item, itemIndex) => item._id === id);
-
-  //   if (dt) {
-  //     switch (type) {
-  //       case "control":
-  //         return dt[0].layout.sort(function (a, b) {
-  //           return a.rowseq < b.rowseq ? -1 : 1;
-  //         });
-  //         break;
-  //       case "currentData":
-  //         return dt;
-  //         break;
-  //     }
-  //   }
+  // const tmpStyle = {
+  //   position: "absolute",
+  //   left: `${position.x}px`,
+  //   top: `${position.y}px`,
+  //   boxShadow: "2px 2px 10px #333333",
   // };
+
   let treeData = useSelector((state) => state.global.treeData);
   const [reload, setReload] = useState(false); //for reload from child
   const [anchorEl, setAnchorEl] = useState(false); //for open menu when rightclick tree
   const [gData, setgData] = useState(treeData);
+  const [nodeVal, setNodeVal] = useState("");
   const { TreeNode } = Tree;
   const [expandedKeys, setExpendedKeys] = useState([]);
-
-  //localStorage.setItem("subList", JSON.stringify(treeDt));
-
   useEffect(() => {
     //console.log("run", props.initData);
     //setgData(props.initData);
@@ -255,13 +182,25 @@ const TreeAnt = (props) => {
       return <TreeNode key={item.key} title={item.title} />;
     });
   };
+
   const onRightClick = ({ event, node }) => {
-    console.log(event, node);
-    event.preventDefault();
-    const clickX = event.clientX;
-    const clickY = event.clientY;
-    setContext({ context: true });
-    setPosition({ x: clickX + 10, y: clickY });
+    setNodeVal(node);
+  };
+
+  let items = [
+    { label: "Item 1" },
+    { label: "Menu item 2" },
+    { label: "Apple" },
+    { label: "This is orange" },
+    { label: "Conetxt menu is fun" },
+    { label: "Cool" },
+  ];
+
+  const itemCallback = (index, node) => {
+    console.log(
+      `you clicked ${index}, ${items[index].label} and node is ${node}`
+    );
+    console.log(node);
   };
   return (
     <div>
@@ -277,7 +216,11 @@ const TreeAnt = (props) => {
       >
         {gData != "" && loop(gData)}
       </Tree>
-      {context && <div style={tmpStyle}>contextmenu</div>}
+      <ContextMenu
+        items={items}
+        callback={itemCallback}
+        node={nodeVal}
+      ></ContextMenu>
     </div>
   );
 };

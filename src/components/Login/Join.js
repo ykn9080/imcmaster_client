@@ -12,8 +12,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import logo from "../../images/logo/imc1_1.png";
-import imclogo from "../../images/logo/imcmaster.png";
+// import logo from "../../images/logo/imc1_1.png";
+// import imclogo from "../../images/logo/imcmaster.png";
 
 function Copyright() {
   return (
@@ -53,8 +53,8 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Link to="/" exact>
-        <Grid container className={classes.logo} justify={"flex-start"}>
+      <Link to="/" exact><h3>IMCMaster</h3>
+        {/* <Grid container className={classes.logo} justify={"flex-start"}>
           <Grid items>
             <img
               src={logo}
@@ -65,7 +65,7 @@ export default function SignUp() {
           <Grid item>
             <img src={imclogo} className="d-inline-block align-top" />
           </Grid>
-        </Grid>
+        </Grid> */}
       </Link>
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">

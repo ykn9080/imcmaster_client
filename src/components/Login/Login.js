@@ -16,8 +16,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import useForm from "../functions/useForm";
 import { remotelogin } from "../functions/api";
-import logo from "../../images/logo/imc1_1.png";
-import imclogo from "../../images/logo/imcmaster.png";
+// import logo from "../../images/logo/imc1_1.png";
+// import imclogo from "../../images/logo/imcmaster.png";
 import Icon from "@material-ui/core/Icon";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
@@ -135,8 +135,8 @@ const SignIn = (props) => {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Icon>star</Icon>
-        <Link to="/" exact>
-          <Grid container className={classes.logo} justify="flex-start">
+        <Link to="/" exact> <h3>IMCMaster</h3>
+          {/* <Grid container className={classes.logo} justify="flex-start">
             <Grid item>
               <img
                 src={logo}
@@ -147,7 +147,7 @@ const SignIn = (props) => {
             <Grid item>
               <img src={imclogo} className="d-inline-block align-top" />
             </Grid>
-          </Grid>
+          </Grid> */}
         </Link>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">

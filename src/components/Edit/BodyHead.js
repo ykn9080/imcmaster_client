@@ -18,14 +18,14 @@ import IconButton from "@material-ui/core/IconButton";
 import Box from "@material-ui/core/Box";
 import Tooltip from "@material-ui/core/Tooltip";
 import { ActiveLastBreadcrumb } from "components/Layouts/BreadCrumb";
-import Layout1 from "images/Layout/Layout1.png";
-import Layout2 from "images/Layout/Layout2.png";
-import Layout3 from "images/Layout/Layout3.png";
-import Layout4 from "images/Layout/Layout4.png";
-import Layout5 from "images/Layout/Layout5.png";
-import Layout6 from "images/Layout/Layout6.png";
-import Layout7 from "images/Layout/Layout7.png";
-import Layout8 from "images/Layout/Layout8.png";
+// import Layout1 from "images/Layout/Layout1.png";
+// import Layout2 from "images/Layout/Layout2.png";
+// import Layout3 from "images/Layout/Layout3.png";
+// import Layout4 from "images/Layout/Layout4.png";
+// import Layout5 from "images/Layout/Layout5.png";
+// import Layout6 from "images/Layout/Layout6.png";
+// import Layout7 from "images/Layout/Layout7.png";
+// import Layout8 from "images/Layout/Layout8.png";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 import Reorder from "@material-ui/icons/Reorder";
 
@@ -182,7 +182,9 @@ export const BodyHead = () => {
       open={Boolean(anchorEl1)}
       onClose={handleClose1}
     >
-      <MenuItem onClick={() => handleClose1(1)}>
+       <MenuItem onClick={() => handleClose1(1)}>
+        </MenuItem>
+      {/* <MenuItem onClick={() => handleClose1(1)}>
         <ListItemIcon>
           <img src={Layout1} alt="img" width={25} />
         </ListItemIcon>
@@ -221,9 +223,9 @@ export const BodyHead = () => {
         <ListItemIcon>
           <img src={Layout8} alt="img" width={25} />
         </ListItemIcon>
-      </MenuItem>
-    </Menu>
-  );
+      </MenuItem>*/}
+
+    </Menu>   );
   const editMenu = (
     <Menu
       id="editMenu"

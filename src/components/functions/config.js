@@ -4,7 +4,7 @@ const server_url = {
   docean: "http://imcmaster.pro:3001/",
   namubuntu: "http://imcmaster.iptime.org:3001/",
 };
-const current_url = server_url.local;
+const current_url = server_url.docean;
 const currentsetting = {
   passporturl: current_url,
   webserviceprefix: current_url,

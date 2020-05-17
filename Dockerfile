@@ -26,7 +26,7 @@ COPY . .
 EXPOSE 8080
 
 #Build the project for production
-#RUN npm run build 
+RUN npm run build 
 
 #Run Stage Start
 FROM nginx

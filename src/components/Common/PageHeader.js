@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import $ from "jquery";
-import { PageHeader, Breadcrumb, Row, Col, Statistic } from "antd";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import { PageHeader, Row, Col } from "antd";
 import AntBreadCrumb from "./BreadCrumb";
 
 const PageHead = (props) => {
   const history = useHistory();
-  let location = useLocation();
   // useEffect(() => {
   //   $(".ant-page-header>.ant-breadcrumb").remove();
   //   $(".ant-page-header").prepend($(".ant-breadcrumb"));

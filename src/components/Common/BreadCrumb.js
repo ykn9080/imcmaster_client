@@ -2,13 +2,9 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import "antd/dist/antd.css";
 import {
-  HashRouter as Router,
-  Route,
-  Switch,
-  Link,
-  withRouter,
+  Link
 } from "react-router-dom";
-import { Breadcrumb, Alert } from "antd";
+import { Breadcrumb } from "antd";
 
 const AntBreadCrumb = (props) => {
   const location = useLocation();

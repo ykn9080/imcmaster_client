@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { Button, Tooltip, Row, Col, Statistic } from "antd";
-import { FormOutlined, EditFilled } from "@ant-design/icons";
+import { useLocation, useHistory,  } from "react-router-dom";
+import { Button, Tooltip,} from "antd";
+import { FormOutlined } from "@ant-design/icons";
 import PageHead from "components/Common/PageHeader";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import "components/Common/Antd.css";
@@ -14,7 +14,7 @@ const FormView = (props) => {
   const dispatch = useDispatch();
   dispatch(globalVariable({ formEdit: false }));
   let formdt = useSelector((state) => state.global.currentData);
-  if (formdt == "") {
+  if (formdt === "") {
     formdt = location.state;
     dispatch(globalVariable({ currentData: location.state }));
   }

@@ -1,26 +1,14 @@
 import React from "react";
 import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "actions";
-import { Link, useHistory } from "react-router-dom";
-import useForceUpdate from "use-force-update";
-import { makeStyles } from "@material-ui/core/styles";
 import { Card, Skeleton, Avatar } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
   LeftOutlined,
   RightOutlined,
-  ControlOutlined,
 } from "@ant-design/icons";
 const { Meta } = Card;
-const useStyles = makeStyles((theme) => ({
-  card: {
-    //maxWidth: "100%"
-    maxHeight: 400,
-    minHeight: 300,
-  },
-}));
+
 const CardAnt = (props) => {
   const resizeControl = (ctrList, _id, direction) => {
     console.log(_id, direction);

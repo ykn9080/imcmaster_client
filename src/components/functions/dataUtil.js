@@ -11,7 +11,9 @@ export const addPath1 = (menu, pid, pathname) => {
   }).map((k, i) => {
     k.path = pathname + "/" + k.title;
     addedmenu.push(k);
-    addPath1(menu, k._id, k.path);
+    return(
+    addPath1(menu, k._id, k.path)
+    )
   });
 };
 export const addRootPid = (data) => {
@@ -55,11 +57,13 @@ export const getNodeData = (
     const tns = _tns || treeDt;
     tns.map((v, i) => {
       const key = `${preKey}-${i}`;
-      v.key = key;
-      if (v.hasOwnProperty("children")) {
-        addKey(v.children, key);
-      }
-    });
+        v.key = key;
+        if (v.hasOwnProperty("children")) {
+          return(
+          addKey(v.children, key)
+          )
+        }
+          });
   };
   addKey();
   return treeDt;

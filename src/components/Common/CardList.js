@@ -1,19 +1,11 @@
-import React, { useState, Fragment, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { globalVariable } from "actions";
-import useForceUpdate from "use-force-update";
+import React, { useEffect } from "react";
 import $ from "jquery";
 import "jquery-ui-bundle";
 import "jquery-ui-bundle/jquery-ui.min.css";
-import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import CardForm from "components/Common/CardForm";
 import CardAnt from "components/Common/CardAnt";
-
-import { ObjectID } from "bson"; //_id maker for MongoDB
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,18 +100,12 @@ const CardList = (props) => {
     };
   }, []);
 
-  const addItemHandler = (dtList) => {
-    const item = props.createItemHandler(dtList);
-    dtList.push(item);
-    props.addItemHandler(dtList);
-
-    // dispatch(globalVariable({ control: dtList }));
-    // forceUpdate();
-  };
+ 
   const removeItemHandler = (_id) => {
     props.dtList.map((e, i) => {
       console.log(e, _id);
-      if (e._id === _id) props.dtList.splice(i, 1);
+      if (e._id === _id) 
+      return (props.dtList.splice(i, 1))
     });
     props.removeItemHandler(props.dtList);
 

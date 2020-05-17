@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
-import $ from "jquery";
-import { Link, useHistory } from "react-router-dom";
-import { List, Avatar, Button, Skeleton, Popconfirm } from "antd";
+import React from "react";
+import { Link} from "react-router-dom";
+import { List, Avatar, Skeleton, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const AntList = (props) => {
-  const history = useHistory();
-
   //loading for skeleton
   const loading = props.loading ? props.loading : false;
 

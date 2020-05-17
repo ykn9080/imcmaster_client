@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import _ from "lodash";
@@ -18,9 +18,7 @@ import {
   DatePicker,
   TimePicker,
   InputNumber,
-  TreeSelect,
   Switch,
-  Cascader,
   Slider,
   Rate,
 } from "antd";
@@ -28,93 +26,93 @@ const { MonthPicker, RangePicker } = DatePicker;
 const { Option } = Select;
 
 //sample data
-const formData = {
-  setting: {
-    formItemLayout: {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 },
-    },
-    layout: "horizontal",
-    //formColumn: 1,
-    size: "middle",
-    initialValues: { name: "hhh" },
-    onFinish2: (values) => {
-      console.log("Received values of form: ", values);
-    },
-    onFinishFailed2: (values, errorFields, outOfDate) => {
-      console.log(values, errorFields, outOfDate);
-    },
-  },
-  list: [
-    { label: "Name", name: "name", type: "input", seq: 1 },
-    {
-      label: "Pass",
-      name: "password",
-      type: "input.password",
-      rules: [{ required: true, message: "enter!!!" }],
-      seq: 2,
-    },
+// const formData = {
+//   setting: {
+//     formItemLayout: {
+//       labelCol: { span: 8 },
+//       wrapperCol: { span: 16 },
+//     },
+//     layout: "horizontal",
+//     //formColumn: 1,
+//     size: "middle",
+//     initialValues: { name: "hhh" },
+//     onFinish2: (values) => {
+//       console.log("Received values of form: ", values);
+//     },
+//     onFinishFailed2: (values, errorFields, outOfDate) => {
+//       console.log(values, errorFields, outOfDate);
+//     },
+//   },
+//   list: [
+//     { label: "Name", name: "name", type: "input", seq: 1 },
+//     {
+//       label: "Pass",
+//       name: "password",
+//       type: "input.password",
+//       rules: [{ required: true, message: "enter!!!" }],
+//       seq: 2,
+//     },
 
-    //inline form
-    {
-      label: "BirthDate",
-      name: "birthdate",
-      type: "nostyle",
-      seq: 3,
-      array: [
-        {
-          name: "year",
-          placeholder: "Input birth year",
-          type: "input",
-          seq: 0,
-        },
-        {
-          name: "month",
-          placeholder: "Input birth month",
-          type: "input",
-          seq: 1,
-        },
-      ],
-    },
-    {
-      type: "button",
-      seq: 1000,
-      tailLayout: {
-        wrapperCol: { offset: 8, span: 16 },
-      },
-      // //signle button
-      // btnLabel: "Submit",
-      // btnStyle: "secondary",
-      // htmlType: "submit",
+//     //inline form
+//     {
+//       label: "BirthDate",
+//       name: "birthdate",
+//       type: "nostyle",
+//       seq: 3,
+//       array: [
+//         {
+//           name: "year",
+//           placeholder: "Input birth year",
+//           type: "input",
+//           seq: 0,
+//         },
+//         {
+//           name: "month",
+//           placeholder: "Input birth month",
+//           type: "input",
+//           seq: 1,
+//         },
+//       ],
+//     },
+//     {
+//       type: "button",
+//       seq: 1000,
+//       tailLayout: {
+//         wrapperCol: { offset: 8, span: 16 },
+//       },
+//       // //signle button
+//       // btnLabel: "Submit",
+//       // btnStyle: "secondary",
+//       // htmlType: "submit",
 
-      //in case multiple button
-      btnArr: [
-        {
-          btnLabel: "Submit",
-          btnStyle: "secondary",
-          htmlType: "submit",
-          seq: 0,
-        },
-        {
-          btnLabel: "Cancel",
-          btnStyle: "primary",
-          htmlType: "button",
-          seq: 1,
-        },
-      ],
-    },
+//       //in case multiple button
+//       btnArr: [
+//         {
+//           btnLabel: "Submit",
+//           btnStyle: "secondary",
+//           htmlType: "submit",
+//           seq: 0,
+//         },
+//         {
+//           btnLabel: "Cancel",
+//           btnStyle: "primary",
+//           htmlType: "button",
+//           seq: 1,
+//         },
+//       ],
+//     },
 
-    {
-      label: "Date",
-      name: "date",
-      type: "datepicker",
-      rules: [
-        { type: "object", required: true, message: "Please select time!" },
-      ],
-      seq: 0,
-    },
-  ],
-};
+//     {
+//       label: "Date",
+//       name: "date",
+//       type: "datepicker",
+//       rules: [
+//         { type: "object", required: true, message: "Please select time!" },
+//       ],
+//       seq: 0,
+//     },
+//   ],
+// };
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -137,12 +135,13 @@ const AntFormElement = (props) => {
   const EditDel = (props) => {
     const deleteHandler = (seq) => {
       confirm({ description: "This action is permanent!" }).then(() => {
-        console.log(seq);
         let delIndex;
         curdt.data.list.map((k, i) => {
           if (k.seq === seq) {
-            curdt.data.list.splice(i, 1);
-            delIndex = i;
+            return(
+              curdt.data.list.splice(i, 1),
+              delIndex = i
+            )
           }
           if (i > delIndex) curdt.data.list.seq--;
         });
@@ -213,51 +212,37 @@ const AntFormElement = (props) => {
                   <FormItem {...k} noStyle key={k.name + k.seq} style={sty} />
                 );
               });
-              break;
             case "input":
               return <Input {...placeholder} />;
-              break;
             case "input.password":
               return <Input.Password {...placeholder} />;
-              break;
             case "input.textarea":
               return <Input.TextArea {...placeholder} />;
-              break;
             case "inputnumber":
               return props.min ? (
                 <InputNumber min={props.min} max={props.max} {...placeholder} />
               ) : (
                 <InputNumber {...placeholder} />
               );
-              break;
-
             case "datepicker":
               return (
                 //<DatePicker format="YYYY-MM-DD" />
                 <DatePicker />
               );
-              break;
             case "datetimepicker":
               return <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />;
-              break;
             case "monthpicker":
               return <MonthPicker />;
-              break;
             case "rangepicker":
               return <RangePicker />;
-              break;
             case "rangetimepicker":
               return <RangePicker showTime format="YYYY-MM-DD HH:mm:ss" />;
-              break;
             case "timepicker":
               return <TimePicker />;
-              break;
             case "plaintext":
               return <span className="ant-form-text">{props.text}</span>;
-              break;
             case "switch":
               return <Switch />;
-              break;
             case "slider":
               let marks = "",
                 min = 0,
@@ -270,13 +255,10 @@ const AntFormElement = (props) => {
               if (props.marks) marks = props.marks;
               if (props.range) range = props.range;
               return <Slider marks={marks} min={min} max={max} range={range} />;
-              break;
             case "rate":
               return <Rate />;
-              break;
             case "checkbox":
               return <Checkbox>{props.checkboxmsg}</Checkbox>;
-              break;
             case "select":
               if (props.optionArray)
                 return (
@@ -288,7 +270,7 @@ const AntFormElement = (props) => {
                     })}
                   </Select>
                 );
-              break;
+                break;
             case "select.multiple":
               if (props.optionArray)
                 return (
@@ -298,7 +280,7 @@ const AntFormElement = (props) => {
                     })}
                   </Select>
                 );
-              break;
+                break;
             case "radio.group":
               if (props.optionArray)
                 return (
@@ -308,7 +290,7 @@ const AntFormElement = (props) => {
                     })}
                   </Radio.Group>
                 );
-              break;
+                break;
             case "radio.button":
               if (props.optionArray)
                 return (
@@ -320,7 +302,7 @@ const AntFormElement = (props) => {
                     })}
                   </Radio.Group>
                 );
-              break;
+                break;
             case "checkbox.group":
               const Chk = (props) => {
                 return props.optionArray.map((k, i) => {
@@ -346,7 +328,7 @@ const AntFormElement = (props) => {
                     )}
                   </Checkbox.Group>
                 );
-              break;
+                break;
             case "button":
               if (props.btnArr)
                 return (
@@ -372,7 +354,6 @@ const AntFormElement = (props) => {
                 };
                 return <Button {...btnProps}>{props.btnLabel}</Button>;
               }
-              break;
           }
         })()}
       </Form.Item>
@@ -380,7 +361,7 @@ const AntFormElement = (props) => {
   };
 
   let colnum = 24;
-  if (props.formColumn == 1) {
+  if (props.formColumn === 1) {
     return !props.editable ? (
       <FormItem {...props} />
     ) : (

@@ -1,7 +1,6 @@
-import React, { Fragment, useState } from "react";
-import { Query } from "react-apollo";
+import React, { useState } from "react";
 import gql from "graphql-tag";
-import { useQuery, useMutation, useLazyQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";

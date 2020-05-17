@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import { currentsetting } from "components/functions/config";
-import { globalVariable } from "actions";
-import { Menu, Breadcrumb } from "antd";
-import {
-  MailOutlined,
-  AppstoreOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { useLocation, useHistory } from "react-router-dom";
+import { Menu } from "antd";
 import { getTreeFromFlatData } from "components/functions/dataUtil";
 
 const { SubMenu } = Menu;
 
 const AntMenu = (props) => {
-  const dispatch = useDispatch();
   const history = useHistory();
   let location = useLocation();
   const [current, setCurrent] = useState("");
@@ -25,25 +15,26 @@ const AntMenu = (props) => {
     setCurrent(location.pathname);
   }, [props.menuList, location.pathname]);
 
-  const routesMap = ({ path, breadcrumbName }) => {
-    let newdt = [],
-      links = "";
-    path.split("/").filter((k, i) => {
-      if (links.endsWith("/")) links += k;
-      else {
-        links += "/" + k;
-      }
-
-      if (i === 0) k = "Home";
-      newdt.push({ path: links, breadcrumbName: k });
-    });
-    if (typeof breadcrumbName != "undefined") {
-      breadcrumbName
-        .split("/")
-        .filter((k, i) => (newdt[i]["breadcrumbName"] = k));
-    }
-    return newdt;
-  };
+  // const routesMap = ({ path, breadcrumbName }) => {
+  //   let newdt = [],
+  //     links = "";
+  //   path.split("/").filter((k, i) => {
+  //     if (links.endsWith("/")) links += k;
+  //     else {
+  //       links += "/" + k;
+  //     }
+  //     if (i === 0) k = "Home";
+  //     return(
+  //     newdt.push({ path: links, breadcrumbName: k })
+  //     )
+  //   });
+  //   if (typeof breadcrumbName != "undefined") {
+  //     breadcrumbName
+  //       .split("/")
+  //       .filter((k, i) => (newdt[i]["breadcrumbName"] = k));
+  //   }
+  //   return newdt;
+  // };
   const handleClick = (e) => {
     console.log("click ", e.item.props.path);
 

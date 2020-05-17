@@ -1,43 +1,20 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Panel from "./Panel";
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap",
-    minWidth: 320,
-    maxWidth: 400,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 320,
-  },
-}));
 
 export default function DialogSelect(props) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   let open1 = useSelector((state) => state.global.openDialog1);
   const [open, setOpen] = React.useState(false);
-  const [age, setAge] = React.useState("");
   useEffect(() => {
     setOpen(open1);
   }, [open1]);
-  const handleChange = (event) => {
-    setAge(Number(event.target.value) || "");
-  };
+
 
   const handleClose = () => {
     setOpen(false);

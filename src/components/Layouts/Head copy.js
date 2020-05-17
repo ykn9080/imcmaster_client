@@ -4,24 +4,16 @@ import {
   Nav,
   Navbar,
   NavDropdown,
-  NavItem,
   Button,
   Form,
-  FormControl
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, globalVariable } from "actions";
 import MultiDispatch, { gb } from "reducers/multipleDispatch";
-//import { menuHead } from "../fromImc/Common_menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "images/logo/imc1_1.png";
-import imclogo from "images/logo/imcmaster.png";
-
-//import { getlogin } from "../fromImc/core";
-
-//import { faCode, faHighlighter } from "@fortawesome/free-regular-svg-icons";
 
 const element = <FontAwesomeIcon icon="user" size="lg" />;
 class topright extends React.Component {

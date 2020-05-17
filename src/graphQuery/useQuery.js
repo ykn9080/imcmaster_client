@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
 export function QueryHandler({ QUERY, VARIABLES }) {
   return useQuery(QUERY, {

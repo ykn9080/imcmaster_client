@@ -1,29 +1,19 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import $ from "jquery";
-import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
 import {
   Nav,
   Navbar,
   NavDropdown,
-  NavItem,
-  Button,
   Form,
-  FormControl,
+
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ActiveLastBreadcrumb } from "./BreadCrumb";
-import { MultiDispatch, GlobalDispatch } from "reducers/multipleDispatch";
-import Signin from "components/Login/Login";
-// import imclogo from "images/logo/imcmaster.png";
-import { directChild } from "components/functions/findChildrens";
-import { isLoggedIn } from "components/Login/Login";
+
 import "./Head.css";
-const element = <FontAwesomeIcon icon="user" size="lg" />;
 let myData = [
   {
     access: [],
@@ -141,8 +131,7 @@ const Topmenu = () => {
   //   dispatch(globalVariable({ menu: menu }));
   // }, []);
   let menuData = useSelector((state) => state.global.menu);
-  let login = useSelector((state) => state.global.login);
-
+ 
   if (!menuData) menuData = myData;
   //const topmenu = menulist(menuData, "");
   const topmenu = menuData
@@ -178,10 +167,9 @@ const Topmenu = () => {
 };
 
 const NavDropRecur = (props) => {
-  {
+  
     /*make menu recursive, */
-  }
-  const subfilter = (id) => {
+    const subfilter = (id) => {
     return props.myData
       .filter((item, itemIndex) => id === item.pid)
       .sort(function (a, b) {
@@ -227,7 +215,9 @@ const Head1 = (props) => {
         //const submenu = directChild(menu, "", "seq");
         var clone = cloneDeep(menu);
         clone.map((k, i) => {
-          k.path = "/edit" + k.path;
+          return(
+          k.path = "/edit" + k.path
+          )
         });
         dispatch(globalVariable({ tempMenu: clone }));
         //dispatch(globalVariable({ subMenu: submenu }));

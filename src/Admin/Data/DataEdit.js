@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
-import AntFormDisplay from "components/Common/AntFormDisplay";
-import DataGrid from "components/Common/DataGrid";
 import ReactDataGrid from "react-data-grid";
+import AntFormDisplay from "components/Common/AntFormDisplay";
 import ReactDataTable from "components/Common/ReactDataTable";
-import useForceUpdate from "use-force-update";
 
 const DataGrid1 = ({ data }) => {
   let columns = [];
   if (data.length > 0)
     Object.keys(data[0]).map((k, i) => {
-      columns.push({ key: k, name: k.charAt(0).toUpperCase() + k.slice(1) });
-    });
-  console.log(data, columns);
+      return(
+        columns.push({ key: k, name: k.charAt(0).toUpperCase() + k.slice(1) })
+      )
+     });
   return (
     <ReactDataGrid
       columns={columns}
@@ -25,7 +24,6 @@ const DataGrid1 = ({ data }) => {
 
 const DataEdit = () => {
   console.log("imin");
-  const forceUpdate = useForceUpdate();
   const [fetched, setFetched] = useState([]);
   const formdt = {
     setting: {
@@ -43,9 +41,11 @@ const DataEdit = () => {
           console.log(response.data);
           let dtarr = [];
           response.data.map((k, i) => {
-            delete k.layout;
-            delete k.access;
-            dtarr.push(k);
+            return(
+              delete k.layout,
+              delete k.access,
+              dtarr.push(k)
+            )
           });
           setFetched(dtarr);
         });

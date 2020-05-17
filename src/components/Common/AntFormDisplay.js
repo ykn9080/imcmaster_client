@@ -1,74 +1,69 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
 import _ from "lodash";
-import $ from "jquery";
-import axios from "axios";
-import { currentsetting } from "components/functions/config";
 import "antd/dist/antd.css";
 import "./Antd.css";
-import { Form, Row, Col } from "antd";
-import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
+import { Form, Row } from "antd";
 import AntFormElement from "./AntFormElement";
 
-const formData = {
-  setting: {
-    formItemLayout: {
-      labelCol: { span: 8 },
-      wrapperCol: { span: 16 },
-    },
-    layout: "horizontal",
-    //formColumn: 1,
-    size: "middle",
-    initialValues: { name: "hhh" },
-    onFinish2: (values) => {
-      console.log("Received values of form: ", values);
-    },
-    onFinishFailed2: (values, errorFields, outOfDate) => {
-      console.log(values, errorFields, outOfDate);
-    },
-  },
-  list: [
-    { label: "Name", name: "name", type: "input", seq: 1 },
-    {
-      label: "Pass",
-      name: "password",
-      type: "input.password",
-      rules: [{ required: true, message: "enter!!!" }],
-      seq: 2,
-    },
-    {
-      type: "button",
-      seq: 1000,
-      tailLayout: {
-        wrapperCol: { offset: 8, span: 16 },
-      },
-      btnArr: [
-        {
-          btnLabel: "Submit",
-          btnStyle: "secondary",
-          htmlType: "submit",
-          seq: 0,
-        },
-        {
-          btnLabel: "Cancel",
-          btnStyle: "primary",
-          htmlType: "button",
-          seq: 1,
-        },
-      ],
-    },
+// const formData = {
+//   setting: {
+//     formItemLayout: {
+//       labelCol: { span: 8 },
+//       wrapperCol: { span: 16 },
+//     },
+//     layout: "horizontal",
+//     //formColumn: 1,
+//     size: "middle",
+//     initialValues: { name: "hhh" },
+//     onFinish2: (values) => {
+//       console.log("Received values of form: ", values);
+//     },
+//     onFinishFailed2: (values, errorFields, outOfDate) => {
+//       console.log(values, errorFields, outOfDate);
+//     },
+//   },
+//   list: [
+//     { label: "Name", name: "name", type: "input", seq: 1 },
+//     {
+//       label: "Pass",
+//       name: "password",
+//       type: "input.password",
+//       rules: [{ required: true, message: "enter!!!" }],
+//       seq: 2,
+//     },
+//     {
+//       type: "button",
+//       seq: 1000,
+//       tailLayout: {
+//         wrapperCol: { offset: 8, span: 16 },
+//       },
+//       btnArr: [
+//         {
+//           btnLabel: "Submit",
+//           btnStyle: "secondary",
+//           htmlType: "submit",
+//           seq: 0,
+//         },
+//         {
+//           btnLabel: "Cancel",
+//           btnStyle: "primary",
+//           htmlType: "button",
+//           seq: 1,
+//         },
+//       ],
+//     },
 
-    {
-      label: "Date",
-      name: "date",
-      type: "datepicker",
-      rules: [
-        { type: "object", required: true, message: "Please select time!" },
-      ],
-      seq: 0,
-    },
-  ],
-};
+//     {
+//       label: "Date",
+//       name: "date",
+//       type: "datepicker",
+//       rules: [
+//         { type: "object", required: true, message: "Please select time!" },
+//       ],
+//       seq: 0,
+//     },
+//   ],
+// };
 
 const AntFormDisplay = (props) => {
   let editable = false,
@@ -115,12 +110,12 @@ const AntFormDisplay = (props) => {
       return <AntFormElement key={i} {...k} {...props} />;
     });
   };
-  const onFinish1 = (values) => {
-    console.log(values);
-  };
-  const onFinishFailed1 = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinish1 = (values) => {
+  //   console.log(values);
+  // };
+  // const onFinishFailed1 = (errorInfo) => {
+  //   console.log("Failed:", errorInfo);
+  // };
   // const propcontent={
   //   formColumn:formColumn
   // layout=:layout

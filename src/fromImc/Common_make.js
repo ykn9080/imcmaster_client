@@ -2,7 +2,7 @@ import $ from "jquery";
 import Swal from "sweetalert2";
 
 function sweetmsg(title, body, icon) {
-  if ((typeof body === "undefined") | (body == ""))
+  if ((typeof body === "undefined") | (body === ""))
     Swal.fire({ title: "", text: title });
   else Swal.fire({ title: title, text: body });
 
@@ -19,7 +19,7 @@ function sweetmsgautoclose(title, body, options) {
   if (typeof options !== "undefined") {
     if (options.hasOwnProperty("timer")) timer = options.timer;
   }
-  if ((typeof body == "undefined") | (body === ""))
+  if ((typeof body === "undefined") | (body === ""))
     Swal.fire({
       title: "",
       text: title,

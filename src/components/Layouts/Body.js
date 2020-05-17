@@ -1,18 +1,11 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import Fab from "@material-ui/core/Fab";
-import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
 import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
-import MultiDispatch, { gb } from "reducers/multipleDispatch";
+import { useSelector } from "react-redux";
 import CardForm from "components/Common/CardForm";
-import { Rtable } from "components/Controls/Table/ReactTable";
-//import BootTable from "components/Controls/Table/BootStrapTable2";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,12 +42,7 @@ export const CenteredGrid = props => {
 
   //const [rowdt, setRowdt] = useState([2, 1, 3, 4]);
   const [rowdt, setRowdt] = useState(ctrlist);
-
-  const [editMode, setEditMode] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   const IconBtn = props => {
     const classes = useStyles();
@@ -86,14 +74,7 @@ export const CenteredGrid = props => {
   };
 
   const GridRow = props => {
-    //const [hoverEffect, setHoverEffect] = useState(false);
-    const removeGridHandler = () => {
-      let newState = [...rowdt]; // clone the array
-      newState[props.dt.row] = props.dt.val;
-      setRowdt(newState);
-    };
-
-    return (
+     return (
       <Grid item xs={props.xssize}>
         <CardForm />
         {/* <Paper className={classes.paper}>
@@ -130,7 +111,7 @@ export const CenteredGrid = props => {
       {/* //<BootTable /> */}
       <Grid container justify="center" className={classes.root} spacing={2}>
         {newArr.map((dt, index) => {
-          return dt.col != dt.val ? (
+          return dt.col !== dt.val ? (
             <GridRow dt={dt} xssize={dt.xs} key={dt.col + "_" + index} />
           ) : (
             <>

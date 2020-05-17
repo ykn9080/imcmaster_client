@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
-import { useLocation, useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { currentsetting } from "components/functions/config";
@@ -12,16 +12,13 @@ import AntFormBuild from "components/Common/AntFormBuild";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import "components/Common/Antd.css";
 import useForceUpdate from "use-force-update";
-import DialogSelect from "components/Common/DialogSelect";
 import DataEdit from "Admin/Data/DataEdit";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
-import MuiAlert from "@material-ui/lab/Alert";
 const { TabPane } = Tabs;
 
 const FormEdit = (props) => {
-  const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   const forceUpdate = useForceUpdate();
@@ -30,9 +27,6 @@ const FormEdit = (props) => {
 
   //for snackbar open/close
   const [open, setOpen] = React.useState(false);
-  const handleClick = () => {
-    setOpen(true);
-  };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -192,7 +186,7 @@ const FormEdit = (props) => {
     summaryData.setting.initialValues = initialValue;
     return summaryData;
   };
-  if (formdt != "") summaryData = updateInitialValues(summaryData, formdt);
+  if (formdt !== "") summaryData = updateInitialValues(summaryData, formdt);
   const [sumdt, setSumdt] = useState(summaryData);
 
   useEffect(() => {
@@ -288,19 +282,7 @@ const FormEdit = (props) => {
     dispatch(globalVariable({ currentData: formdt }));
     setOpen(false);
   };
-  const actbutton = (
-    <Button
-      color="primary"
-      onClick={() => {
-        dispatch(globalVariable({ openDialog: true }));
-      }}
-    >
-      Save As
-    </Button>
-  );
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+ 
   const snack = (
     <Snackbar
       anchorOrigin={{

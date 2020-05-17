@@ -1,14 +1,10 @@
-import React, { useStyle } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
-import useForceUpdate from "use-force-update";
-import $ from "jquery";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import AddBox from "@material-ui/icons/AddBox";
 import IconButton from "@material-ui/core/IconButton";
-import Paper from "@material-ui/core/Paper";
-import { borders } from "@material-ui/system";
 import Box from "@material-ui/core/Box";
 import Tooltip from "@material-ui/core/Tooltip";
 import Divider from "@material-ui/core/Divider";
@@ -25,7 +21,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 const SubMenuHead = props => {
-  const forceUpdate = useForceUpdate();
   const classes = useStyles();
   const dispatch = useDispatch();
   let tempMenu = useSelector(state => state.global.tempMenu);
@@ -33,7 +28,7 @@ const SubMenuHead = props => {
   const handleAddSubMenu = () => {
     const id = new ObjectID();
     const length = _.filter(tempMenu, function(o) {
-      return o.pid == selectedKey;
+      return o.pid === selectedKey;
     }).length;
 
     let newmenu = {

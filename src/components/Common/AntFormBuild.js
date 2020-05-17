@@ -6,19 +6,16 @@ import $ from "jquery";
 import { makeStyles } from "@material-ui/core/styles";
 import "antd/dist/antd.css";
 import "./Antd.css";
-import { Form, Row, Col, Button } from "antd";
-import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import AntFormElement from "./AntFormElement";
 import SpeedDialButton from "./SpeedDial";
 import ElementInput from "Admin/ElementInput";
 import DialogFull from "./DialogFull";
 import AntFormDisplay from "./AntFormDisplay";
-import SaveIcon from "@material-ui/icons/Save";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import DialogSelect from "components/Common/DialogSelect";
 import MuTab from "components/Common/MuTab";
-import MuGrid from "components/Common/MuGrid";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { useConfirm } from "material-ui-confirm";
@@ -56,15 +53,11 @@ const AntFormBuild = (props) => {
   const [formdt, setFormdt] = useState(props.formdt);
   const [tabarray, setTabarray] = useState("");
   const dispatch = useDispatch();
-  const [form] = Form.useForm();
   let open = useSelector((state) => state.global.openDialog); //edit
   let open1 = useSelector((state) => state.global.openDialog1); //create new
-  useEffect(() => {
-    dispatch(globalVariable({ formEdit: true }));
-  }, []);
+
   const ReOrder = (start_pos, end_pos) => {
     let arr = formdt;
-    const _id = arr._id;
     let newArr = [];
     let list = _.sortBy(arr.data.list, ["seq"]);
     if (start_pos < end_pos)
@@ -90,6 +83,7 @@ const AntFormBuild = (props) => {
     //st>ed -> st prev +1 st->ed
   };
   useEffect(() => {
+    dispatch(globalVariable({ formEdit: true }));
     MakeTabPanel1();
     setTabarray(tabPanelArray);
     let $node = $(".SortForm");
@@ -134,7 +128,8 @@ const AntFormBuild = (props) => {
     const findSeq = () => {
       let maxseq = 0;
       formArray.list.map((k, i) => {
-        if (k.seq >= maxseq) maxseq++;
+        if (k.seq >= maxseq) 
+        return(maxseq++)
       });
       return maxseq;
     };
@@ -180,46 +175,48 @@ const AntFormBuild = (props) => {
       );
     };
     optGrp.map((k, i) => {
+      return(
       tabPanelArray.push(
         <Grid container spacing={1}>
           {k.map((j, i) => {
             return <MakeTabPanel title={j} type={j} />;
           })}
         </Grid>
-      );
+      )
+      )
     });
   };
   const tabArray = ["input", "select", "datetime", "toggle", "level", "others"];
 
-  const optionArray = [
-    { group: true, label: "input" },
-    { value: "input" },
-    { value: "input.password" },
-    { value: "input.textarea" },
-    { value: "inputnumber" },
-    { group: true, label: "select" },
-    { value: "select" },
-    { value: "select.multiple" },
-    { value: "radio.group" },
-    { value: "radio.button" },
-    { value: "checxkbox.group" },
-    { group: true, label: "datetime" },
-    { value: "datepicker" },
-    { value: "datetimepicker" },
-    { value: "monthpicker" },
-    { value: "rangepicker" },
-    { value: "rangetimepicker" },
-    { value: "timepicker" },
-    { group: true, label: "toggle" },
-    { value: "checkbox" },
-    { value: "switch" },
-    { group: true, label: "level" },
-    { value: "slider" },
-    { value: "rate" },
-    { group: true, label: "others" },
-    { value: "plaintext" },
-    { value: "button" },
-  ];
+  // const optionArray = [
+  //   { group: true, label: "input" },
+  //   { value: "input" },
+  //   { value: "input.password" },
+  //   { value: "input.textarea" },
+  //   { value: "inputnumber" },
+  //   { group: true, label: "select" },
+  //   { value: "select" },
+  //   { value: "select.multiple" },
+  //   { value: "radio.group" },
+  //   { value: "radio.button" },
+  //   { value: "checxkbox.group" },
+  //   { group: true, label: "datetime" },
+  //   { value: "datepicker" },
+  //   { value: "datetimepicker" },
+  //   { value: "monthpicker" },
+  //   { value: "rangepicker" },
+  //   { value: "rangetimepicker" },
+  //   { value: "timepicker" },
+  //   { group: true, label: "toggle" },
+  //   { value: "checkbox" },
+  //   { value: "switch" },
+  //   { group: true, label: "level" },
+  //   { value: "slider" },
+  //   { value: "rate" },
+  //   { group: true, label: "others" },
+  //   { value: "plaintext" },
+  //   { value: "button" },
+  // ];
   const actions = [
     {
       icon: <AddBoxIcon />,

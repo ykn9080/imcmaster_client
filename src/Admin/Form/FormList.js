@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { globalVariable } from "actions";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
 import AntList from "components/Common/List";
-import { Avatar, Tooltip, Button } from "antd";
+import { Tooltip, Button } from "antd";
 import PageHead from "components/Common/PageHeader";
 import { FileAddOutlined, FormOutlined } from "@ant-design/icons";
 import useForceUpdate from "use-force-update";
@@ -27,25 +27,28 @@ const FormList = (props) => {
       .then((response) => {
         let imsiData1 = [];
         response.data.map((k, i) => {
-          imsiData1.push({
-            _id: k._id,
-            data: k.data,
-            name: k.name,
-            description: k.desc,
-            titleHandler: true,
-            href: {
-              pathname: `/admin/control/${props.type}/${props.type}view`,
-              search: `?_id=${k._id}`,
-              state: k,
-            },
-            avatar: {
-              size: 32,
-              style: { backgroundColor: "#87d068" },
-              shape: "square",
-              icon: <FormOutlined />,
-            },
-            desc: k.desc,
-          });
+          return(
+            imsiData1.push({
+              _id: k._id,
+              data: k.data,
+              name: k.name,
+              description: k.desc,
+              titleHandler: true,
+              href: {
+                pathname: `/admin/control/${props.type}/${props.type}view`,
+                search: `?_id=${k._id}`,
+                state: k,
+              },
+              avatar: {
+                size: 32,
+                style: { backgroundColor: "#87d068" },
+                shape: "square",
+                icon: <FormOutlined />,
+              },
+              desc: k.desc,
+            })
+          )
+          
         });
         setListData(imsiData1);
         //리로드 귀찮아서 해둰거 개발완료시 지울것!!!!!!!!!!!!!!!!!

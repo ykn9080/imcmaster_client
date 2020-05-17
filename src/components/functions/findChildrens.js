@@ -19,7 +19,7 @@ import _ from "lodash";
 // ];
 
 export default function findChildrens(data, id, oputArr, callback) {
-  let filterArr = data.filter(({ pid }) => pid == id);
+  let filterArr = data.filter(({ pid }) => pid === id);
   if (filterArr.length) {
     //Concat array with filtered data
     oputArr = [...oputArr, ...filterArr.map(({ id }) => id)];
@@ -43,7 +43,6 @@ let res = [];
 //not callback childFind(data,"id");
 export const findChild = (data, id, sortFields, sortOrder) => {
   data.forEach((obj) => {
-    let newres = [];
     if (obj.pid === id) {
       res.push(obj);
       _.remove(data, (dt) => dt.id === id);
@@ -66,7 +65,7 @@ export const findChild = (data, id, sortFields, sortOrder) => {
 //   b: 1
 // }]
 export const sortBy = (data, fields, orderby) => {
-  if (typeof orderby === "undefiend") orderby = [];
+  if (typeof orderby === "undefined") orderby = [];
   return _.sortBy(data, fields, orderby);
 };
 

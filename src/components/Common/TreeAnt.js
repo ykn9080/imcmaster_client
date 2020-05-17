@@ -9,54 +9,22 @@
 
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "actions";
+import { useSelector } from "react-redux";
 import {
-  getTreeFromFlatData,
   getFlatDataFromTree,
 } from "components/functions/dataUtil";
-import { getChildren } from "components/functions/findChildrens";
-import { makeStyles } from "@material-ui/core/styles";
+
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
 import "antd/dist/antd.css";
 import { Tree } from "antd";
 import useForceUpdate from "use-force-update";
 import ContextMenu from "./ContextMenu";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    flexBasis: "33.33%",
-    flexShrink: 0,
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
-  },
-}));
-
 const TreeAnt = (props) => {
   const forceUpdate = useForceUpdate();
-  const [context, setContext] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  // const tmpStyle = {
-  //   position: "absolute",
-  //   left: `${position.x}px`,
-  //   top: `${position.y}px`,
-  //   boxShadow: "2px 2px 10px #333333",
-  // };
 
   let treeData = useSelector((state) => state.global.treeData);
   const [reload, setReload] = useState(false); //for reload from child
-  const [anchorEl, setAnchorEl] = useState(false); //for open menu when rightclick tree
   const [gData, setgData] = useState(treeData);
   const [nodeVal, setNodeVal] = useState("");
   const { TreeNode } = Tree;
@@ -66,10 +34,6 @@ const TreeAnt = (props) => {
     //setgData(props.initData);
     setgData(treeData);
   }, [props, reload]);
-
-  const handleClose = () => {
-    setAnchorEl(false);
-  };
 
   /* #region anttree eventhandler collection */
   const onDragEnter = (info) => {
@@ -214,7 +178,7 @@ const TreeAnt = (props) => {
         onSelect={onSelect}
         onRightClick={onRightClick}
       >
-        {gData != "" && loop(gData)}
+        {gData !== "" && loop(gData)}
       </Tree>
       <ContextMenu
         items={items}

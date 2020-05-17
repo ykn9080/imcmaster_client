@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { globalVariable } from "actions";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   fade,
   makeStyles,
-  withTheme,
-  withStyles
 } from "@material-ui/core/styles";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
@@ -16,7 +14,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import SearchIcon from "@material-ui/icons/Search";
-import Slide from "@material-ui/core/Slide";
 import Switch from "@material-ui/core/Switch";
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -71,16 +68,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const Controls = ({ id, type, status, status1 }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
-  console.log("imin");
 
   const [open, setOpen] = useState(false);
   const [ctype, setCtype] = useState(true);
@@ -96,10 +88,6 @@ const Controls = ({ id, type, status, status1 }) => {
         break;
     }
   }, [status, status1]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch,  } from "react-redux";
 import { globalVariable } from "actions";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -10,18 +9,15 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import useForm from "../functions/useForm";
-import { remotelogin } from "../functions/api";
 // import logo from "../../images/logo/imc1_1.png";
 // import imclogo from "../../images/logo/imcmaster.png";
 import Icon from "@material-ui/core/Icon";
 import axios from "axios";
 import { currentsetting } from "components/functions/config";
-import { sweetmsg, sweetmsgautoclose } from "fromImc/Common_make";
+import { sweetmsgautoclose } from "fromImc/Common_make";
 import Snack from "utilities/Snackbar";
 function Copyright() {
   return (
@@ -39,8 +35,10 @@ function appendPid(menu) {
   //append pid for
   menu.map((k, i) => {
     if (!k.hasOwnProperty("pid")) {
-      k.pid = "";
-      menu.slice(i, 1, k);
+      return(
+      k.pid = "",
+      menu.slice(i, 1, k)
+      )
     }
   });
   return menu;

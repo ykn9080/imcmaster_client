@@ -1,16 +1,12 @@
-import React, { useState, useEffect, useStyle } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
-import { Link, useHistory } from "react-router-dom";
-import useForceUpdate from "use-force-update";
+import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import $ from "jquery";
 import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
 import AddBox from "@material-ui/icons/AddBox";
 import Apps from "@material-ui/icons/Apps";
 import MoreVert from "@material-ui/icons/MoreVert";
@@ -53,7 +49,6 @@ export const BodyHead = () => {
   console.log(ctrList);
   if (typeof ctrList === "undefined") ctrList = [];
   const dispatch = useDispatch();
-  const forceUpdate = useForceUpdate();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorEl1, setAnchorEl1] = useState(null);
@@ -119,14 +114,14 @@ export const BodyHead = () => {
       size: size,
     };
   };
-  const isBlank = () => {
-    //chk if any of object already assign control
-    let chk = true;
-    ctrList.map((v, i) => {
-      if (v.ctrid !== "") chk = false;
-    });
-    return chk;
-  };
+  // const isBlank = () => {
+  //   //chk if any of object already assign control
+  //   let chk = true;
+  //   ctrList.map((v, i) => {
+  //     if (v.ctrid !== "") return(chk = false)
+  //   });
+  //   return chk;
+  // };
   const LayoutControl = (layObj, ctrl) => {
     if (typeof layObj === "undefined") return false;
     if (typeof ctrl != "undefined") ctrList = ctrl;
@@ -138,17 +133,21 @@ export const BodyHead = () => {
       let seq = 0;
       for (let i = 0; i < layObj.repeat; i++) {
         layObj.col.map((v, i) => {
-          for (let j = 0; j < v; j++) {
-            ctrList.push(addCtr(seq, findNthWidth(seq, layObj.col)));
-            seq++;
-          }
+            for (let j = 0; j < v; j++) {
+              return(
+              ctrList.push(addCtr(seq, findNthWidth(seq, layObj.col))),
+              seq++
+              )
+            }
         });
       }
     } else {
       ctrList = _.sortBy(ctrList, ["seq"]);
       ctrList.map((ctr, j) => {
-        ctr.seq = j;
-        ctr.size = findNthWidth(j, layObj.col);
+        return(
+          ctr.seq = j,
+          ctr.size = findNthWidth(j, layObj.col)
+        )
       });
       console.log(ctrList);
     }

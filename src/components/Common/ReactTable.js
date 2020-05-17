@@ -1,42 +1,41 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
+//import styled from "styled-components";
 import { useTable } from "react-table";
 import "./ReactTable.css";
-// import "react-table/react-table.css";
 import MaUTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-const Styles = styled.div`
-  padding: 1rem;
+// const Styles = styled.div`
+//   padding: 1rem;
 
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
+//   table {
+//     border-spacing: 0;
+//     border: 1px solid black;
 
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
+//     tr {
+//       :last-child {
+//         td {
+//           border-bottom: 0;
+//         }
+//       }
+//     }
 
-    th,
-    td {
-      margin: 0;
-      padding: 0.2rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+//     th,
+//     td {
+//       margin: 0;
+//       padding: 0.2rem;
+//       border-bottom: 1px solid black;
+//       border-right: 1px solid black;
 
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`;
+//       :last-child {
+//         border-right: 0;
+//       }
+//     }
+//   }
+// `;
 
 const ReactTable = () => {
   const data = useMemo(

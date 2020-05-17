@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import $ from "jquery";
-import ReactDOM from "react-dom";
 import jexcel from "jexcel";
 
 // import "./styles.css";

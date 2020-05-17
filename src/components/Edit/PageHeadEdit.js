@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
 import { useSelector, useDispatch } from "react-redux";
 import { globalVariable } from "actions";
-import { makeStyles } from "@material-ui/core/styles";
-import { useConfirm } from "material-ui-confirm";
 import PageHead from "components/Common/PageHeader";
 import { Tooltip, Button, Descriptions, Row, Popconfirm } from "antd";
 import {
@@ -17,33 +14,9 @@ import "components/Common/Antd.css";
 import AntFormDisplay from "components/Common/AntFormDisplay";
 import useForceUpdate from "use-force-update";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-    marginRight: theme.spacing(10),
-  },
-  sortable: {
-    margin: 0,
-  },
-}));
-
 export const PageHeadEdit = (props) => {
-  let topMenu,
-    title = "",
-    pid = "",
-    keyfortree = "",
-    treeData = [];
-
-  const classes = useStyles();
-  const history = useHistory();
+  let title = "", pid = "";
   const forceUpdate = useForceUpdate();
-  const confirm = useConfirm();
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
 
@@ -68,7 +41,7 @@ export const PageHeadEdit = (props) => {
 
   // treeData = getNodeData(tempMenu, rtn, "_id", "pid", "", "title");
   let currdt = _.filter(tempMenu, function (o) {
-    return o._id == selectedKey;
+    return o._id === selectedKey;
   });
 
   if (currdt.length > 0) {
@@ -138,10 +111,7 @@ export const PageHeadEdit = (props) => {
       },
     ],
   };
-  const content = [
-    { term: "Title", detail: currdt.title },
-    { term: "Desc", detail: currdt.desc },
-  ];
+ 
   const renderContent = (column = 1) => (
     <Descriptions size="small" column={column}>
       <Descriptions.Item label="Title">{currdt.title}</Descriptions.Item>
@@ -174,17 +144,17 @@ export const PageHeadEdit = (props) => {
       </Popconfirm>
     </Tooltip>,
   ];
-  const extraContent = (
-    <div
-      style={{
-        display: "flex",
-        width: "max-content",
-        justifyContent: "flex-end",
-      }}
-    >
-      {/* <SubMenu selectedmenu={selectedmenu} tempMenu={tempMenu} /> */}
-    </div>
-  );
+  // const extraContent = (
+  //   <div
+  //     style={{
+  //       display: "flex",
+  //       width: "max-content",
+  //       justifyContent: "flex-end",
+  //     }}
+  //   >
+  //     {/* <SubMenu selectedmenu={selectedmenu} tempMenu={tempMenu} /> */}
+  //   </div>
+  // );
   const Content = ({ children, extraContent }) => {
     return (
       <Row>

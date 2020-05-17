@@ -1,13 +1,6 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useHistory } from "react-router-dom";
-import axios from "axios";
-import { currentsetting } from "components/functions/config";
-import { Link } from "react-router-dom";
-import { globalVariable } from "actions";
+import React, { useEffect,  } from "react";
 import AntMenu from "components/Common/Menu";
 import DenseAppBar from "components/Common/AppBar";
-import { Button } from "antd";
 import FormList from "Admin/Form/FormList";
 import FormView from "Admin/Form/FormView";
 import FormEdit from "Admin/Form/FormEdit";
@@ -15,12 +8,6 @@ import DataEdit from "Admin/Data/DataEdit";
 import TableView from "Admin/Table/TableView";
 import PageBuild from "Admin/Menu/PageBuild";
 import PageHead from "components/Common/PageHeader";
-import {
-  addedmenu,
-  emptyAddedmenu,
-  addRootPid,
-  addPath1,
-} from "components/functions/dataUtil";
 
 const adminMenu = [
   {
@@ -265,22 +252,16 @@ const Admin = ({ match }) => {
           case "chart":
           case "data":
             return <FormList type={title} />;
-            break;
           case "formview":
             return <FormView />;
-            break;
           case "formedit":
             return <FormEdit />;
-            break;
           case "tableview":
             return <TableView />;
-            break;
           case "dataedit":
             return <DataEdit />;
-            break;
           case "pagebuild":
             return <PageBuild />;
-            break;
         }
       })()}
     </>

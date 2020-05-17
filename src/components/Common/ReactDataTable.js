@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useCallback, useEffect } from "react";
 import tableDataItems from "./ReactDataTable_sampleDesserts";
 import DataTable from "react-data-table-component";
-import { Input } from "antd";
 
 const ReactDataTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);

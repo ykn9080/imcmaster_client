@@ -3,9 +3,9 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
+import filterFactory from "react-bootstrap-table2-filter";
 import paginationFactory from "react-bootstrap-table2-paginator";
-import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
+import cellEditFactory from "react-bootstrap-table2-editor";
 
 const BootTable = ({ dt, apiUrl, keyfield, attr }) => {
   // let condensed = "";

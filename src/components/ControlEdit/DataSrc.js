@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector,  } from "react-redux";
 import BootTable from "components/Controls/Table/BootStrapTable2";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
+import { textFilter } from "react-bootstrap-table2-filter"
+import  { Type } from "react-bootstrap-table2-editor";
 import SearchInput from "./ApiUrlSearch";
 
 const DataSrc = () => {
@@ -91,7 +91,7 @@ const DataSrc = () => {
       }
     ]
   };
-  const url = apiUrl; //"http://localhost:3001/results";
+  //const url = apiUrl; //"http://localhost:3001/results";
 
   return (
     <>

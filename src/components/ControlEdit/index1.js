@@ -1,8 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import { currentsetting } from "components/functions/config";
-import { Link } from "react-router-dom";
 import { globalVariable } from "actions";
 import {
   TabContent,
@@ -10,19 +7,12 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Card,
-  Button,
-  CardTitle,
-  CardText,
   Row,
   Col,
 } from "reactstrap";
 import classnames from "classnames";
 import DataSrc from "./DataSrc";
-import Summary from "./Summary";
-import DynamicForm from "components/Common/DynamicForm";
 import AntFormBuild from "components/Common/AntFormBuild";
-import BootFormDisplay from "components/Common/BootFormDisplay";
 import DenseAppBar from "components/Common/AppBar";
 import IconBtn from "components/Common/IconButton";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -85,35 +75,31 @@ import SettingsIcon from "@material-ui/icons/Settings";
 //     },
 //   ],
 // };
-const Fetch = () => {
-  const dispatch = useDispatch();
-  const [data, setData] = useState(null);
-  useEffect(() => {
-    (async () => {
-      // let res = await fetch(
-      //   "http://localhost:3001/bootform/5e8054063346b1dd6ce970aa" //example and simple data
-      // );
-      const result = await axios.get(
-        "http://localhost:3001/bootform/5e8054063346b1dd6ce970aa"
-      );
-      // let response = await res.json();
-      dispatch(globalVariable({ formData: result.data.data }));
-      setData(JSON.stringify(result.data.data));
-      console.log(result.data.data);
-    })();
-  }, []);
-  return <div>{data}</div>;
-};
+// const Fetch = () => {
+//   const dispatch = useDispatch();
+//   const [data, setData] = useState(null);
+//   useEffect(() => {
+//     (async () => {
+//       // let res = await fetch(
+//       //   "http://localhost:3001/bootform/5e8054063346b1dd6ce970aa" //example and simple data
+//       // );
+//       const result = await axios.get(
+//         "http://localhost:3001/bootform/5e8054063346b1dd6ce970aa"
+//       );
+//       // let response = await res.json();
+//       dispatch(globalVariable({ formData: result.data.data }));
+//       setData(JSON.stringify(result.data.data));
+//       console.log(result.data.data);
+//     })();
+//   }, []);
+//   return <div>{data}</div>;
+// };
 
 const EditTab = (props) => {
   const [activeTab, setActiveTab] = useState("1");
-  const [formArray, setFormArray] = useState("");
-  const [isFetching, setFetching] = useState(false);
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
-  let setting = {},
-    list = [];
   const NItem = ({ indx, title }) => {
     return (
       <NavItem>

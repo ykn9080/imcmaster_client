@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { globalVariable } from "actions";
@@ -9,15 +9,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import CardList from "components/Common/CardList";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  }
-}));
 
 const ControlCard = props => {
   const forceUpdate = useForceUpdate();
-  const classes = useStyles();
   const history = useHistory();
   let ctrList;
   const dispatch = useDispatch();

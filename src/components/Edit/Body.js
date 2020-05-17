@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, {  useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { globalVariable } from "actions";
@@ -6,9 +6,6 @@ import useForceUpdate from "use-force-update";
 import $ from "jquery";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import CardForm from "components/Common/CardForm";
 import CardList from "components/Common/CardList";
 import { ObjectID } from "bson"; //_id maker for MongoDB
 import { BodyHead } from "./BodyHead";
@@ -66,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const Body = (props) => {
   const forceUpdate = useForceUpdate();
-  const classes = useStyles();
   const history = useHistory();
   let ctrList;
   const dispatch = useDispatch();

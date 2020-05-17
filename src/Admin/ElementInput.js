@@ -1,37 +1,19 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import _ from "lodash";
 import cloneDeep from "lodash/cloneDeep";
-import $ from "jquery";
-import axios from "axios";
 import "jquery-ui-bundle";
 import "jquery-ui-bundle/jquery-ui.min.css";
 import { useSelector, useDispatch } from "react-redux";
-import { currentsetting } from "components/functions/config";
 import { globalVariable } from "actions";
-import { makeStyles } from "@material-ui/core/styles";
-
 import "antd/dist/antd.css";
 import { Button, Tooltip } from "antd";
 import {
-  DesktopOutlined,
   SaveOutlined,
-  QuestionCircleOutlined,
 } from "@ant-design/icons";
 import PageHead from "components/Common/PageHeader";
 import AntFormDisplay from "components/Common/AntFormDisplay";
-import useForceUpdate from "use-force-update";
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    marginRight: 2,
-  },
-}));
 
 const ElementInput = (props) => {
-  const history = useHistory();
   const dispatch = useDispatch();
-  const forceUpdate = useForceUpdate();
   let elementData = useSelector((state) => state.global.elementData);
   let currentData = useSelector((state) => state.global.currentData);
 
@@ -84,8 +66,8 @@ const ElementInput = (props) => {
           if (obj === "required") {
             requireobj = { required: changedValues[obj] };
             if (
-              allValues["requiredmsg"] != "undefined" &&
-              allValues["requiredmsg"] != ""
+              allValues["requiredmsg"] !== "undefined" &&
+              allValues["requiredmsg"] !== ""
             )
               requireobj = {
                 ...requireobj,
@@ -173,10 +155,10 @@ const ElementInput = (props) => {
       });
       let optsplit = "";
       elementData.optionArray.map((k, i) => {
-        if (k.value === k.text) optsplit += k.value + ";";
-        else optsplit += k.value + "," + k.text + ";";
+        if (k.value === k.text) return (optsplit += k.value + ";")
+        else return(optsplit += k.value + "," + k.text + ";")
       });
-      if (optsplit != "") optsplit = optsplit.slice(0, -1);
+      if (optsplit !== "") optsplit = optsplit.slice(0, -1);
       summaryData.setting.initialValues = {
         ...summaryData.setting.initialValues,
         optionArray: optsplit,
@@ -206,7 +188,9 @@ const ElementInput = (props) => {
           if (typeof opt === "string") {
             let array = [];
             opt.split(";").map((k, i) => {
-              array.push({ value: k, text: k });
+              return(
+              array.push({ value: k, text: k })
+              )
             });
             instantView.list[0].optionArray = array;
           }
@@ -214,8 +198,10 @@ const ElementInput = (props) => {
           let isExist = false;
           currentData.data.list.map((k, i) => {
             if (k.seq === instantView.list[0].seq) {
-              currentData.data.list.splice(i, 1, instantView.list[0]);
-              isExist = true;
+              return(
+              currentData.data.list.splice(i, 1, instantView.list[0]),
+              isExist = true
+              )
             }
           });
           if (!isExist) currentData.data.list.push(instantView.list[0]);

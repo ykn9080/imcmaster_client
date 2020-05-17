@@ -1,11 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import _ from "lodash";
 import Head from "./Head";
-import PageHeadHome from "./PageHeadHome";
 import { CenteredGrid } from "./Body";
 import Footer from "./Footer";
-import { HeadEdit } from "components/Edit/Head3";
 import { globalVariable } from "actions";
 import { addedmenu, addRootPid, addPath1 } from "components/functions/dataUtil";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -36,8 +33,6 @@ library.add(
   faGlobe,
   faCog
 );
-
-let menuData = [];
 
 // export const addPath1 = (menu, pid, pathname) => {
 //   _.filter(menu, function (o) {

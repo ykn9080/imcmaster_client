@@ -1,9 +1,5 @@
 import React from "react";
 import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
-import { globalVariable } from "actions";
-import { Link, useHistory } from "react-router-dom";
-import useForceUpdate from "use-force-update";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -16,18 +12,12 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import ArrowLeft from "@material-ui/icons/ArrowLeft";
 import ArrowRight from "@material-ui/icons/ArrowRight";
 import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import Tooltip from "@material-ui/core/Tooltip";
-import ControlIcon from "components/Controls/ControlIcon";
-import ControlList from "components/Controls";
-import DataGrid1 from "components/Common/DataGrid1";
 import DataGrid from "components/Common/DataGrid";
 
 const useStyles = makeStyles((theme) => ({
@@ -67,13 +57,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default (props) => {
   const classes = useStyles();
-  const forceUpdate = useForceUpdate();
-  const dispatch = useDispatch();
-  const history = useHistory();
   const [expanded, setExpanded] = React.useState(false);
 
-  const [open, setOpen] = React.useState(false);
-  const [open1, setOpen1] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -95,26 +80,24 @@ export default (props) => {
     });
     props.resizeItemHandler(ctrList);
   };
-  const removeHandler = () => {
-    setExpanded(!expanded);
-  };
-  const BlankCard = (data) => {
-    return (
-      <Card className={classes.cardDot}>
-        <CardHeader style={{ textAlign: "center" }} title="Add New" />
-        <CardActions>
-          <IconButton aria-label="add" className={classes.icon}>
-            <AddIcon
-              style={{ fontSize: 50 }}
-              onClick={() => {
-                history.push("/controls", { data });
-              }}
-            />
-          </IconButton>
-        </CardActions>
-      </Card>
-    );
-  };
+
+  // const BlankCard = (data) => {
+  //   return (
+  //     <Card className={classes.cardDot}>
+  //       <CardHeader style={{ textAlign: "center" }} title="Add New" />
+  //       <CardActions>
+  //         <IconButton aria-label="add" className={classes.icon}>
+  //           <AddIcon
+  //             style={{ fontSize: 50 }}
+  //             onClick={() => {
+  //               history.push("/controls", { data });
+  //             }}
+  //           />
+  //         </IconButton>
+  //       </CardActions>
+  //     </Card>
+  //   );
+  // };
   // const createControl = (ctrList, data, direction) => {
   //   //step1: select control type->step2: select template/create new
   //   //->step3: edit control
